@@ -1,0 +1,7 @@
+com/template/page_objects/HomePage.class
+com/template/stepdefs/ExampleDefs.class
+com/template/DriverManager.class
+com/template/stepdefs/Hooks.class
+com/template/PageObjectManager.class
+com/template/RunnerTestCase.class
+com/template/Helpers.class
