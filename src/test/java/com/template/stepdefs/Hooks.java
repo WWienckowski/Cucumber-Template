@@ -27,7 +27,7 @@ public class Hooks {
 		  String browser = Helpers.browserCheck(scenarioName);
 		  DriverManager.startDriver(browser);
 		  // Create all page objects in the PageObjectManager
-	      manager = new PageObjectManager(DriverManager.driver);
+	      manager = new PageObjectManager(DriverManager.driver, DriverManager.wait);
 	  }
 	  
 	  @After(order=1)

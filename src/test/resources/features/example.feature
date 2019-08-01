@@ -11,6 +11,11 @@ Feature: This is an example feature
     | "Firefox" |
     | "Chrome" |  
   
+  @example_2
+  Scenario: Navigate from the Home Page to the Details page
+  	Given I navigate the web driver to the home page
+  	When I click on the SHIRTS link
+  	Then I should be on the "detail" page
 
 	
 	
