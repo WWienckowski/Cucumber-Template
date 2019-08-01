@@ -9,11 +9,9 @@ Feature: This is an example feature
   Examples: 
     | browser |
     | "Firefox" |
-    | "Chrome" |
-  ##| "Edge" |  
+    | "Chrome" |  
   
-  @example_2
-  Scenario: 
+
 	
 	
     

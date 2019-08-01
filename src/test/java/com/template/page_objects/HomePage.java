@@ -21,7 +21,7 @@ WebDriver driver;
 		}
 	
 	public void verifyTitle() {
-		String expectedText = "THE PuNK SHIRT";
+		String expectedText = "THE PINK SHIRT";
 		String actualText = title.getText();
 		Assert.assertTrue("Title missing or incorrect",expectedText.equals(actualText));	
 		
