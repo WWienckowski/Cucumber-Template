@@ -8,7 +8,7 @@
 3. [Running a Test](#running-a-test)
 4. [Generating a Cluecumber Report](#generating-a-cluecumber-report)
 
-## Directory [^](#contents)
+## Directory
 
 ### src/test/resources
 
@@ -32,7 +32,9 @@
 
 * **cluecumber-report** - generates a nicer looking report named "index.html"
 
-## Choosing the browser with scenario names [^](#contents)
+[Back to Contents](#contents)
+
+## Choosing the browser with scenario names
   
   By default, the tests will run in FireFox unless the scenario name contains the word "Chrome" or "Edge" (case sensitive), in which case the test will be run using the Google Chrome or Microsoft Edge respectively.
 
@@ -50,7 +52,9 @@
 
   In this case the scenario will be tested three times, once in FireFox, once in Chrome, and once in Edge
 
-## Running a Test [^](#contents)
+  [Back to Contents](#contents)
+
+## Running a Test
 
   From the directory where the pom.xml file is located, type:
   
@@ -67,7 +71,9 @@
   |```@tagName and @otherTagName```| All scenarios tagged with both ```@tagName``` and ```@otherTagName```
   |```(@tagName or @otherTagName) and (not @thirdTagName)```| All scenarios tagged with either ```@tagName``` or ```@otherTagName```, ignoring any of those which are tagged with ```@thirdTagName```
 
-## Generating a Cluecumber Report [^](#contents)
+  [Back to Contents](#contents)
+
+## Generating a Cluecumber Report
 
   When the test runs it will generate a basic html report and the results will be shown in the terminal, however the stylized cluecumber report will not generate unless you run the tests with:
 
@@ -82,3 +88,5 @@
   If you just want to generate a cluecumber report from the existing cucumber.json file without running additional tests enter:
 
   ```mvn cluecumber-report:reporting```
+
+  [Back to Contents](#contents)
