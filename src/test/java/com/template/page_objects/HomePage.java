@@ -12,13 +12,20 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import cucumber.api.Scenario;
+
 public class HomePage {
 WebDriver driver;
 WebDriverWait wait;
+Scenario scenario;
+public String homePage = "https://pink-develop.s3.us-east-2.amazonaws.com/index.html";
+
+
 	
-	public HomePage(WebDriver driver, WebDriverWait wait) {
+	public HomePage(WebDriver driver, WebDriverWait wait, Scenario scenario) {
 		 this.driver = driver;
 		 this.wait = wait;
+		 this.scenario = scenario;
 		 PageFactory.initElements(driver, this);
 		 }
 	
@@ -31,18 +38,24 @@ WebDriverWait wait;
 	List<WebElement> categoryLinks;
 	
 	public void navigateTo_HomePage() {
-		driver.get("https://pink-develop.s3.us-east-2.amazonaws.com/index.html");
+		scenario.write("Navigating to: "+homePage+"...");
+		driver.get(homePage);
 		}
 	
 	public void verifyTitle() {
 		wait.until(ExpectedConditions.visibilityOf(title));
 		String expectedText = "THE PINK SHIRT";
 		String actualText = title.getText();
-		Assert.assertTrue("Title missing or incorrect",expectedText.equals(actualText));		
+		scenario.write("Comparing "+expectedText+" to "+actualText+"...");
+		Assert.assertTrue("Title missing or incorrect",expectedText.equals(actualText));
+		scenario.write("They match!");
 	}
 
 	public void clickShirtsLink() {
+		scenario.write("Waiting for Shirts link...");
 		wait.until(ExpectedConditions.visibilityOfAllElements(categoryLinks));
+		scenario.write("Clicking Shirts link...");
 		categoryLinks.get(0).click();
+		scenario.write("Shirts link clicked!");
 	}
 }

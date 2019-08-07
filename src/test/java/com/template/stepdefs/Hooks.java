@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.template.DriverManager;
 import com.template.Helpers;
 import com.template.PageObjectManager;
@@ -13,8 +15,12 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 
 public class Hooks {
-	public static WebDriver driver;		
+	DriverManager driverManager;		
 	public static PageObjectManager manager;
+	
+	public Hooks(DriverManager driverManager)  {
+		this.driverManager = driverManager;
+	}
 	
 	  @Before
 	/*
@@ -22,25 +28,34 @@ public class Hooks {
 	 * helper method that scans it for a browser name, the browser name is sent
 	 * to the DriverManager which opens the WebDriver.
 	 */
-	  public static void initialize(Scenario scenario) throws MalformedURLException {
+	  public void initialize(Scenario scenario) throws MalformedURLException {
+		  scenario.write("Selecting browser, opening web driver, and initializing page objects...");
 		  String scenarioName = scenario.getName();
 		  String browser = Helpers.browserCheck(scenarioName);
-		  DriverManager.startDriver(browser);
+		  driverManager.startDriver(browser);
 		  // Create all page objects in the PageObjectManager
-	      manager = new PageObjectManager(DriverManager.driver, DriverManager.wait);
+		  WebDriver driver = driverManager.getDriver();
+		  WebDriverWait wait = driverManager.getWait();
+	      manager = new PageObjectManager(driver, wait, scenario);
+	      scenario.write("...Done!");
 	  }
 	  
 	  @After(order=1)
 		// If a test fails, document it with a screen shot and then quit the driver
 		public void captureScreenOnFail(Scenario scenario){
 			if (scenario.isFailed()) {
-				byte[] screenshot = ((TakesScreenshot) DriverManager.driver).getScreenshotAs(OutputType.BYTES);
+				scenario.write("Scenario has failed, adding screenshot to report.");
+				byte[] screenshot = ((TakesScreenshot) driverManager.getDriver()).getScreenshotAs(OutputType.BYTES);
 				scenario.embed(screenshot, "image/png"); 
+			} else {
+				scenario.write("Scenario passed, no screenshots taken.");
 			}
 	  }
 	  @After(order=0)
 	  // Quit the driver after a test
-	  public void quitDriver() {
-		  DriverManager.driver.quit();
+	  public void quitDriver(Scenario scenario) {
+		  scenario.write("Closing web driver to end scenario");
+		  driverManager.teardownDriver();;
 	  }
+	  
 }

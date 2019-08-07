@@ -12,7 +12,7 @@ Feature: This is an example feature
     | "Chrome" |  
   
   @example_2
-  Scenario: Navigate from the Home Page to the Details page
+  Scenario: Navigate from the Home Page to the Details page - Chrome
   	Given I navigate the web driver to the home page
   	When I click on the SHIRTS link
   	Then I should be on the "detail" page

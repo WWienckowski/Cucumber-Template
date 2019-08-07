@@ -1,6 +1,8 @@
 package com.template;
 
+import org.junit.AfterClass;
 import org.junit.runner.RunWith;
+
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
@@ -14,5 +16,9 @@ import cucumber.api.junit.Cucumber;
 
 public class RunnerTestCase {
 	
+	@AfterClass
+	public static void teardown() {
+		System.out.println("Tests over");
+	}
 
 }
