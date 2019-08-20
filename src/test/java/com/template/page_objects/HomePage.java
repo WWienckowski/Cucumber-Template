@@ -1,13 +1,10 @@
 package com.template.page_objects;
 
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -31,11 +28,7 @@ public String homePage = "https://pink-develop.s3.us-east-2.amazonaws.com/index.
 	
 	@FindBy(xpath = "/html/body/app-root/pink-home-layout/pink-banner-home/div/div/h1")WebElement title;
 	
-	@FindBys( {
-		@FindBy(className = "category-link"),
-		@FindBy(xpath = "//a[text()=\"SHIRTS\"]")
-	} )
-	List<WebElement> categoryLinks;
+	@FindBy(xpath = "/html/body/app-root/pink-header/div/nav/pink-header-navigation/div/pink-header-navigation-tray[1]/div/div[1]/a[1]")WebElement shirtsLink;
 	
 	public void navigateTo_HomePage() {
 		scenario.write("Navigating to: "+homePage+"...");
@@ -53,9 +46,9 @@ public String homePage = "https://pink-develop.s3.us-east-2.amazonaws.com/index.
 
 	public void clickShirtsLink() {
 		scenario.write("Waiting for Shirts link...");
-		wait.until(ExpectedConditions.visibilityOfAllElements(categoryLinks));
+		wait.until(ExpectedConditions.elementToBeClickable(shirtsLink));
 		scenario.write("Clicking Shirts link...");
-		categoryLinks.get(0).click();
+		shirtsLink.click();
 		scenario.write("Shirts link clicked!");
 	}
 }
