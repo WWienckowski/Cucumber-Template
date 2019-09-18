@@ -29,7 +29,7 @@ public class DriverManager {
 	}
 	
 	public void startDriver(String browser) {
-		// Determines if the tests run headless; true = yes, false = no
+		// Determines if the drivers run headless
 		boolean headless = true;
 		if (browser.contentEquals("Firefox") && !(driver instanceof org.openqa.selenium.firefox.FirefoxDriver))
 		{
@@ -46,11 +46,13 @@ public class DriverManager {
 		} else if (browser.contentEquals("Edge") && !(driver instanceof org.openqa.selenium.edge.EdgeDriver)) {
 			WebDriverManager.edgedriver().setup();
 			driver = new EdgeDriver();
+		} else if (browser.contentEquals("Mobile")) {
+			
 		}
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	    driver.manage().deleteAllCookies();
 	    driver.manage().window().maximize();
-	    wait = new WebDriverWait(driver, 10);	    
+	    wait = new WebDriverWait(driver, 5);	    
 	}
 	
 	public void teardownDriver() {

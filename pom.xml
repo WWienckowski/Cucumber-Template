@@ -14,6 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss z</maven.build.timestamp.format>
   </properties>
   <build>
     <plugins>
@@ -32,8 +33,9 @@
 	    </executions>
 	    <configuration>
 	        <sourceJsonReportDirectory>${project.build.directory}/cucumber-report</sourceJsonReportDirectory>
-	        <generatedHtmlReportDirectory>${project.build.directory}/cluecumber-report</generatedHtmlReportDirectory>
-	        <customPageTitle>Testing Report</customPageTitle>
+	        <generatedHtmlReportDirectory>${project.build.directory}/testing-report-${maven.build.timestamp}</generatedHtmlReportDirectory>
+	        <customPageTitle>Pink Testing Report</customPageTitle>
+	        <expandBeforeAfterHooks>true</expandBeforeAfterHooks>
 	        <customStatusColorPassed>#017FAF</customStatusColorPassed>
     		<customStatusColorFailed>#C94A38</customStatusColorFailed>
     		<customStatusColorSkipped>#F48F00</customStatusColorSkipped>

@@ -15,10 +15,7 @@ public class HomePage {
 WebDriver driver;
 WebDriverWait wait;
 Scenario scenario;
-public String homePage = "https://pink-develop.s3.us-east-2.amazonaws.com/index.html";
 
-
-	
 	public HomePage(WebDriver driver, WebDriverWait wait, Scenario scenario) {
 		 this.driver = driver;
 		 this.wait = wait;
@@ -29,11 +26,6 @@ public String homePage = "https://pink-develop.s3.us-east-2.amazonaws.com/index.
 	@FindBy(xpath = "/html/body/app-root/pink-home-layout/pink-banner-home/div/div/h1")WebElement title;
 	
 	@FindBy(xpath = "/html/body/app-root/pink-header/div/nav/pink-header-navigation/div/pink-header-navigation-tray[1]/div/div[1]/a[1]")WebElement shirtsLink;
-	
-	public void navigateTo_HomePage() {
-		scenario.write("Navigating to: "+homePage+"...");
-		driver.get(homePage);
-		}
 	
 	public void verifyTitle() {
 		wait.until(ExpectedConditions.visibilityOf(title));

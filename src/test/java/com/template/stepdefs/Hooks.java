@@ -29,7 +29,6 @@ public class Hooks {
 	 * to the DriverManager which opens the WebDriver.
 	 */
 	  public void initialize(Scenario scenario) throws MalformedURLException {
-		  scenario.write("Selecting browser, opening web driver, and initializing page objects...");
 		  String scenarioName = scenario.getName();
 		  String browser = Helpers.browserCheck(scenarioName);
 		  driverManager.startDriver(browser);
@@ -37,14 +36,12 @@ public class Hooks {
 		  WebDriver driver = driverManager.getDriver();
 		  WebDriverWait wait = driverManager.getWait();
 	      manager = new PageObjectManager(driver, wait, scenario);
-	      scenario.write("...Done!");
 	  }
 	  
 	  @After(order=1)
 		// If a test fails, document it with a screen shot and then quit the driver
 		public void captureScreenOnFail(Scenario scenario){
 			if (scenario.isFailed()) {
-				scenario.write("Scenario has failed, adding screenshot to report.");
 				byte[] screenshot = ((TakesScreenshot) driverManager.getDriver()).getScreenshotAs(OutputType.BYTES);
 				scenario.embed(screenshot, "image/png"); 
 			} else {
@@ -54,7 +51,6 @@ public class Hooks {
 	  @After(order=0)
 	  // Quit the driver after a test
 	  public void quitDriver(Scenario scenario) {
-		  scenario.write("Closing web driver to end scenario");
 		  driverManager.teardownDriver();;
 	  }
 	  
