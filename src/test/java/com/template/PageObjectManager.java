@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.template.page_objects.BagPage;
 import com.template.page_objects.CheckoutPage;
+import com.template.page_objects.ConfirmationPage;
 import com.template.page_objects.Global;
 import com.template.page_objects.HomePage;
 import com.template.page_objects.ProductDetailPage;
@@ -19,11 +20,12 @@ public class PageObjectManager {
 	public ProductDetailPage detail;
 	public CheckoutPage checkout;
 	public BagPage bag;
+	public ConfirmationPage confirmation;
 
 	// add each page object here and they will be instantiated when the scenario starts
-	public PageObjectManager(WebDriver driver, WebDriverWait wait, Scenario scenario) {
+	public PageObjectManager(WebDriver driver, WebDriverWait wait, Scenario scenario, String baseUrl) {
 		if (global == null) {
-			global = new Global(driver, wait, scenario);
+			global = new Global(driver, wait, scenario, baseUrl);
 		}
 		if (home == null) {
 			home = new HomePage(driver, wait, scenario);
@@ -36,6 +38,9 @@ public class PageObjectManager {
 		}
 		if (bag == null) {
 			bag = new BagPage(driver, wait, scenario);
+		}
+		if (confirmation == null) {
+			confirmation = new ConfirmationPage(driver, wait, scenario);
 		}
 	}
 }

@@ -11,7 +11,7 @@ Feature: Contact for Order Component (UI)
 		When the user clicks on the <delivery type> section
 		Then there will be a 'Contact for order' component
 		And the page will display all fields for <delivery type>
-		And 'Contact for Order' will contain an interactive checkbox that the user can check
+		And Contact for Order will contain an interactive checkbox that the user can check
    
    Examples:
    | delivery type |

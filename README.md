@@ -4,8 +4,8 @@
 ## Contents
 
 1. [Directory](#directory)
-2. [Choosing the browser with scenario names](#choosing-the-browser-with-scenario-names)
-3. [Running a Test](#running-a-test)
+2. [Running a Test](#running-a-test)
+3. [Changing the Test Environment](#changing-the-test-environment)
 4. [Generating a Cluecumber Report](#generating-a-cluecumber-report)
 
 ## Directory
@@ -22,37 +22,17 @@
   * PageObjectManager.java - holds all page objects, which abstract the minute actions used in the step definitions
   * RunnerTestCase.java - cucumber configuration options
 
-* **com.template.page_objects** - where page objects are located
+* **com.template.page_objects** - where page object methods are located
 
 * **com.template.stepdefs** - where step definitions and step hooks are located
 
 ### target - where reports are generated
 
-* **basic-html-report** - generates a simple report named "index.html"
+* **basic-html-report** - generates a simple html report named "index.html"
 
-* **cluecumber-report** - generates a nicer looking report named "index.html"
+* **testing-report YYYY-DD-MM HH:MM:SS z** - generates a styled, navigable report named "index.html"
 
 [Back to Contents](#contents)
-
-## Choosing the browser with scenario names
-  
-  By default, the tests will run in FireFox unless the scenario name contains the word "Chrome" or "Edge" (case sensitive), in which case the test will be run using the Google Chrome or Microsoft Edge respectively.
-
-  Optionally, you can test the same scenario on different browsers by creating a scenario outline like this:
-
-    Scenario Outline: Perform a test in <browser>
-      Given ...
-      When ...
-      Then  ...
-    Examples:
-    | browser |
-    | "Firefox" |
-    | "Chrome" |
-    | "Edge" |
-
-  In this case the scenario will be tested three times, once in FireFox, once in Chrome, and once in Edge
-
-  [Back to Contents](#contents)
 
 ## Running a Test
 
@@ -70,6 +50,22 @@
   |```@tagName or @otherTagName```| All scenarios tagged with either ```@tagName``` or ```@otherTagName``` |
   |```@tagName and @otherTagName```| All scenarios tagged with both ```@tagName``` and ```@otherTagName```
   |```(@tagName or @otherTagName) and (not @thirdTagName)```| All scenarios tagged with either ```@tagName``` or ```@otherTagName```, ignoring any of those which are tagged with ```@thirdTagName```
+
+  [Back to Contents](#contents)
+
+## Changing the Test Environment
+
+  The test environment can be changed when running the test from the command line like this:
+
+  ```mvn test -Dlocation="environment"```
+
+  | Environment | Description | Url |
+  |-------------|-------------|------|
+  |```-Dlocation="DEV"```| Dev environment | <http://pink-develop.s3-website.us-east-2.amazonaws.com/> |
+  |```-Dlocation="QA"```| Qa environment | <http://pink-qa.s3-website-us-east-1.amazonaws.com/> |
+  |```-Dlocation="LOCAL"```| Local environment | <http://localhost:4200/> |
+
+  If the tests are run without specifiying the environment, then the environment will default to Dev.
 
   [Back to Contents](#contents)
 

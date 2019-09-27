@@ -8,7 +8,7 @@ public class Helpers {
 	// This method determines which browser to use based on the Scenario name and deaults to Firefox
 	public static String browserCheck(String scenarioName) {
 		// Default to Firefox
-		String browser = "Firefox";
+		String browser = "Chrome";
 		// Check for Chrome
 		boolean chrome = scenarioName.matches(".*\\bChrome\\b.*");
 		if (chrome == true) {
@@ -26,8 +26,13 @@ public class Helpers {
 	
 	// Call this method to hover the cursor on an element
 	public static void HoverOn(WebElement element, WebDriver driver) {
-		Actions builder = new Actions(driver);
-		builder.moveToElement(element).build().perform();
+		Actions pointer = new Actions(driver);
+		pointer.moveToElement(element).perform();
+	}
+	
+	public static void MoveCursor(int x, int y, WebDriver driver) {
+		Actions pointer = new Actions(driver);
+		pointer.moveByOffset(x, y).perform();
 	}
 
 }
