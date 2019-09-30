@@ -1,5 +1,7 @@
 package com.template;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +14,9 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class DriverManager {
 	private WebDriver driver;
@@ -40,26 +45,23 @@ public class DriverManager {
 	
 	public void startDriver(String browser) {
 		// Determines if the drivers run headless
-		boolean headless = true;
-		this.checkEnvironment();
-		if (browser.contentEquals("Firefox") && !(driver instanceof org.openqa.selenium.firefox.FirefoxDriver))
-		{
-			WebDriverManager.firefoxdriver().setup();
-		    FirefoxOptions firefoxOptions = new FirefoxOptions();
-		    firefoxOptions.setHeadless(headless);
-		    driver = new FirefoxDriver(firefoxOptions);
-		    
-		} else if (browser.contentEquals("Chrome") && !(driver instanceof org.openqa.selenium.chrome.ChromeDriver)) {
-			WebDriverManager.chromedriver().setup();
-			ChromeOptions chromeOptions = new ChromeOptions();
-			chromeOptions.setHeadless(headless);
-			chromeOptions.addArguments("start-maximized");
-			driver = new ChromeDriver(chromeOptions);
-		} 
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-	    driver.manage().deleteAllCookies();
-	    driver.manage().window().maximize();
-	    wait = new WebDriverWait(driver, 5);	    
+		try{
+			String selenium = System.getProperty("selenium");
+			if (browser.contentEquals("Firefox")) {
+				driver = new RemoteWebDriver(new URL(selenium),DesiredCapabilities.firefox());
+
+			} else if (browser.contentEquals("Chrome")) {
+				driver = new RemoteWebDriver(new URL(selenium),DesiredCapabilities.chrome());
+			} else if (browser.contentEquals("Edge")) {
+				driver = new RemoteWebDriver(new URL(selenium),DesiredCapabilities.edge());
+			}
+			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			driver.manage().deleteAllCookies();
+			driver.manage().window().maximize();
+			wait = new WebDriverWait(driver, 10);
+		} catch(MalformedURLException e){
+			System.out.println("Error"+e);
+		}
 	}
 	
 	private void checkEnvironment() {
