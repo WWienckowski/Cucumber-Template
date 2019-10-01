@@ -27,7 +27,7 @@ public class GenericDefs {
 
 	@When("the user clicks the checkbox for {string}")
 	public void the_user_clicks_the_checkbox_for(String checkbox) {
-	    manager.global.clickOnByText(checkbox);
+	    manager.global.clickCheckboxByText(checkbox);
 	}
 
 	@Given("the checkbox for {string} is checked")
@@ -91,5 +91,20 @@ public class GenericDefs {
 	@When("the user taps anywhere on the screen")
 	public void the_user_taps_anywhere_on_the_screen() {
 	    manager.global.tapAnywhere();
+	}
+	
+	@Then("the {string} radio button is selected")
+	public void the_radio_button_is_selected(String string) {
+	    manager.global.isSelectedByText(string, true);
+	}
+	
+	@Then("an active {string} button will display")
+	public void an_active_button_will_display(String buttonText) {
+	    manager.global.isButtonEnabledByText(buttonText, true);
+	}
+	
+	@Then("the mouse cursor will revert to default")
+	public void the_mouse_cursor_will_revert_to_default() {
+	    manager.global.checkCSS("//body", "auto", "cursor");
 	}
 }

@@ -119,16 +119,15 @@ public class ConfirmationPage {
 		
 		Hooks.manager.global.scrollToElement(element);
 		Actions action = new Actions(driver);
+		action.pause(2000);
 		action.click(toolTipIcon);
-		// action.pause(2000);
-		// action.click(toolTipIcon);
-		action.pause(1000);
+		action.pause(2000);
 		action.perform();
 		Hooks.manager.global.includeScreenshot();
 	}
 
 	public void enterPaymentDetails() {
-		scenario.write("At the time of writing this test, it is not possible to enter payment details."
-				+ "\nSkipping to clicking the continue button.");
+		WebElement button = driver.findElement(By.xpath("//button[text()='continue']"));
+		Hooks.manager.global.javascriptClick(button);
 	}
 }

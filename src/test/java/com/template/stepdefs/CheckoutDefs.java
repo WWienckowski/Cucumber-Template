@@ -19,9 +19,9 @@ public class CheckoutDefs {
 		manager.checkout.locationIs("UK");
 	}
 
-	@Then("the page will display all fields")
+	@Then("the Shipping Address section will display all fields")
 	public void the_page_will_display_all_fields(List<String> fields) {
-	    int fieldsetIndex = 0;	
+	    int fieldsetIndex = 1;	
 		manager.checkout.checkFields(fields, fieldsetIndex);
 	}
 
@@ -57,7 +57,7 @@ public class CheckoutDefs {
 
 	@Then("a {string} link should appear below the last field")
 	public void a_link_should_appear_below_the_last_field(String link) {
-	    manager.global.clickOnByText(link);
+	    manager.global.findLinkByText(link);
 	}
 
 	@Then("the {string} radio button should be selected")
@@ -106,13 +106,13 @@ public class CheckoutDefs {
 	
 	@Then("there will be a {string} component")
 	public void there_will_be_a_component(String elementName) {
-	    manager.global.checkForElementByText(elementName);
+	    manager.global.findComponentByText(elementName);
 	}
 	
 	@Then("the page will display all fields for {string}")
 	public void the_page_will_display_all_fields_for(String deliveryOption) {
 		List<String> fieldNames = new ArrayList<String>();
-		int fieldsetIndex = 2;
+		int fieldsetIndex = 3;
 		if (deliveryOption.matches("Ship to Address")) {
 			fieldNames = Arrays.asList( "Email Address*", "Mobile Number*");
 	    } else if (deliveryOption.matches("Collection Point Pick Up") 
@@ -205,7 +205,6 @@ public class CheckoutDefs {
 	@When("the user enters valid entries into the Payment section and clicks Continue")
 	public void the_user_enters_valid_entries_into_the_Payment_section_and_clicks() {
 	    manager.confirmation.enterPaymentDetails();
-	    manager.global.clickOnByText("continue");
 	}
 	
 	@Then("the cursor becomes a finger")
@@ -226,7 +225,6 @@ public class CheckoutDefs {
 	@Given("the user is on the Review section of the Checkout page")
 	public void the_user_is_on_the_Review_section_of_the_Checkout_page() {
 		manager.confirmation.enterPaymentDetails();
-	    manager.global.clickOnByText("continue");
 	}
 	
 	@Then("the footer should appear as per designs")
@@ -300,4 +298,115 @@ public class CheckoutDefs {
 		manager.checkout.orderSummaryLocation();
 	}
 
+	@Given("the user is in the payment section of checkout")
+	public void the_user_is_in_the_payment_section_of_checkout() {
+	    // REVIEW this may need to be updated as functionality is added to the site
+		manager.checkout.enterPaymentSection();
+		}
+	
+	@When("the user selects the {string} payment option")
+	public void the_user_selects_the_payment_option(String paymentType) {
+	    manager.checkout.choosePaymentType(paymentType);
+	}
+	
+	@Then("the checkbox should display under the card details fields as per designs")
+	public void the_checkbox_should_display_under_the_card_details_fields_as_per_designs() {
+	    manager.global.isXaboveYbyXpath("//pink-payment-options-form//input[@name='expirationDate']",
+	    		"//pink-payment-options-form//input[@type='checkbox']", true);
+	}
+	
+	@Given("the address fields appear underneath the checkbox for users input")
+	public void the_address_fields_appear_underneath_for_users_input() {
+		List<String> fieldNames = Arrays.asList("Address 1*", "Address 2", "City/Town*",
+				"County*", "Postcode*", "Country");
+	    manager.checkout.verifyPaymentAddressFields(fieldNames);
+	}
+	
+	@Then("the billing address fields disappear")
+	public void the_billing_address_fields_disappear() {
+	    manager.checkout.billingAddressFieldsDissapear();
+	}
+	
+	@Then("the {string}, {string} and {string} payment options should display with radio buttons as per designs")
+	public void the_and_payment_options_should_display_with_radio_buttons_as_per_designs(String creditCard, String paypal, String giftCard) {
+	    manager.global.findComponentByText(creditCard);
+	    manager.global.findComponentByText(paypal);
+	    manager.global.findComponentByText(giftCard);
+	}
+	
+	@Then("the payment section should be greyed out as per designs")
+	public void the_payment_section_should_be_greyed_out_as_per_designs() {
+	    manager.global.checkCSS("//pink-payment-options-selector//fieldset", "", "disabled");
+	}
+	
+	@Then("the relevant payment fields will be displayed")
+	public void the_relevant_payment_fields_will_be_displayed(List<String> fieldNames) {
+	    manager.checkout.checkFields(fieldNames, 1);
+	}
+	
+	@Then("the {string} checkbox will appear checked below the fields")
+	public void the_checkbox_will_appear_checked_below_the_fields(String string) {
+	    manager.global.isSelectedByText(string, true);
+	    manager.global.isXaboveYbyXpath("//pink-payment-options-form//input[@name='expirationDate']", 
+	    		"//pink-payment-options-form//input[@type='checkbox']", true);
+	}
+	
+	@Then("the gift card fields will be displayed")
+	public void the_gift_card_fields_will_be_displayed(List<String> fieldNames) {
+	    for (String fieldName : fieldNames) {
+	    	manager.global.findElementByPlaceholder(fieldName);
+	    }
+	}
+	
+	@Then("the Captcha security check will be displayed beneath the fields")
+	public void the_Captcha_security_check_will_be_displayed_beneath_the_fields() {
+	    	manager.global.findElementByXpath("//*[contains(@class, 'captcha')]");
+	}
+	
+	@Then("no payment fields will display underneath")
+	public void no_payment_fields_will_display_underneath() {
+	    manager.checkout.noPayPalFields();
+	}
+	
+	@Then("a paragraph of text will appear beneath the radio buttons")
+	public void a_paragraph_of_text_will_appear_beneath_the_radio_buttons() {
+	    manager.global.findElementByXpath("//p[contains(@class,'paypal-copy')]");
+	    manager.global.getTextByXpath("//p[contains(@class,'paypal-copy')]");
+	}
+	
+	@Then("the Review section of the Checkout page will not display")
+	public void the_Review_section_of_the_Checkout_page_will_not_display() {
+	    manager.checkout.noPayPalReview();
+	}
+	@Then("an active CTA button will be displayed with a black outline, black fill and white text")
+	public void an_active_CTA_button_will_be_displayed_with_a_black_outline_black_fill_and_white_text() {
+	    manager.checkout.buttonCheck(true);
+	}
+	
+	@Then("an inactive CTA button will be displayed with a grey outline, grey fill and white text")
+	public void an_inactive_CTA_button_will_be_displayed_with_a_grey_outline_grey_fill_and_white_text() {
+	    manager.checkout.buttonCheck(false);
+	}
+	
+	@When("the user hovers over an active CTA button")
+	public void the_user_hovers_over_an_active_CTA_button() {
+	    manager.checkout.hoverCTA(true);
+	}
+	
+	@Then("the cursor hovering over an active CTA button will be a pointing finger icon")
+	public void the_cursor_hovering_over_an_active_CTA_button_will_be_a_pointing_finger_icon() {
+	    manager.checkout.hoverCTA(true);
+	    manager.global.checkCSS("//button[not(@disabled)]", "pointer", "cursor");
+	}
+	
+	@Then("the cursor hovering over an inactive CTA button will be the default mouse cursor")
+	public void the_cursor_hovering_over_an_inactive_CTA_button_will_be_the_default_mouse_cursor() {
+		manager.checkout.hoverCTA(false);
+	    manager.global.checkCSS("//button[@disabled]", "auto", "cursor");
+	}
+	
+	@When("the user moves the cursor off the active CTA button")
+	public void the_user_moves_the_cursor_off_the_active_CTA_button() {
+	    manager.global.hoverOnByText("Country");
+	}
 }

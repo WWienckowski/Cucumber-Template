@@ -2,7 +2,6 @@ package com.template.page_objects;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -11,6 +10,7 @@ import javax.imageio.ImageIO;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
@@ -71,10 +71,15 @@ public class Global {
 
 	public void clickOnByText(String elementText) {
 		scenario.write("Clicking: "+elementText);
+		try {
 		WebElement element = driver.findElement(By.xpath("//*[contains(text(), \'"+elementText+"\')]"));
-		this.includeScreenshotOfElement(element);
 		wait.until(ExpectedConditions.elementToBeClickable(element)).click();
-		
+		} catch (NoSuchElementException e) {
+			Assert.fail("No element found with this text."
+					+ " \nThere may be a misspelling or a difference in wording or capitalization.");
+		} catch (Exception f) {
+			f.printStackTrace();
+		}
 		scenario.write("Success");
 	}
 
@@ -90,10 +95,16 @@ public class Global {
 	}
 
 	public void isSelectedByText(String text, boolean expected) {
-		WebElement element = driver.findElement(By.xpath("//input[following-sibling::*[contains(text(), \'"+text+"\')]]"));
-		Boolean actual = element.isSelected();
-		scenario.write("Expecting Selected to be: "+expected+"\nSelected is: "+actual);
-		Assert.assertTrue(actual==expected);	
+		try {
+			WebElement element = driver.findElement(By.xpath("//input[following-sibling::*[contains(text(), \'"+text+"\')]]"));
+			Boolean actual = element.isSelected();
+			scenario.write("Expecting Selected to be: "+expected+"\nSelected is: "+actual);
+			Assert.assertTrue(actual==expected);
+		} catch (NoSuchElementException e) {
+			Assert.fail("No element found with label: "+text+"\nThis may be due to a difference in spelling,"
+					+ "wording, or capitalization.");
+		}
+			
 	}
 	
 	public void includeScreenshotOfElement(WebElement element) {
@@ -104,8 +115,8 @@ public class Global {
 	File screenshotFile = new File("target/image.png");
 	try {
 	    ImageIO.write(screenshot, "png", screenshotFile);
-	} catch (IOException e) {
-	    e.printStackTrace();
+	} catch (Exception e) {
+	    scenario.write("Screenshot failed");
 	}
 
         try {
@@ -123,7 +134,7 @@ public class Global {
 		    byte[] screenByte = Files.readAllBytes(screenshotFile.toPath());
 		    
 		    scenario.embed(screenByte, "image/png");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			scenario.write("Screenshot failed");
 		}
 	    
@@ -191,8 +202,14 @@ public class Global {
 
 	public void clickCheckboxByText(String checkText) {
 		scenario.write("Clicking: "+checkText+" checkbox");
-		WebElement element = driver.findElement(By.xpath("//*[contains(text(), \'"+checkText+"\')]/preceding-sibling::input[@type='checkbox']"));
-		this.javascriptClick(element);
+		try {
+			WebElement element = driver.findElement(By.xpath("//*[contains(text(), \'"+checkText+"\')]/preceding-sibling::input[@type='checkbox']"));
+			this.javascriptClick(element);
+		} catch (NoSuchElementException e) {
+			Assert.fail("No element found with label: "+checkText+"\nThis may be due to a difference in spelling,"
+					+ "wording, or capitalization.");
+		}
+		
 		scenario.write("Success");
 	}
 	
@@ -231,9 +248,9 @@ public class Global {
 			WebElement element = driver.findElement(By.xpath("//*[contains(text(),\'"+componentText+"\')]"));
 			this.scrollToElement(element);
 		} catch (Exception e) {
-			Assert.fail("No "+componentText+" component found.");
+			Assert.fail("No "+componentText+" component found. This may be due to a spelling or capitalization difference.");
 		} 
-		scenario.write(componentText+" component found");
+		scenario.write(componentText+" found");
 		this.includeScreenshot();
 	}
 	
@@ -245,7 +262,7 @@ public class Global {
 	public void checkCSS(String xpath, String expectedValue, String cssValue) {
 		String actualValue = driver.findElement(By.xpath(xpath)).getCssValue(cssValue);
 		scenario.write("Expected "+cssValue+": "+expectedValue+"\nActual "+cssValue+": "+actualValue);
-		Assert.assertEquals(expectedValue, actualValue);
+		Assert.assertEquals("Mismatch in "+cssValue+" values...", expectedValue, actualValue);
 	}
 
 	public void tapAnywhere() {
@@ -266,6 +283,52 @@ public class Global {
 		WebElement element = driver.findElement(By.xpath(xpath));
 		Assert.assertTrue("Element is displayed: "+expected, expected==element.isDisplayed());
 		scenario.write("Element is displayed: "+expected);
+	}
+
+	public void findLinkByText(String link) {
+		try {
+			WebElement element = driver.findElement(By.xpath("//*[contains(text(),\'"+link+"\')]"));
+			this.scrollToElement(element);
+			if (!element.getTagName().contentEquals("a")) {
+				Assert.fail("Expected element tag to be 'a', but it was '"+element.getTagName()+"'");
+			}
+		} catch (Exception e) {
+			Assert.fail("No element found with text: "+link);
+		} 
+		scenario.write(link+" link found");
+		this.includeScreenshot();
+	}
+
+	public void isXaboveYbyXpath(String xpathX, String xpathY, Boolean expected) {
+		WebElement x = driver.findElement(By.xpath(xpathX));
+		WebElement y = driver.findElement(By.xpath(xpathY));
+		
+		int xBottom = x.getRect().y+x.getRect().height;
+		int yTop = y.getRect().y;
+		
+		Boolean result = xBottom<=yTop ? true : false;
+		if (result!=expected) {
+			Assert.fail("Relative element locations were not as expected");
+		}
+		scenario.write("Relative element locations were as expected.");
+	}
+
+	public void findElementByXpath(String xpath) {
+		try {
+			driver.findElement(By.xpath(xpath));
+		} catch (Exception e) {
+			Assert.fail("Element not found. This may be due to a difference in spelling, wording, or capitalization");
+		}
+		scenario.write("Element found.");
+	}
+
+	public void findElementByPlaceholder(String placeholder) {
+		scenario.write("Looking for: "+placeholder);
+		this.findElementByXpath("//pink-payment-options-form//input[@placeholder=\'"+placeholder+"\']");
+	}
+
+	public void getTextByXpath(String xpath) {
+		scenario.write(driver.findElement(By.xpath(xpath)).getText());		
 	}
 
 	
