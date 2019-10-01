@@ -18,29 +18,26 @@ Feature: View Shopping Bag from Checkout (UI)
 	And the Shopping Bag control is expanded
 	When the user clicks on 'Shopping Bag'
 	Then the Shopping Bag control is minimised
-
-	# Get clarification on these:
 	 
-	#Scenario: The user clicks the 'Edit Shopping Bag' link
-	#And the Shopping Bag control is expanded
-	#When the user clicks on 'Edit Shopping Bag' link
-	#Then the Shopping Bag page is loaded
-	#And there is one or more products in the Shopping Bag
-	#And the user has added a gift message to a product
-	#When the Shopping Bag control is expanded
-	#Then the gift message field is displayed underneath the associated product
-	#And the text is greyed out and not clickable
+	Scenario: The user clicks the 'Edit Shopping Bag' link
+		Given the user clicks on 'Shopping Bag'
+		And the Shopping Bag control is expanded
+		When the user clicks on 'Edit Shopping Bag' link
+		Then the Shopping Bag page is loaded
+		
+	Scenario: Gift message is displayed
+		When the user clicks on 'Shopping Bag'
+		Then the gift message field is displayed underneath the associated product
+		And the text is greyed out and not clickable
 	
-	@Mobile
+	@mobile
 	Scenario: The mobile shopping bag header is sticky
-	Given the user is on the Checkout page on mobile
 	When the user scrolls down past the Shopping Bag header
 	Then the Shopping Bag header is stuck to the top of the screen
 	
-	@Mobile
+	@mobile
 	Scenario: The mobile shopping bag header returns to its original placement
-	Given the user is on the Checkout page on mobile
-	And the user is scrolled down past the Shopping Bag header
+	And the user scrolls down past the Shopping Bag header
   And the Shopping Bag header is stuck to the top of the screen
 	When the user scrolls up past the original placement of the Shopping Bag header
 	Then the Shopping Bag header is unstuck and in its original placement on the Checkout page

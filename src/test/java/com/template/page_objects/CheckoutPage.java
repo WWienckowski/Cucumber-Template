@@ -56,6 +56,18 @@ public class CheckoutPage {
 		@FindBy(className = "help") 
 	}) private List<WebElement> helpLines;
 	
+	@FindAll ( {
+		@FindBy(tagName = "pink-collect-in-store-list-item")
+	}) private List<WebElement> storeList;
+	
+	@FindAll ( {
+		@FindBy(xpath = "//a[contains(text(), 'See map view ')]")
+	}) private List<WebElement> mapLinks;
+	
+	@FindAll ( {
+		@FindBy(xpath = "//a[text()='See store details']")
+	}) private List<WebElement> detailLinks;
+	
 	public CheckoutPage(WebDriver driver, WebDriverWait wait, Scenario scenario) {
 		 this.driver = driver;
 		 this.wait = wait;
@@ -463,6 +475,18 @@ public class CheckoutPage {
 				? driver.findElement(By.xpath("//button[not(@disabled)]")) :
 					driver.findElement(By.xpath("//button[@disabled]"));
 		Helpers.HoverOn(CTA, driver);
+	}
+
+	public void eachStoreHasMap() {
+		scenario.write("Stores: "+storeList.size()+" Map links: "+mapLinks.size());
+		Assert.assertEquals("Incorrect amount of map links:", storeList.size(), mapLinks.size());
+		
+	}
+
+	public void eachStoreHasDetails() {
+		scenario.write("Stores: "+storeList.size()+" Store details links: "+detailLinks.size());
+		Assert.assertEquals("Incorrect amount of detail links:", storeList.size(), detailLinks.size());
+		
 	}
 	
 }

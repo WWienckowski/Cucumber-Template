@@ -1,4 +1,4 @@
-@PINK-129 @CheckoutUI
+@PINK-129 @CheckoutUI @ignore
 Feature: Contact for Order Component (UI)
   This is the UI story for the 'Contact for Order' component on the Checkout page.
   This component is part of all the fulfilment options,

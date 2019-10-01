@@ -107,4 +107,20 @@ public class GenericDefs {
 	public void the_mouse_cursor_will_revert_to_default() {
 	    manager.global.checkCSS("//body", "auto", "cursor");
 	}
+	
+	@Then("the Shopping Bag page is loaded")
+	public void the_Shopping_Bag_page_is_loaded() {
+	    manager.global.checkUrl("bag");
+	}
+	
+	@Then("the {string} button turns black")
+	public void the_button_turns_black(String element) {
+	    manager.global.isActiveByText(element);
+	}
+	
+	@Then("{string} is bold and underlined")
+	public void is_bold_and_underlined(String text) {
+	    manager.global.checkCSS("//*[text()=\'"+text+"\']", "700", "font-weight");
+	    manager.global.checkCSS("//*[text()=\'"+text+"\']", "underline solid rgb(0, 0, 0)", "text-decoration");
+	}
 }

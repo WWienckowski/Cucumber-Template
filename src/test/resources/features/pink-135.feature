@@ -1,4 +1,4 @@
-@PINK-135 @CheckoutUI
+@PINK-135 @CheckoutUI @ignore
 Feature: Checkout Header (UI)
   Users will be provided with a simplified header when in the checkout
 

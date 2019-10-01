@@ -409,4 +409,94 @@ public class CheckoutDefs {
 	public void the_user_moves_the_cursor_off_the_active_CTA_button() {
 	    manager.global.hoverOnByText("Country");
 	}
+	
+	@Then("the user can see the products in the Shopping Bag")
+	public void the_user_can_see_the_products_in_the_Shopping_Bag() {
+	    manager.global.isDisplayed("//div[@class='checkout-shopping-bag_items']", true);
+	}
+	
+	@Then("the gift message field is displayed underneath the associated product")
+	public void the_gift_message_field_is_displayed_underneath_the_associated_product() {
+	    manager.global.isDisplayed("//textarea", true);
+	    manager.global.isXaboveYbyXpath("//img[@class='checkout-shopping-bag-item_image']",
+	    		"//textarea", true);
+	}
+
+	@Then("the text is greyed out and not clickable")
+	public void the_text_is_greyed_out_and_not_clickable() {
+	    manager.global.checkCSS("//textarea", "", "disabled");
+	}
+	
+	@When("the user scrolls down past the Shopping Bag header")
+	public void the_user_scrolls_down_past_the_Shopping_Bag_header() {
+	    manager.global.scrollToXpath("//pink-footer");
+	}
+	
+	@Then("the Shopping Bag header is stuck to the top of the screen")
+	public void the_Shopping_Bag_header_is_stuck_to_the_top_of_the_screen() {
+	    manager.global.isDisplayed("//button[@class='checkout-shopping-bag_button']", true);
+	    
+	}
+	
+	@When("the user scrolls up past the original placement of the Shopping Bag header")
+	public void the_user_scrolls_up_past_the_original_placement_of_the_Shopping_Bag_header() {
+	    manager.global.scrollToXpath("//div[@class='container simple-header']");
+	}
+
+	@Then("the Shopping Bag header is unstuck and in its original placement on the Checkout page")
+	public void the_Shopping_Bag_header_is_unstuck_and_in_its_original_placement_on_the_Checkout_page() {
+	    manager.global.findElementByXpath("//div[@class='checkout_shopping-bag']");
+	}
+	
+	@Then("the {string} field is displayed beneath it as per wireframe")
+	public void the_field_is_displayed_beneath_it_as_per_wireframe(String placeholder) {
+	    manager.global.findElementByXpath("//input[@placeholder=\'"+placeholder+"\']");
+	    manager.global.isXaboveYbyXpath("//div[@class='form-button-selector']",
+	    		"//input[@placeholder=\'"+placeholder+"\']", true);
+	}
+	
+	@Then("there is a clickable black arrow next to the {string} field")
+	public void there_is_a_clickable_black_arrow_next_to_the_field(String string) {
+	    // TODO there's an arrow but its not clickable. Ask about this. Skip for now.
+	}
+
+	@Then("beneath the {string} field there is text that says {string}")
+	public void beneath_the_field_there_is_text_that_says(String string1, String string2) {
+	    manager.global.findElementByXpath("//*[text()='or ' ] | //*[text()='use my location']");
+	    manager.global.isXaboveYbyXpath("//input[@placeholder=\'"+string1+"\']",
+	    		"//*[text()='or ' ] | //*[text()='use my location']", true);
+	}
+	
+	@Given("a list of Pink stores is displayed")
+	public void a_list_of_Pink_stores_is_displayed() {
+	    manager.global.isDisplayed("//pink-collect-in-store-list", true);
+	}
+	
+	@Given("each Pink store cell has a clickable ‘Show on map’ link")
+	public void each_Pink_store_cell_has_a_clickable_Show_on_map_link() {
+	    manager.checkout.eachStoreHasMap();
+	}
+	
+	@Given("each Pink store cell has a clickable ‘See store details' link that is underlined")
+	public void each_Pink_store_cell_has_a_clickable_See_store_details_link_that_is_underlined() {
+	    manager.checkout.eachStoreHasDetails();
+	}
+	
+	
+	@Then("the system will load the map component")
+	public void the_system_will_load_the_map_component() {
+	    manager.global.isDisplayed("//pink-gmap", true);
+	}
+	
+	@Then("the {string} summary and {string} link are displayed")
+	public void the_summary_and_link_are_displayed(String summary, String link) {
+	    manager.global.findComponentByText(summary);
+	    manager.global.findElementByXpath("//pink-collect-in-store-pickup//*[text()=\'"+link+"\']");
+	    manager.global.getTextByXpath("//pink-collect-in-store-pickup//span[@class='checkout-preview_detail-description']");
+	}
+	
+	@When("the user clicks on the {string} link in the {string} summary")
+	public void the_user_clicks_on_the_link_in_the_summary(String link, String string2) {
+	    manager.global.clickOnByXpath("//pink-collect-in-store-pickup//*[text()=\'"+link+"\']");
+	}
 }

@@ -331,5 +331,22 @@ public class Global {
 		scenario.write(driver.findElement(By.xpath(xpath)).getText());		
 	}
 
-	
+	public void scrollToXpath(String xpath) {
+		WebElement element = driver.findElement(By.xpath(xpath));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+		
+	}
+
+	public void clickOnByXpath(String xpath) {
+		try {
+			WebElement element = driver.findElement(By.xpath(xpath));
+			wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+			} catch (NoSuchElementException e) {
+				Assert.fail("No element found with this text."
+						+ " \nThere may be a misspelling or a difference in wording or capitalization.");
+			} catch (Exception f) {
+				f.printStackTrace();
+			}
+			scenario.write("Success");
+	}
 }
