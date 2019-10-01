@@ -9,11 +9,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -29,10 +25,6 @@ public class DriverManager {
 	
 	public WebDriverWait getWait( ) {
 		return wait;
-	}
-	
-	public void setDriver(WebDriver driver) {
-		this.driver = driver;
 	}
 	
 	public void setBaseUrl(String baseUrl) {
