@@ -11,7 +11,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class DriverManager {
@@ -38,15 +37,9 @@ public class DriverManager {
 	public void startDriver(String browser) {
 		// Determines if the drivers run headless
 		try{
+			this.checkEnvironment();
 			String selenium = System.getProperty("selenium");
-			if (browser.contentEquals("Firefox")) {
-				driver = new RemoteWebDriver(new URL(selenium),DesiredCapabilities.firefox());
-
-			} else if (browser.contentEquals("Chrome")) {
-				driver = new RemoteWebDriver(new URL(selenium),DesiredCapabilities.chrome());
-			} else if (browser.contentEquals("Edge")) {
-				driver = new RemoteWebDriver(new URL(selenium),DesiredCapabilities.edge());
-			}
+			driver = new RemoteWebDriver(new URL(selenium), new ChromeOptions());
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 			driver.manage().deleteAllCookies();
 			driver.manage().window().maximize();
