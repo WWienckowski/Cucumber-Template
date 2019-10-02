@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
@@ -43,7 +44,13 @@ public class DriverManager {
 				driver = new RemoteWebDriver(new URL(selenium),DesiredCapabilities.firefox());
 
 			} else if (browser.contentEquals("Chrome")) {
+				//ChromeOptions options = new ChromeOptions();
+				//options.addArguments("--headless");
+				//options.addArguments("--whitelisted-ips");
+				//options.addArguments("--no-sandbox");
+				//options.addArguments("--disable-extensions");
 				driver = new RemoteWebDriver(new URL(selenium),DesiredCapabilities.chrome());
+
 			} else if (browser.contentEquals("Edge")) {
 				driver = new RemoteWebDriver(new URL(selenium),DesiredCapabilities.edge());
 			}
