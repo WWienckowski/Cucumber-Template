@@ -19,5 +19,3 @@ Scenario: The user registers via the confirmation page
 		And the user clicks on the 'Terms and Conditions' checkbox
 		Then the 'Create Account' button is not disabled
 
-Scenario: The user clicks a social media icon
-		When the user clicks on the social media icons they open a new tab for the link

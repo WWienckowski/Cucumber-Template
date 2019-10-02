@@ -27,7 +27,7 @@ public class GenericDefs {
 
 	@When("the user clicks the checkbox for {string}")
 	public void the_user_clicks_the_checkbox_for(String checkbox) {
-	    manager.global.clickOnByText(checkbox);
+	    manager.global.clickCheckboxByText(checkbox);
 	}
 
 	@Given("the checkbox for {string} is checked")
@@ -91,5 +91,36 @@ public class GenericDefs {
 	@When("the user taps anywhere on the screen")
 	public void the_user_taps_anywhere_on_the_screen() {
 	    manager.global.tapAnywhere();
+	}
+	
+	@Then("the {string} radio button is selected")
+	public void the_radio_button_is_selected(String string) {
+	    manager.global.isSelectedByText(string, true);
+	}
+	
+	@Then("an active {string} button will display")
+	public void an_active_button_will_display(String buttonText) {
+	    manager.global.isButtonEnabledByText(buttonText, true);
+	}
+	
+	@Then("the mouse cursor will revert to default")
+	public void the_mouse_cursor_will_revert_to_default() {
+	    manager.global.checkCSS("//body", "auto", "cursor");
+	}
+	
+	@Then("the Shopping Bag page is loaded")
+	public void the_Shopping_Bag_page_is_loaded() {
+	    manager.global.checkUrl("bag");
+	}
+	
+	@Then("the {string} button turns black")
+	public void the_button_turns_black(String element) {
+	    manager.global.isActiveByText(element);
+	}
+	
+	@Then("{string} is bold and underlined")
+	public void is_bold_and_underlined(String text) {
+	    manager.global.checkCSS("//*[text()=\'"+text+"\']", "700", "font-weight");
+	    manager.global.checkCSS("//*[text()=\'"+text+"\']", "underline solid rgb(0, 0, 0)", "text-decoration");
 	}
 }

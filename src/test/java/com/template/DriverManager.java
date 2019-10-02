@@ -78,7 +78,7 @@ public class DriverManager {
 			}
 		} catch (NullPointerException e) {
 			this.setBaseUrl("http://pink-develop.s3-website.us-east-2.amazonaws.com/");
-			System.out.println("No location, running tests on DEV environment\n"+baseUrl);
+			System.out.println("No location argument, running tests on DEV environment\n"+baseUrl);
 		}
 	}
 

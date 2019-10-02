@@ -1,4 +1,4 @@
-@PINK-128 @CheckoutUI
+@PINK-128 @CheckoutUI @ignore
 Feature: Delivery Speed Control (UI)
   This is the UI story for the delivery speed control in the 'Ship to Address' section of the checkout flow
 

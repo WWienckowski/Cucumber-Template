@@ -1,4 +1,4 @@
-@PINK-142 @CheckoutUI
+@PINK-142 @CheckoutUI @ignore
 Feature: Payment Summary Messaging (UI)
   This is the UI story for the Payment summary section
   which will provide a non-interactive set of fields summarising the payment information supplied by the user.

@@ -1,4 +1,4 @@
-@PINK-130 @CheckoutUI
+@PINK-130 @CheckoutUI @ignore
 Feature: Fulfilment summary messaging (UI)
   When the user has successfully complete the Delivery section
   then the site must present a summary component of the information that the user has entered or selected

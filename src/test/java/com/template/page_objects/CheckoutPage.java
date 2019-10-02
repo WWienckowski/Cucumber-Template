@@ -1,6 +1,7 @@
 package com.template.page_objects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -13,6 +14,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.template.Helpers;
 import com.template.stepdefs.Hooks;
 
 import cucumber.api.Scenario;
@@ -23,16 +25,12 @@ public class CheckoutPage {
 	Scenario scenario;
 	
 	@FindAll( {  // A list of all fieldsets on the checkout page
-		@FindBy(className = "checkout_form-fieldset")
+		@FindBy(xpath = "//fieldset")
 	} ) private List<WebElement> checkoutFieldsets;
 	
 	@FindBy(className = "form-control_flag-text") private WebElement flagText;
 	
 	@FindBy(className = "form-control_flag-image") private WebElement flagImage;
-	
-	@FindAll( {  // A list of titles available from the userTitle dropdown list
-		@FindBy(xpath = "//*[@id=\"userTitle\"]/option")
-	} ) private List<WebElement> userTitles;
 	
 	@FindAll( { // A list of delivery speed radio buttons
 		@FindBy(xpath = "//input[@name=\"deliverySpeed\"]")
@@ -58,6 +56,18 @@ public class CheckoutPage {
 		@FindBy(className = "help") 
 	}) private List<WebElement> helpLines;
 	
+	@FindAll ( {
+		@FindBy(tagName = "pink-collect-in-store-list-item")
+	}) private List<WebElement> storeList;
+	
+	@FindAll ( {
+		@FindBy(xpath = "//a[contains(text(), 'See map view ')]")
+	}) private List<WebElement> mapLinks;
+	
+	@FindAll ( {
+		@FindBy(xpath = "//a[text()='See store details']")
+	}) private List<WebElement> detailLinks;
+	
 	public CheckoutPage(WebDriver driver, WebDriverWait wait, Scenario scenario) {
 		 this.driver = driver;
 		 this.wait = wait;
@@ -67,19 +77,21 @@ public class CheckoutPage {
 	
 	public void checkFields(List<String> fieldNames, int fieldsetIndex) {
 		WebElement fieldset = checkoutFieldsets.get(fieldsetIndex);
-		List<WebElement> fields = null;
+		Boolean failed = false;
 		Hooks.manager.global.includeScreenshotOfElement(fieldset);
-		
-		if (fieldsetIndex==2) {
-			fields = fieldset.findElements(By.xpath(".//input[not(@type='checkbox')] | .//select"));
+		if (fieldsetIndex==3) {
+			List<WebElement> fields = fieldset.findElements(By.xpath(".//input[not(@type='checkbox')] | "
+					+ ".//select"));
 			if (fields.size() != fieldNames.size()) {
 				scenario.write(fieldNames.size()+" fields expected, "+fields.size()+" fields found");
-				Assert.fail(fieldNames.size()+" fields expected, "+fields.size()+" fields found");
+				failed = true;
 			}
 		} 
 		
 		Hooks.manager.global.checkInputFieldPlaceholders(fieldNames, fieldset);
-		
+		if (failed==true) { 
+			Assert.fail("Too many fields found for this section");
+		}
 	}
 
 	public void locationIs(String expectedLocation) {
@@ -107,12 +119,18 @@ public class CheckoutPage {
 	}
 	
 	public void checkTitles() {
+		WebElement titleSelect = driver.findElement(By.xpath("//select"));
+		List<WebElement> userTitles = titleSelect.findElements(By.xpath("./option")); 
 		if (userTitles.size()==0) {
 			Assert.fail("No title options found");
 		} else {
-			scenario.write("Available titles:");
+			scenario.write("Displayed titles:");
 			for (WebElement title : userTitles) {
-				scenario.write(title.getText());
+				if (title.isDisplayed()==true) {
+					scenario.write(title.getText());
+				} else {
+					scenario.write(title.getText()+" is not displayed.");
+				}
 			}
 		}
 	}
@@ -354,8 +372,8 @@ public class CheckoutPage {
 
 	public void orderSummaryLocation() {
 		WebElement rightRail = driver.findElement(By.className("checkout_right-rail"));
-		WebElement shoppingBag = rightRail.findElement(By.xpath("./pink-checkout-shopping-bag"));
-		WebElement orderSummary = rightRail.findElement(By.xpath("./div[@class='checkout_order-summary']"));
+		WebElement shoppingBag = rightRail.findElement(By.xpath(".//pink-checkout-shopping-bag"));
+		WebElement orderSummary = rightRail.findElement(By.xpath(".//div[@class='checkout_order-summary']"));
 		scenario.write("Order Summary found on the right side.");
 		if (Hooks.manager.global.isXaboveY(shoppingBag, orderSummary)==false) {
 			Assert.fail("Shopping Bag is not above Order Summary");
@@ -373,6 +391,102 @@ public class CheckoutPage {
 		}
 		scenario.write("Order Summary is above the Edit Link");
 		Hooks.manager.global.includeScreenshot();
+	}
+
+	public void enterPaymentSection() {
+		WebElement edit = driver.findElement(By.xpath("//*[contains(text(), 'Payment')]/a[text()='Edit']"));
+		Hooks.manager.global.scrollToElement(edit);
+		edit.click();
+		Hooks.manager.global.scrollToElement(edit);
+	}
+
+	public void choosePaymentType(String paymentType) {
+		int noMatch = 0;
+		WebElement paymentFieldset = checkoutFieldsets.get(0);
+		List<WebElement> paymentOptions = paymentFieldset.findElements
+				(By.xpath("//fieldset//input[@type='radio']/following-sibling::span[1]"));
+		for (WebElement option : paymentOptions) {
+			if (option.getText().contentEquals(paymentType)) {
+				scenario.write(option.getText()+" selected.");
+				option.click();
+			} else {
+				noMatch++;
+				if (noMatch>=3) {
+					Assert.fail("No matching payment options found for: \'"+paymentType+"\' "
+							+ "\nThis may be due to a difference in text on the site");
+					
+				}
+			}
+		}
+	}
+
+	public void verifyPaymentAddressFields(List<String> fieldNames) {
+		WebElement fieldset = checkoutFieldsets.get(1);
+		Hooks.manager.global.checkInputFieldPlaceholders(fieldNames, fieldset);
+		
+	}
+
+	public void billingAddressFieldsDissapear() {
+		List<WebElement> inputFields = driver.findElements(By.xpath("//pink-payment-options-form//input"));
+		if (inputFields.size()>5) {
+			Assert.fail("Billing Address fields are still visible");
+		}
+		scenario.write("Billing Address fields are no longer visible");
+		Hooks.manager.global.includeScreenshotOfElement(checkoutFieldsets.get(1));
+	}
+
+	public void noPayPalFields() {
+		if (checkoutFieldsets.size()>1) {
+			Assert.fail("Too many fieldsets found");
+		}
+		scenario.write("No payment fields displayed");
+	}
+
+	public void noPayPalReview() {
+		List<WebElement> previews = driver.findElements(By.xpath("//pink-checkout-preview"));
+		if (previews.size()>1) {
+			Assert.fail("Review section is still visible, or a new preview element has been added.");
+		}
+		scenario.write("Review section is not displayed");
+	}
+
+	public void buttonCheck(boolean active) {
+		List<WebElement> buttons = driver.findElements(By.tagName("button"));
+		int index = active==true ? 0 : 1;
+		WebElement button = buttons.get(index);
+		
+		String outline = active==true ? "rgb(0, 0, 0)" : "rgb(216, 216, 216)";
+		String background = active==true ? "rgba(0, 0, 0, 1)" : "rgba(200, 200, 200, 1)";
+		String color = "rgba(255, 255, 255, 1)";
+		List<String> expected = Arrays.asList(outline, background, color);
+
+		List<String> actual = Arrays.asList(button.getCssValue("border-color"),
+				button.getCssValue("background-color"),
+				button.getCssValue("color"));
+		
+		Assert.assertEquals("Button colors do not match, the following values are for border-color, background-color, and color \n", expected, actual);
+		scenario.write("Button colors match");
+		
+		
+	}
+
+	public void hoverCTA(boolean active) {
+		WebElement CTA = active==true 
+				? driver.findElement(By.xpath("//button[not(@disabled)]")) :
+					driver.findElement(By.xpath("//button[@disabled]"));
+		Helpers.HoverOn(CTA, driver);
+	}
+
+	public void eachStoreHasMap() {
+		scenario.write("Stores: "+storeList.size()+" Map links: "+mapLinks.size());
+		Assert.assertEquals("Incorrect amount of map links:", storeList.size(), mapLinks.size());
+		
+	}
+
+	public void eachStoreHasDetails() {
+		scenario.write("Stores: "+storeList.size()+" Store details links: "+detailLinks.size());
+		Assert.assertEquals("Incorrect amount of detail links:", storeList.size(), detailLinks.size());
+		
 	}
 	
 }

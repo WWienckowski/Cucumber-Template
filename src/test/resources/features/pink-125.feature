@@ -9,7 +9,7 @@ Feature: Ship to Address (UI)
 
   Scenario: UK Ship to Address fields display correctly
     When the Ship to Address section of the UK checkout page loads
-    Then the page will display all fields
+    Then the Shipping Address section will display all fields
       | First name*           |
       | Last name*            |
       | Search for address... |
@@ -26,14 +26,13 @@ Feature: Ship to Address (UI)
 
   Scenario: All fields display for manual address entry
     When the user selects the 'enter address manually' link underneath the address lookup field
-    Then the page will display all fields 
+    Then the Shipping Address section will display all fields
       | Select a Title |
       | First name*    |
       | Last name*     |
       | Address 1*     |
-      | Address 2      |
       | City/Town*     |
       | County*        |
       | Postcode*      |
       | Country        |
-    And a 'Search New Address' link should appear below the last field
+    And a 'Search for Address' link should appear below the last field
