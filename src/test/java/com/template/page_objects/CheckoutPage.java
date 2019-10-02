@@ -17,7 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.template.Helpers;
 import com.template.stepdefs.Hooks;
 
-import cucumber.api.Scenario;
+import io.cucumber.core.api.Scenario;
 
 public class CheckoutPage {
 	WebDriver driver;

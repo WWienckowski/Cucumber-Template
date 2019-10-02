@@ -56,10 +56,10 @@ public class DriverManager {
 			chromeOptions.addArguments("start-maximized");
 			driver = new ChromeDriver(chromeOptions);
 		} 
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	    driver.manage().deleteAllCookies();
 	    driver.manage().window().maximize();
-	    wait = new WebDriverWait(driver, 5);	    
+	    wait = new WebDriverWait(driver, 10);	    
 	}
 	
 	private void checkEnvironment() {
@@ -94,7 +94,7 @@ public class DriverManager {
 		mobileEmulation.put("deviceName", "iPhone 6/7/8");
 
 		ChromeOptions chromeOptions = new ChromeOptions();
-		chromeOptions.setHeadless(false);
+		chromeOptions.setHeadless(true);
 		chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
 
 		driver = new ChromeDriver(chromeOptions);

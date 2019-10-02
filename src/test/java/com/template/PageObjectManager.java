@@ -11,7 +11,7 @@ import com.template.page_objects.Global;
 import com.template.page_objects.HomePage;
 import com.template.page_objects.ProductDetailPage;
 
-import cucumber.api.Scenario;
+import io.cucumber.core.api.Scenario;
 
 
 public class PageObjectManager {
