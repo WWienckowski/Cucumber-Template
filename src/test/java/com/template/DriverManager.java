@@ -4,7 +4,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
@@ -37,6 +36,7 @@ public class DriverManager {
 	}
 	
 	public void startDriver(String browser) {
+		checkEnvironment();
 		// Determines if the drivers run headless
 		try{
 			String selenium = System.getProperty("selenium");
@@ -44,11 +44,6 @@ public class DriverManager {
 				driver = new RemoteWebDriver(new URL(selenium),DesiredCapabilities.firefox());
 
 			} else if (browser.contentEquals("Chrome")) {
-				//ChromeOptions options = new ChromeOptions();
-				//options.addArguments("--headless");
-				//options.addArguments("--whitelisted-ips");
-				//options.addArguments("--no-sandbox");
-				//options.addArguments("--disable-extensions");
 				driver = new RemoteWebDriver(new URL(selenium),DesiredCapabilities.chrome());
 
 			} else if (browser.contentEquals("Edge")) {
@@ -97,8 +92,11 @@ public class DriverManager {
 		ChromeOptions chromeOptions = new ChromeOptions();
 		chromeOptions.setHeadless(false);
 		chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
-
-		driver = new ChromeDriver(chromeOptions);
+		try {
+			driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), chromeOptions);
+		} catch(MalformedURLException e){
+			System.out.println("Error"+e);
+		}
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	    driver.manage().deleteAllCookies();
 	    wait = new WebDriverWait(driver, 5);
