@@ -3,67 +3,48 @@ package com.template.stepdefs;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 
 import javax.imageio.ImageIO;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.Dimension;
 
-import com.template.DriverManager;
-import com.template.Helpers;
-import com.template.PageObjectManager;
-
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
+import driver.DriverFactory;
+import driver.SharedDriver;
+import io.cucumber.core.api.Scenario;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
-public class Hooks {
-	DriverManager driverManager;		
-	public static PageObjectManager manager;
-	String baseUrl;
-	
-	public Hooks(DriverManager driverManager)  {
-		this.driverManager = driverManager;
+public class Hooks {		
+	public Hooks(SharedDriver driver)  {
+		
 	}
 	
 	  @Before("not @mobile")
-	/*
-	 * Before any scenario runs this hook takes the scenario's name, passes it to a
-	 * helper method that scans it for a browser name, the browser name is sent
-	 * to the DriverManager which opens the WebDriver.
-	 */
-	  public void initialize(Scenario scenario) throws MalformedURLException {
-		  String scenarioName = scenario.getName();
-		  String browser = Helpers.browserCheck(scenarioName);
-		  driverManager.startDriver(browser);
-		  baseUrl = driverManager.getBaseUrl();
-		  // Create all page objects in the PageObjectManager
-		  WebDriver driver = driverManager.getDriver();
-		  WebDriverWait wait = driverManager.getWait();
-	      manager = new PageObjectManager(driver, wait, scenario, baseUrl);
+	  public void initialize(Scenario scenario) {
+	      DriverFactory.getDriver().manage().window().maximize();
+		  System.out.println(Thread.currentThread().getId());
+		  DriverFactory.setScenario(scenario);
 	  }
 	  
 	  @Before("@mobile")
 	  public void initializeMobile(Scenario scenario) {
 		  scenario.write("Simulating mobile browser");
-		  driverManager.startMobileDriver();
-		  baseUrl = driverManager.getBaseUrl();
-		  WebDriver driver = driverManager.getDriver();
-		  WebDriverWait wait = driverManager.getWait();
-	      manager = new PageObjectManager(driver, wait, scenario, baseUrl);
+		  Dimension d = new Dimension(375,812);
+		  DriverFactory.getDriver().manage().window().setSize(d);
+	      System.out.println(Thread.currentThread().getId());
+	      DriverFactory.setScenario(scenario);
 	  }
 	  
 	  @After(order=1)
-		// If a test fails, document it with a screen shot and then quit the driver
-		public void captureScreenOnFail(Scenario scenario){
+		// If a test fails, document it with a screen shot
+		public synchronized void captureScreenOnFail(Scenario scenario){
 			if (scenario.isFailed()) {
 				BufferedImage screenshot = new AShot()
 			            .shootingStrategy(ShootingStrategies.viewportPasting(100))
-			            .takeScreenshot(driverManager.getDriver()).getImage();
+			            .takeScreenshot(DriverFactory.getDriver()).getImage();
 
 			File screenshotFile = new File("target/image.png");
 			try {
@@ -86,10 +67,10 @@ public class Hooks {
 				
 			}
 	  }
+	  
 	  @After(order=0)
-	  // Quit the driver after a test
-	  public void quitDriver(Scenario scenario) {
-		  driverManager.teardownDriver();;
+	  public void clearCookies() {
+		  DriverFactory.getDriver().manage().deleteAllCookies();
 	  }
 	  
 }

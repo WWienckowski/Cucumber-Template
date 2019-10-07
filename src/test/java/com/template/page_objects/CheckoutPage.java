@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -14,15 +13,15 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.template.Helpers;
-import com.template.stepdefs.Hooks;
+import driver.DriverFactory;
+import io.cucumber.core.api.Scenario;
 
-import cucumber.api.Scenario;
+import com.template.Helpers;
+
 
 public class CheckoutPage {
-	WebDriver driver;
-	WebDriverWait wait;
-	Scenario scenario;
+	WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), 15);
+	Scenario scenario = DriverFactory.getScenario();
 	
 	@FindAll( {  // A list of all fieldsets on the checkout page
 		@FindBy(xpath = "//fieldset")
@@ -68,17 +67,14 @@ public class CheckoutPage {
 		@FindBy(xpath = "//a[text()='See store details']")
 	}) private List<WebElement> detailLinks;
 	
-	public CheckoutPage(WebDriver driver, WebDriverWait wait, Scenario scenario) {
-		 this.driver = driver;
-		 this.wait = wait;
-		 this.scenario = scenario;
-		 PageFactory.initElements(driver, this);
+	public CheckoutPage() {
+		 PageFactory.initElements(DriverFactory.getDriver(), this);
 		 }
 	
 	public void checkFields(List<String> fieldNames, int fieldsetIndex) {
 		WebElement fieldset = checkoutFieldsets.get(fieldsetIndex);
 		Boolean failed = false;
-		Hooks.manager.global.includeScreenshotOfElement(fieldset);
+		Helpers.includeScreenshotOfElement(fieldset);
 		if (fieldsetIndex==3) {
 			List<WebElement> fields = fieldset.findElements(By.xpath(".//input[not(@type='checkbox')] | "
 					+ ".//select"));
@@ -88,7 +84,7 @@ public class CheckoutPage {
 			}
 		} 
 		
-		Hooks.manager.global.checkInputFieldPlaceholders(fieldNames, fieldset);
+		Helpers.checkInputFieldPlaceholders(fieldNames, fieldset);
 		if (failed==true) { 
 			Assert.fail("Too many fields found for this section");
 		}
@@ -96,11 +92,11 @@ public class CheckoutPage {
 
 	public void locationIs(String expectedLocation) {
 		String actualLocation = flagText.getText();
-		scenario.write(expectedLocation+" is expected");
+		//scenario.write(expectedLocation+" is expected");
 		if (expectedLocation.matches(actualLocation)) {
-			scenario.write("Location Confirmed");
+			//scenario.write("Location Confirmed");
 		} else {
-			scenario.write(actualLocation+" was found");
+			//scenario.write(actualLocation+" was found");
 			Assert.fail("Incorrect Location");
 		}
 	}
@@ -119,7 +115,7 @@ public class CheckoutPage {
 	}
 	
 	public void checkTitles() {
-		WebElement titleSelect = driver.findElement(By.xpath("//select"));
+		WebElement titleSelect = DriverFactory.getDriver().findElement(By.xpath("//select"));
 		List<WebElement> userTitles = titleSelect.findElements(By.xpath("./option")); 
 		if (userTitles.size()==0) {
 			Assert.fail("No title options found");
@@ -141,7 +137,7 @@ public class CheckoutPage {
 				String radioText = radio.findElement(By.xpath("following-sibling::span")).getText();
 				if (radioText.contains(selection)) {
 					scenario.write(radioText+" contains "+selection);
-					Hooks.manager.global.includeScreenshotOfElement(radio);
+					Helpers.includeScreenshotOfElement(radio);
 				} else {
 					scenario.write(radioText+" does not contain "+selection);
 					Assert.fail(radioText+" does not contain "+selection);
@@ -184,14 +180,14 @@ public class CheckoutPage {
 	
 	public void clickCheckoutHeaderLogo() {
 		scenario.write("Clicking Checkout Page Header Logo");
-		Hooks.manager.global.includeScreenshotOfElement(headerLogo);
+		Helpers.includeScreenshotOfElement(headerLogo);
 		wait.until(ExpectedConditions.elementToBeClickable(headerLogo)).click();
 		scenario.write("Logo Successfully Clicked");
 		
 	}
 
 	public void verifyHeader() {
-		Hooks.manager.global.includeScreenshotOfElement(header);	
+		Helpers.includeScreenshotOfElement(header);	
 	}
 
 	public void fillOutRequiredFields(String deliveryType) {
@@ -200,7 +196,7 @@ public class CheckoutPage {
 	}
 
 	public void verifySummary() {
-		WebElement summary = driver.findElement(By.className("checkout-preview_details"));
+		WebElement summary = DriverFactory.getDriver().findElement(By.className("checkout-preview_details"));
 		List <WebElement> terms = summary.findElements(By.xpath(".//li/span[@class='checkout-preview_detail-term']"));
 		
 		scenario.write(Integer.toString(terms.size()));
@@ -215,12 +211,12 @@ public class CheckoutPage {
 			Assert.assertTrue(option.isDisplayed());
 		}
 		scenario.write("Delivery component is displayed");
-		Hooks.manager.global.includeScreenshot();
+		Helpers.includeScreenshot();
 	}
 
 	public void checkSummaryFields(List<String> fieldNames) {
-		WebElement summary = driver.findElement(By.className("checkout-preview_details"));
-		Hooks.manager.global.includeScreenshotOfElement(summary);
+		WebElement summary = DriverFactory.getDriver().findElement(By.className("checkout-preview_details"));
+		Helpers.includeScreenshotOfElement(summary);
 		
 		List <WebElement> terms = summary.findElements(By.xpath(".//li/span[@class='checkout-preview_detail-term']"));
 		List<String> termsText = new ArrayList<String>();
@@ -240,11 +236,11 @@ public class CheckoutPage {
 	}
 
 	public void verifyInputs() {
-		WebElement deliverySection = driver.findElement(By.className("checkout-fulfilment_section"));
+		WebElement deliverySection = DriverFactory.getDriver().findElement(By.className("checkout-fulfilment_section"));
 		try {
 			WebElement textInput = deliverySection.findElement(By.xpath(".//input[@type='text']"));
 			textInput.sendKeys("Test");
-			Hooks.manager.global.includeScreenshotOfElement(checkoutFieldsets.get(0));
+			Helpers.includeScreenshotOfElement(checkoutFieldsets.get(0));
 			scenario.write("Successfully amended delivery info");
 		} catch (Exception e) {
 			Assert.fail("Unable to amend delivery fields");
@@ -256,7 +252,7 @@ public class CheckoutPage {
 		String state = open==false ? "closed" : "open";
 		scenario.write("Expecting Shopping Bag Summary to be "+state);
 		try {
-			driver.findElement(By.xpath("//*[contains(@class,'is-open')]"));
+			DriverFactory.getDriver().findElement(By.xpath("//*[contains(@class,'is-open')]"));
 			actual = true;
 		} catch (Exception e) {
 			actual = false;
@@ -280,7 +276,7 @@ public class CheckoutPage {
 		int headerLocation = header.getLocation().getY();
 		Assert.assertTrue(loginLocation>headerLocation);
 		scenario.write("Login bar (Y: "+loginLocation+") is below the header (Y: "+headerLocation+")");
-		Hooks.manager.global.includeScreenshot();
+		Helpers.includeScreenshot();
 	}
 
 	public void loginAboveShoppingBag() {
@@ -288,24 +284,24 @@ public class CheckoutPage {
 		int bagLocation = shoppingBag.getLocation().getY();
 		Assert.assertTrue(loginLocation<bagLocation);
 		scenario.write("Login bar (Y: "+loginLocation+") is above the Shopping bag (Y: "+bagLocation+")");
-		Hooks.manager.global.includeScreenshot();
+		Helpers.includeScreenshot();
 	}
 
 	public void cursorVerifyLogin() {
-		Hooks.manager.global.checkCursor("pointer", loginLink);
+		Helpers.checkCursor("pointer", loginLink);
 		
 	}
 	
 	public void cursorVerifyHelpLine() {
 		WebElement helpLine = helpLines.get(1);
 		WebElement helpLineNumber = helpLine.findElement(By.xpath("./*[2]"));
-		Hooks.manager.global.checkCursor("pointer", helpLineNumber);
+		Helpers.checkCursor("pointer", helpLineNumber);
 	}
 
 	public void checkReviewFields(List<String> fieldNames, String xpath) {
 		scenario.write("Expected fields: "+fieldNames);
 		List<String> headerTexts = new ArrayList<String>();
-		List<WebElement> headers = driver.findElements(By.xpath(xpath));
+		List<WebElement> headers = DriverFactory.getDriver().findElements(By.xpath(xpath));
 		for (WebElement header : headers) {
 			headerTexts.add(header.getText());
 		}
@@ -316,12 +312,12 @@ public class CheckoutPage {
 	public void footerConfirm() {
 		wait.until(ExpectedConditions.visibilityOf(checkoutFooter));
 		scenario.write("Alternate footer is visible");
-		Hooks.manager.global.scrollToElement(checkoutFooter);
-		Hooks.manager.global.includeScreenshot();
+		Helpers.scrollToElement(checkoutFooter);
+		Helpers.includeScreenshot();
 	}
 
 	public void footerIconConfirm() {
-		List<WebElement> icons = driver.findElements(By.xpath("//pink-footer//a"));
+		List<WebElement> icons = DriverFactory.getDriver().findElements(By.xpath("//pink-footer//a"));
 		if (icons.size()!=0) {
 			Assert.fail("Clickable icons found.");
 		}
@@ -338,14 +334,14 @@ public class CheckoutPage {
 		WebElement helpMessage = helpLine.findElement(By.xpath("./*[1]"));
 		WebElement helpNumber = helpLine.findElement(By.xpath("./*[2]"));
 		
-		WebElement total = driver.findElement(By.xpath("//div[*[contains(text(), \'"+section+"\')]]//div[@class='detail total']"));
+		WebElement total = DriverFactory.getDriver().findElement(By.xpath("//div[*[contains(text(), \'"+section+"\')]]//div[@class='detail total']"));
 
 		Assert.assertEquals(message, helpMessage.getText());
 		scenario.write("Message matches acceptance criteria");
 		Assert.assertEquals(phone, helpNumber.getText());
 		scenario.write("Phone number matches acceptance criteria");
 		
-		if (Hooks.manager.global.isXaboveY(total, helpLine)==false) {
+		if (Helpers.isXaboveY(total, helpLine)==false) {
 			Assert.fail("Helpline was not below the "+section);
 		}
 		scenario.write("Helpline was below "+section);
@@ -353,12 +349,12 @@ public class CheckoutPage {
 	
 	public void checkHelpLineLocation () {
 		WebElement helpLine = helpLines.get(1);
-		WebElement total = driver.findElement(By.xpath("//div[*[contains(text(), 'Order Summary')]]//div[@class='detail total']"));
-		if (Hooks.manager.global.isXaboveY(total, helpLine)==false) {
+		WebElement total = DriverFactory.getDriver().findElement(By.xpath("//div[*[contains(text(), 'Order Summary')]]//div[@class='detail total']"));
+		if (Helpers.isXaboveY(total, helpLine)==false) {
 			Assert.fail("Helpline was not below the Order Summary");
 		}
 		scenario.write("Helpline is still below the Order Summary");
-		Hooks.manager.global.includeScreenshot();
+		Helpers.includeScreenshot();
 	}
 
 	public void helplineLink(int format) {
@@ -371,33 +367,33 @@ public class CheckoutPage {
 	}
 
 	public void orderSummaryLocation() {
-		WebElement rightRail = driver.findElement(By.className("checkout_right-rail"));
+		WebElement rightRail = DriverFactory.getDriver().findElement(By.className("checkout_right-rail"));
 		WebElement shoppingBag = rightRail.findElement(By.xpath(".//pink-checkout-shopping-bag"));
 		WebElement orderSummary = rightRail.findElement(By.xpath(".//div[@class='checkout_order-summary']"));
 		scenario.write("Order Summary found on the right side.");
-		if (Hooks.manager.global.isXaboveY(shoppingBag, orderSummary)==false) {
+		if (Helpers.isXaboveY(shoppingBag, orderSummary)==false) {
 			Assert.fail("Shopping Bag is not above Order Summary");
 		}
 		scenario.write("Shopping Bag is above the Order Summary");
-		Hooks.manager.global.includeScreenshot();
+		Helpers.includeScreenshot();
 	}
 
 	public void mobileOrderSummaryLocation() {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("checkout-shopping-bag_order-summary")));
-		WebElement orderSummary = driver.findElement(By.className("checkout-shopping-bag_order-summary"));
-		WebElement editLink = driver.findElement(By.className("checkout-shopping-bag_edit-button"));
-		if (Hooks.manager.global.isXaboveY(orderSummary, editLink)==false) {
+		WebElement orderSummary = DriverFactory.getDriver().findElement(By.className("checkout-shopping-bag_order-summary"));
+		WebElement editLink = DriverFactory.getDriver().findElement(By.className("checkout-shopping-bag_edit-button"));
+		if (Helpers.isXaboveY(orderSummary, editLink)==false) {
 			Assert.fail("Order Summary is not above the Edit Link");
 		}
 		scenario.write("Order Summary is above the Edit Link");
-		Hooks.manager.global.includeScreenshot();
+		Helpers.includeScreenshot();
 	}
 
 	public void enterPaymentSection() {
-		WebElement edit = driver.findElement(By.xpath("//*[contains(text(), 'Payment')]/a[text()='Edit']"));
-		Hooks.manager.global.scrollToElement(edit);
+		WebElement edit = DriverFactory.getDriver().findElement(By.xpath("//*[contains(text(), 'Payment')]/a[text()='Edit']"));
+		Helpers.scrollToElement(edit);
 		edit.click();
-		Hooks.manager.global.scrollToElement(edit);
+		Helpers.scrollToElement(edit);
 	}
 
 	public void choosePaymentType(String paymentType) {
@@ -422,17 +418,17 @@ public class CheckoutPage {
 
 	public void verifyPaymentAddressFields(List<String> fieldNames) {
 		WebElement fieldset = checkoutFieldsets.get(1);
-		Hooks.manager.global.checkInputFieldPlaceholders(fieldNames, fieldset);
+		Helpers.checkInputFieldPlaceholders(fieldNames, fieldset);
 		
 	}
 
 	public void billingAddressFieldsDissapear() {
-		List<WebElement> inputFields = driver.findElements(By.xpath("//pink-payment-options-form//input"));
+		List<WebElement> inputFields = DriverFactory.getDriver().findElements(By.xpath("//pink-payment-options-form//input"));
 		if (inputFields.size()>5) {
 			Assert.fail("Billing Address fields are still visible");
 		}
 		scenario.write("Billing Address fields are no longer visible");
-		Hooks.manager.global.includeScreenshotOfElement(checkoutFieldsets.get(1));
+		Helpers.includeScreenshotOfElement(checkoutFieldsets.get(1));
 	}
 
 	public void noPayPalFields() {
@@ -443,7 +439,7 @@ public class CheckoutPage {
 	}
 
 	public void noPayPalReview() {
-		List<WebElement> previews = driver.findElements(By.xpath("//pink-checkout-preview"));
+		List<WebElement> previews = DriverFactory.getDriver().findElements(By.xpath("//pink-checkout-preview"));
 		if (previews.size()>1) {
 			Assert.fail("Review section is still visible, or a new preview element has been added.");
 		}
@@ -451,7 +447,7 @@ public class CheckoutPage {
 	}
 
 	public void buttonCheck(boolean active) {
-		List<WebElement> buttons = driver.findElements(By.tagName("button"));
+		List<WebElement> buttons = DriverFactory.getDriver().findElements(By.tagName("button"));
 		int index = active==true ? 0 : 1;
 		WebElement button = buttons.get(index);
 		
@@ -472,9 +468,9 @@ public class CheckoutPage {
 
 	public void hoverCTA(boolean active) {
 		WebElement CTA = active==true 
-				? driver.findElement(By.xpath("//button[not(@disabled)]")) :
-					driver.findElement(By.xpath("//button[@disabled]"));
-		Helpers.HoverOn(CTA, driver);
+				? DriverFactory.getDriver().findElement(By.xpath("//button[not(@disabled)]")) :
+					DriverFactory.getDriver().findElement(By.xpath("//button[@disabled]"));
+		Helpers.HoverOn(CTA);
 	}
 
 	public void eachStoreHasMap() {

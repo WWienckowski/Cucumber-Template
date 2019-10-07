@@ -2,25 +2,24 @@ package com.template.page_objects;
 
 
 import org.junit.Assert;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import cucumber.api.Scenario;
+import driver.DriverFactory;
+import io.cucumber.core.api.Scenario;
+
 
 public class HomePage {
-WebDriver driver;
 WebDriverWait wait;
 Scenario scenario;
 
-	public HomePage(WebDriver driver, WebDriverWait wait, Scenario scenario) {
-		 this.driver = driver;
-		 this.wait = wait;
+	public HomePage(Scenario scenario) {
 		 this.scenario = scenario;
-		 PageFactory.initElements(driver, this);
+		 this.wait = new WebDriverWait(DriverFactory.getDriver(), 15);
+		 PageFactory.initElements(DriverFactory.getDriver(), this);
 		 }
 	
 	@FindBy(xpath = "/html/body/app-root/pink-home-layout/pink-banner-home/div/div/h1")WebElement title;

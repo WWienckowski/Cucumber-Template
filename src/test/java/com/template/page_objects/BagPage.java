@@ -1,20 +1,15 @@
 package com.template.page_objects;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import driver.DriverFactory;
+//import io.cucumber.core.api.Scenario;
 
-import cucumber.api.Scenario;
 
 public class BagPage {
-	WebDriver driver;
-	WebDriverWait wait;
-	Scenario scenario;
+	//private Scenario scenario = DriverFactory.getScenario();
 	
-	public BagPage(WebDriver driver, WebDriverWait wait, Scenario scenario) {
-		 this.driver = driver;
-		 this.wait = wait;
-		 this.scenario = scenario;
-		 PageFactory.initElements(driver, this);
+	public BagPage() {
+		
+		 PageFactory.initElements(DriverFactory.getDriver(), this);
 		 }
 }

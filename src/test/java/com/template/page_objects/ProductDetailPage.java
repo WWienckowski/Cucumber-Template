@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -12,10 +11,11 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import cucumber.api.Scenario;
+import driver.DriverFactory;
+import io.cucumber.core.api.Scenario;
+
 
 public class ProductDetailPage {
-	WebDriver driver;
 	WebDriverWait wait;
 	Scenario scenario;
 	private String productUrl;
@@ -26,11 +26,10 @@ public class ProductDetailPage {
 	} )
 	private List<WebElement> colourSwatches;
 		
-		public ProductDetailPage(WebDriver driver, WebDriverWait wait, Scenario scenario) {
-			 this.driver = driver;
-			 this.wait = wait;
+		public ProductDetailPage(Scenario scenario) {
+			 this.wait = new WebDriverWait(DriverFactory.getDriver(), 15);
 			 this.scenario = scenario;
-			 PageFactory.initElements(driver, this);
+			 PageFactory.initElements(DriverFactory.getDriver(), this);
 			 }
 		
 		public void confirmUrl() {

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
@@ -13,21 +12,19 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.template.Helpers;
-import com.template.stepdefs.Hooks;
+import driver.DriverFactory;
+import io.cucumber.core.api.Scenario;
 
-import cucumber.api.Scenario;
+import com.template.Helpers;
+
+
 
 public class ConfirmationPage {
-	WebDriver driver;
-	WebDriverWait wait;
-	Scenario scenario;
+	WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), 15);;
+	Scenario scenario = DriverFactory.getScenario();
 	
-	public ConfirmationPage(WebDriver driver, WebDriverWait wait, Scenario scenario) {
-		 this.driver = driver;
-		 this.wait = wait;
-		 this.scenario = scenario;
-		 PageFactory.initElements(driver, this);
+	public ConfirmationPage() {
+		 PageFactory.initElements(DriverFactory.getDriver(), this);
 		 }
 	
 	@FindAll( { // A list of the social media links
@@ -54,17 +51,17 @@ public class ConfirmationPage {
 				noTab++;
 				continue;
 			}
-			Hooks.manager.global.javascriptClick(link);
+			Helpers.javascriptClick(link);
 			
-			List<String> browserTabs = new ArrayList<String> (driver.getWindowHandles());
+			List<String> browserTabs = new ArrayList<String> (DriverFactory.getDriver().getWindowHandles());
 			if (browserTabs.size()>1) {
-				driver.switchTo().window(browserTabs.get(1));
-				scenario.write("Expecting: "+linkHref+" \n Found: "+driver.getCurrentUrl());
-				if (!driver.getCurrentUrl().matches(linkHref)); {
+				DriverFactory.getDriver().switchTo().window(browserTabs.get(1));
+				scenario.write("Expecting: "+linkHref+" \n Found: "+DriverFactory.getDriver().getCurrentUrl());
+				if (!DriverFactory.getDriver().getCurrentUrl().matches(linkHref)); {
 					noMatch++;
 				}
-				driver.close();
-				driver.switchTo().window(browserTabs.get(0));
+				DriverFactory.getDriver().close();
+				DriverFactory.getDriver().switchTo().window(browserTabs.get(0));
 			}
 			
 		}
@@ -78,25 +75,25 @@ public class ConfirmationPage {
 	}
 
 	public void checkRegistrationFields(List<String> fieldNames) {
-		WebElement fieldset = driver.findElement(By.xpath("//fieldset[@class='form-fieldset']"));
-		Hooks.manager.global.checkInputFieldPlaceholders(fieldNames, fieldset);
+		WebElement fieldset = DriverFactory.getDriver().findElement(By.xpath("//fieldset[@class='form-fieldset']"));
+		Helpers.checkInputFieldPlaceholders(fieldNames, fieldset);
 	}
 
 	public void checkLoginHeader() {
-		String legend = driver.findElement(By.xpath("//div[@class='login-header']/legend")).getText();
-		String email = driver.findElement(By.xpath("//div[@class='login-header']/div[@class='login-email']")).getText();
+		String legend = DriverFactory.getDriver().findElement(By.xpath("//div[@class='login-header']/legend")).getText();
+		String email = DriverFactory.getDriver().findElement(By.xpath("//div[@class='login-header']/div[@class='login-email']")).getText();
 		scenario.write("Name: "+legend+"\nEmail: "+email);
 	}
 
 	public void enterPassword() {
-		WebElement fieldset = driver.findElement(By.xpath("//fieldset[@class='form-fieldset']"));
+		WebElement fieldset = DriverFactory.getDriver().findElement(By.xpath("//fieldset[@class='form-fieldset']"));
 		password.sendKeys("Test1234!");
 		passwordConfirm.sendKeys("Test1234!");
-		Hooks.manager.global.includeScreenshotOfElement(fieldset);
+		Helpers.includeScreenshotOfElement(fieldset);
 	}
 
 	public void hoverOnTooltip() {
-		Helpers.HoverOn(toolTipIcon, driver);
+		Helpers.HoverOn(toolTipIcon);
 		
 	}
 
@@ -105,29 +102,28 @@ public class ConfirmationPage {
 		Assert.assertTrue(message.equals(tooltip.getText()));
 		Assert.assertTrue(tooltip.isDisplayed());
 		scenario.write("Tool tip is visible");
-		Hooks.manager.global.includeScreenshot();
+		Helpers.includeScreenshot();
 	}
 
 	public void tooltipMessageDismissed() {
 		Assert.assertFalse(tooltip.isDisplayed());
 		scenario.write("Tool tip is not visible");
-		Hooks.manager.global.includeScreenshot();
+		Helpers.includeScreenshot();
 	}
 
 	public void tapToolTip() {
-		WebElement element = driver.findElement(By.className("right-column"));
-		
-		Hooks.manager.global.scrollToElement(element);
-		Actions action = new Actions(driver);
+		WebElement element = DriverFactory.getDriver().findElement(By.tagName("pink-confirmation-create-account"));
+		Helpers.scrollToElement(element);
+		Actions action = new Actions(DriverFactory.getDriver());
 		action.pause(2000);
 		action.click(toolTipIcon);
 		action.pause(2000);
 		action.perform();
-		Hooks.manager.global.includeScreenshot();
+		Helpers.includeScreenshot();
 	}
 
 	public void enterPaymentDetails() {
-		WebElement button = driver.findElement(By.xpath("//button[text()='continue']"));
-		Hooks.manager.global.javascriptClick(button);
+		WebElement button = DriverFactory.getDriver().findElement(By.xpath("//button[text()='continue']"));
+		Helpers.javascriptClick(button);
 	}
 }
