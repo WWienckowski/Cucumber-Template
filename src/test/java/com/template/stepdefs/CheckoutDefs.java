@@ -500,4 +500,11 @@ public class CheckoutDefs {
 		manager.checkout.PickUpEditClick();
 	    //manager.global.clickOnByXpath("//pink-collect-in-store-pickup//*[text()=\'"+link+"\']");
 	}
+	
+	@Given("the user is in the Card payment section")
+	public void the_user_is_in_the_Card_payment_section() {
+	    manager.global.navigateTo("checkout");
+	    manager.checkout.enterPaymentSection();
+	    
+	}
 }

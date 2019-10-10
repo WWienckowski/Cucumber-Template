@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
@@ -376,6 +377,15 @@ public class Global {
 		JavascriptExecutor executor = (JavascriptExecutor)driver;
 		String item = (String) executor.executeScript("return window.localStorage.getItem('pink-shopper')");
 		scenario.write(item);
+	}
+
+	public void inputTextByPlaceholder(String placeholder, String text) {
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder=\'"+placeholder+"\']")));
+		driver.findElement(By.xpath("//input[@placeholder=\'"+placeholder+"\']")).sendKeys(text);		
+	}
+
+	public void exitFieldByPlaceholder(String placeholder) {
+		driver.findElement(By.xpath("//input[@placeholder=\'"+placeholder+"\']")).sendKeys(Keys.TAB);
 	}
 
 }

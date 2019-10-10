@@ -1,5 +1,7 @@
 package com.template.stepdefs;
 
+import java.util.List;
+
 import com.template.PageObjectManager;
 
 import cucumber.api.java.en.Given;
@@ -18,7 +20,8 @@ public class GenericDefs {
 	
 	@Given("there are products in the Shopping Bag")
 	public void there_are_products_in_the_Shopping_Bag() {
-	    //TODO the bag needs to be populated
+		manager.global.navigateTo("homepage");
+		manager.global.setCart();
 	}
 	
 	@When("the user clicks on {string}")
@@ -168,14 +171,36 @@ public class GenericDefs {
 	public void the_user_is_in_US_locale(String locale) {
 	    switch(locale) {
 	    case "US":
-	    	// set to USA
+	    	// TODO set to USA
 	    	break;
 	    case "UK":
-	    	// set to UK
+	    	// TODO set to UK
 	    	break;
 	    case "ROW":
-	    	// set to ROW
+	    	// TODO set to ROW
 	    	break;
 	    }
 	}
+	
+	@Given("the user has entered an invalid value in the field")
+	public void the_user_is_in_the_string_field(List<String> info) {
+	    manager.global.inputTextByPlaceholder(info.get(0),info.get(1));
+	    
+	}
+	
+	@When("the user clicks out of the field")
+	public void the_user_clicks_out_of_the_field(String placeholder) {
+		manager.global.exitFieldByPlaceholder(placeholder);
+	}
+	
+	@Then("the error message displays as per designs")
+	public void the_error_message_displays_as_per_designs(String message) {
+	    manager.global.checkForElementByText(message);
+	}
+	
+	@Then("the field is underlined in red")
+	public void the_field_is_underlined_in_red(String placeholder) {
+	    manager.global.checkCSS("//input[@placeholder=\'"+placeholder+"\']", "rgb(196, 11, 20)", "border-color");
+	}
+	
 }

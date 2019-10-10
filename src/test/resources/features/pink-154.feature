@@ -5,44 +5,53 @@ Feature: Card Payment - Field Validation (Services)
 
 	NOTE: in-line validation should wait until field is not in focus to show error messages.
 	Current website shows error messages while typing.
-
-  Scenario Outline: Title of your scenario
- 		Given the user is in the Card payment section
-		And the user is in the <field>
-		And the user has entered an invalid <entry>
-		When the user clicks out of the <field>
-		Then the <error_message> displays as per designs
+	
+	Background: 
+		Given there are products in the Shopping Bag
+		And the user is in the Card payment section
+	
+  Scenario Outline: The user inputs invalid Card payment information for: <field>
+		Given the user has entered an invalid value in the field
+		| <field> |
+		| <entry> |
+		When the user clicks out of the field
+		| <field> |
+		Then the error message displays as per designs
+		| <error_message> |
 		And the field is underlined in red
+		| <field> |
 	Examples:
 	| field | entry | error_message |
-	| Enter Card Number* | Card Number | Please enter a valid payment card number |
-	| Name on Card* | Name | Please enter the cardholder's name |
-	| Expiration (MM/YY)* | Expiration Date | Please enter a valid expiry date |
-	| CVV* | Expiration Date | Please a valid security number |	
+	| Enter Card Number* | test | Please enter a valid payment card number |
+	| Name on Card* | 123 | Please enter the cardholder's name |
+	| Expiration (MM/YY)* | 999 | Please enter a valid expiry date |
+	| CVV* | test | Please enter a valid security number |	
 		
-	Scenario Outline:	
-		Given the user is in the Card payment section
-		And the user is in the <field>
+	Scenario Outline:	The user inputs valid Card payment information for: <field>
+		Given the user is in the <field>
 		And the user has entered a valid <entry>
 		When the user clicks out of the <field>
-		Then user's entry is displayed in the <field>
+		Then user's <entry> is displayed in the <field>
 	Examples:
-	| field | entry | error_message |
-	| Enter Card Number* | Card Number | Please enter a valid payment card number |
-	| Name on Card* | Name | Please enter the cardholder's name |
-	| Expiration (MM/YY)* | Expiration Date | Please enter a valid expiry date |
-	| CVV* | Expiration Date | Please a valid security number |
+	| field | entry | 
+	| Enter Card Number* | 12345678901234 | 
+	| Name on Card* | Test Name |
+	| Expiration (MM/YY)* | 1020 | 
+	| CVV* | 123 | 
 	
-	Scenario Outline:	
-		Given the user is in the Card payment section
-		And the user has not entered any information in <field>
+	Scenario:	The user attempts to continue without entering Card payment information
+  	Given the user has not entered any information
 		When the user clicks 'Continue'
-		Then the <error_message> displays as per designs
-		And the field is underlined in red
-	Examples:
-	| field | error_message |
-	| Enter Card Number* | Please enter a valid payment card number |
-	| Name on Card* | Please enter the cardholder's name |
-	| Expiration (MM/YY)* | Please enter a valid expiry date |
-	| CVV* | Please a valid security number |
+		Then the error_messages display as per designs
+		| Please enter a valid payment card number |
+		| Please enter the cardholder's name |
+		| Please enter a valid expiry date |
+		| Please a valid security number |
+		And the fields are underlined in red
+		| Enter Card Number* |
+		| Name on Card* |
+		| Expiration (MM/YY)* |
+		| CVV* |
+
+	
                                                             
