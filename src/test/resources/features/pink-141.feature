@@ -4,7 +4,8 @@ Feature: Payment Type Selection (UI)
   Each option will present different values underneath when selected.
 
   Background: 
-    Given the user is on the checkout page
+  	Given there are items in the cart
+    And the user is on the checkout page
 
   Scenario: Payment options are initially disabled during checkout
     Then the 'Credit or Debit Card', 'Paypal' and 'Gift Card or e-voucher' payment options should display with radio buttons as per designs

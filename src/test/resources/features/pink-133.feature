@@ -4,7 +4,8 @@ Feature: Review Order Component (UI)
   placing their order in the checkout, as well as agreeing to the Terms and Conditions of Sale.
 
   Background: 
-    Given the user is on the checkout page
+  	Given there are items in the cart
+    And the user is on the checkout page
 
   Scenario: The checkout page has an inactive Review component
     Then there is a 'Review' component as per designs

@@ -25,7 +25,6 @@ public class Hooks {
 	  @Before("not @mobile")
 	  public void initialize(Scenario scenario) {
 	      DriverFactory.getDriver().manage().window().maximize();
-		  System.out.println(Thread.currentThread().getId());
 		  DriverFactory.setScenario(scenario);
 	  }
 	  
@@ -34,7 +33,6 @@ public class Hooks {
 		  scenario.write("Simulating mobile browser");
 		  Dimension d = new Dimension(375,812);
 		  DriverFactory.getDriver().manage().window().setSize(d);
-	      System.out.println(Thread.currentThread().getId());
 	      DriverFactory.setScenario(scenario);
 	  }
 	  

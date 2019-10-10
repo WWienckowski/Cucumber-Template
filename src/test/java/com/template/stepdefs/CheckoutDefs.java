@@ -491,8 +491,8 @@ public class CheckoutDefs {
 	    Helpers.getTextByXpath("//pink-collect-in-store-pickup//span[@class='checkout-preview_detail-description']");
 	}
 	
-	@When("the user clicks on the {string} link in the {string} summary")
-	public void the_user_clicks_on_the_link_in_the_summary(String link, String string2) {
-	    Helpers.clickOnByXpath("//pink-collect-in-store-pickup//*[text()=\'"+link+"\']");
+	@When("the user clicks on the {string} link in the Picking up summary")
+	public void the_user_clicks_on_the_link_in_the_summary(String link) {
+		Helpers.javascriptClickXpath("//a[@class='edit-link']");
 	}
 }

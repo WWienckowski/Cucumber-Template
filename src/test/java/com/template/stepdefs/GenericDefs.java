@@ -15,10 +15,16 @@ public class GenericDefs {
 		
 	}
 	
+	@Given("there are items in the cart")
+	public void set_cart(){
+		Helpers.navigateTo("");
+		Helpers.setShopper();
+	}
 	
 	@Given("the user is on the {word} page")
 	public void navigate_to_page_url(String urlSuffix) {
 		urlSuffix = urlSuffix.equals("PDP") ? "detail" : urlSuffix;
+		urlSuffix = urlSuffix.contentEquals("bag") ? "basket/viewbasket" : urlSuffix;
 		Helpers.navigateTo(urlSuffix);
 	}
 	
