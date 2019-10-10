@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -487,6 +488,11 @@ public class CheckoutPage {
 		scenario.write("Stores: "+storeList.size()+" Store details links: "+detailLinks.size());
 		Assert.assertEquals("Incorrect amount of detail links:", storeList.size(), detailLinks.size());
 		
+	}
+
+	public void PickUpEditClick() {
+		WebElement editLink = driver.findElement(By.xpath("//pink-collect-in-store-pickup//*[text()='Edit']"));
+		Hooks.manager.global.javascriptClick(editLink);
 	}
 	
 }

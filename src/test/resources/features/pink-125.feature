@@ -5,7 +5,8 @@ Feature: Ship to Address (UI)
   this can then be amended later for the US and International sites
 
 	Background:
-		Given the user is on the checkout page
+		Given I put a cart into local storage
+		And the user is on the checkout page
 
   Scenario: UK Ship to Address fields display correctly
     When the Ship to Address section of the UK checkout page loads

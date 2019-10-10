@@ -3,7 +3,6 @@ package com.template.stepdefs;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 
 import javax.imageio.ImageIO;
@@ -12,7 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.template.DriverManager;
-import com.template.Helpers;
 import com.template.PageObjectManager;
 
 import cucumber.api.Scenario;
@@ -25,36 +23,27 @@ public class Hooks {
 	DriverManager driverManager;		
 	public static PageObjectManager manager;
 	String baseUrl;
+	Boolean mobile;
 	
 	public Hooks(DriverManager driverManager)  {
 		this.driverManager = driverManager;
 	}
 	
 	  @Before("not @mobile")
-	/*
-	 * Before any scenario runs this hook takes the scenario's name, passes it to a
-	 * helper method that scans it for a browser name, the browser name is sent
-	 * to the DriverManager which opens the WebDriver.
-	 */
-	  public void initialize(Scenario scenario) throws MalformedURLException {
-		  String scenarioName = scenario.getName();
-		  String browser = Helpers.browserCheck(scenarioName);
-		  driverManager.startDriver(browser);
-		  baseUrl = driverManager.getBaseUrl();
-		  // Create all page objects in the PageObjectManager
+	  public void initialize(Scenario scenario) {
+		  driverManager.startDriver();
 		  WebDriver driver = driverManager.getDriver();
 		  WebDriverWait wait = driverManager.getWait();
-	      manager = new PageObjectManager(driver, wait, scenario, baseUrl);
+	      manager = new PageObjectManager(driver, wait, scenario);
 	  }
 	  
 	  @Before("@mobile")
 	  public void initializeMobile(Scenario scenario) {
 		  scenario.write("Simulating mobile browser");
 		  driverManager.startMobileDriver();
-		  baseUrl = driverManager.getBaseUrl();
 		  WebDriver driver = driverManager.getDriver();
 		  WebDriverWait wait = driverManager.getWait();
-	      manager = new PageObjectManager(driver, wait, scenario, baseUrl);
+	      manager = new PageObjectManager(driver, wait, scenario);
 	  }
 	  
 	  @After(order=1)

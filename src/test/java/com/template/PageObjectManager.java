@@ -23,9 +23,9 @@ public class PageObjectManager {
 	public ConfirmationPage confirmation;
 
 	// add each page object here and they will be instantiated when the scenario starts
-	public PageObjectManager(WebDriver driver, WebDriverWait wait, Scenario scenario, String baseUrl) {
+	public PageObjectManager(WebDriver driver, WebDriverWait wait, Scenario scenario) {
 		if (global == null) {
-			global = new Global(driver, wait, scenario, baseUrl);
+			global = new Global(driver, wait, scenario);
 		}
 		if (home == null) {
 			home = new HomePage(driver, wait, scenario);

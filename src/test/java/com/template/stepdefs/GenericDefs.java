@@ -12,7 +12,13 @@ public class GenericDefs {
 	@Given("the user is on the {word} page")
 	public void navigate_to_page_url(String urlSuffix) {
 		urlSuffix = urlSuffix.equals("PDP") ? "detail" : urlSuffix;
+		urlSuffix = urlSuffix.equals("Bag") ? "basket/viewbasket" : urlSuffix;
 		manager.global.navigateTo(urlSuffix);
+	}
+	
+	@Given("there are products in the Shopping Bag")
+	public void there_are_products_in_the_Shopping_Bag() {
+	    //TODO the bag needs to be populated
 	}
 	
 	@When("the user clicks on {string}")
@@ -45,7 +51,7 @@ public class GenericDefs {
 	    manager.global.clickOnByLinkText(linkText);
 	}
 	
-	@Then("the user is re-directed to the {word}")
+	@Then("the user is re-directed to the {string} page")
 	public void the_user_is_redirected(String page) {
 		manager.global.checkUrl(page);
 	}
@@ -110,7 +116,7 @@ public class GenericDefs {
 	
 	@Then("the Shopping Bag page is loaded")
 	public void the_Shopping_Bag_page_is_loaded() {
-	    manager.global.checkUrl("bag");
+	    manager.global.checkUrl("Shopping Bag");
 	}
 	
 	@Then("the {string} button turns black")
@@ -122,5 +128,54 @@ public class GenericDefs {
 	public void is_bold_and_underlined(String text) {
 	    manager.global.checkCSS("//*[text()=\'"+text+"\']", "700", "font-weight");
 	    manager.global.checkCSS("//*[text()=\'"+text+"\']", "underline solid rgb(0, 0, 0)", "text-decoration");
+	}
+	
+	@When("the user has not clicked\\/tapped on any element within the mini shopping bag for {int} seconds")
+	public void the_user_has_not_clicked_tapped_on_any_element_within_the_mini_shopping_bag_for_seconds(Integer seconds) {
+	    manager.global.idleForX(seconds);
+	}
+	
+	@Then("there is a {string} button as per designs")
+	public void there_is_a_button_as_per_designs(String string) {
+	    manager.global.isDisplayed("//button[text()=\'"+string+"\']", true);
+	}
+	
+	@Then("the {string} button is black with white text")
+	public void the_button_is_black_with_white_text(String string) {
+	    manager.global.checkCSS("//button[text()=\'"+string+"\']", "rgba(0, 0, 0, 1)", "background-color");
+	    manager.global.checkCSS("//button[text()=\'"+string+"\']", "rgba(255, 255, 255, 1)", "color");
+	}
+	
+	@Then("the {string} button is white with black text and black outline")
+	public void the_button_is_white_with_black_text_and_black_outline(String string) {
+		manager.global.checkCSS("//button[text()=\'"+string+"\']", "rgba(255, 255, 255, 1)", "background-color");
+	    manager.global.checkCSS("//button[text()=\'"+string+"\']", "rgba(0, 0, 0, 1)", "color");
+	    manager.global.checkCSS("//button[text()=\'"+string+"\']", "rgb(0, 0, 0)", "border-color");
+	}
+	
+	@Then("the {string} button is active")
+	public void the_button_is_active(String string) {
+	    manager.global.isButtonEnabledByText(string, true);
+	}
+	
+	@Given("I put a cart into local storage")
+	public void i_put_a_cart_into_local_storage() {
+	    manager.global.navigateTo("homepage");
+		manager.global.setCart();
+	}
+	
+	@Given("the user is in {word} locale")
+	public void the_user_is_in_US_locale(String locale) {
+	    switch(locale) {
+	    case "US":
+	    	// set to USA
+	    	break;
+	    case "UK":
+	    	// set to UK
+	    	break;
+	    case "ROW":
+	    	// set to ROW
+	    	break;
+	    }
 	}
 }

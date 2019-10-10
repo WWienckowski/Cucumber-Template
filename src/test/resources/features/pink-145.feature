@@ -3,7 +3,8 @@ Feature: Collect in Pink Store (UI)
   The UI story for the Collect in Pink store fulfilment option
 
   Background:
-  	Given the user is on the checkout page
+  	Given I put a cart into local storage
+  	And the user is on the checkout page
   	And the user clicks on 'Collect in a Pink Store'
   
   Scenario: The Collect in a Pink Store delivery option displays options to find a store or use location 
@@ -19,7 +20,7 @@ Feature: Collect in Pink Store (UI)
 		
 	Scenario: Each store has a 'See store details' link and the Contact for order component is displayed
 		And each Pink store cell has a clickable ‘See store details' link that is underlined
-		And there will be a 'Contact for Order' component
+		And there will be a 'Contact for order' component
 	
 	Scenario: The map link displays a map component
 		Given a list of Pink stores is displayed
@@ -30,10 +31,10 @@ Feature: Collect in Pink Store (UI)
 		Given the user clicks on 'Pick-up here'
 		Then the 'Picking up' summary and 'Edit' link are displayed
 		
-	Scenario:	
+	Scenario:	The user can return to the store list after selecting a pick up store
 		Given the user clicks on 'Pick-up here'
 		And the 'Picking up' summary and 'Edit' link are displayed
-		When the user clicks on the 'Edit' link in the 'Picking up' summary
+		When the user clicks on the 'Edit' link in the Picking up summary
 		Then a list of Pink stores is displayed
 
 

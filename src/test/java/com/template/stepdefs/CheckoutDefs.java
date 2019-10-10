@@ -418,7 +418,7 @@ public class CheckoutDefs {
 	@Then("the gift message field is displayed underneath the associated product")
 	public void the_gift_message_field_is_displayed_underneath_the_associated_product() {
 	    manager.global.isDisplayed("//textarea", true);
-	    manager.global.isXaboveYbyXpath("//img[@class='checkout-shopping-bag-item_image']",
+	    manager.global.isXaboveYbyXpath("//img[@class='bag-item_image']",
 	    		"//textarea", true);
 	}
 
@@ -429,18 +429,18 @@ public class CheckoutDefs {
 	
 	@When("the user scrolls down past the Shopping Bag header")
 	public void the_user_scrolls_down_past_the_Shopping_Bag_header() {
-	    manager.global.scrollToXpath("//pink-footer");
+	    manager.global.scrollToXpath("//button[text()='Place order']");
 	}
 	
 	@Then("the Shopping Bag header is stuck to the top of the screen")
 	public void the_Shopping_Bag_header_is_stuck_to_the_top_of_the_screen() {
-	    manager.global.isDisplayed("//button[@class='checkout-shopping-bag_button']", true);
-	    
+	    manager.global.isVisible("//pink-checkout-shopping-bag", true);
+	    manager.global.isXaboveYbyXpath("//pink-header", "//pink-checkout-shopping-bag", true);
 	}
 	
 	@When("the user scrolls up past the original placement of the Shopping Bag header")
 	public void the_user_scrolls_up_past_the_original_placement_of_the_Shopping_Bag_header() {
-	    manager.global.scrollToXpath("//div[@class='container simple-header']");
+	    manager.global.scrollToXpath("//pink-guest-checkout-bar");
 	}
 
 	@Then("the Shopping Bag header is unstuck and in its original placement on the Checkout page")
@@ -495,8 +495,9 @@ public class CheckoutDefs {
 	    manager.global.getTextByXpath("//pink-collect-in-store-pickup//span[@class='checkout-preview_detail-description']");
 	}
 	
-	@When("the user clicks on the {string} link in the {string} summary")
-	public void the_user_clicks_on_the_link_in_the_summary(String link, String string2) {
-	    manager.global.clickOnByXpath("//pink-collect-in-store-pickup//*[text()=\'"+link+"\']");
+	@When("the user clicks on the {string} link in the Picking up summary")
+	public void the_user_clicks_on_the_link_in_the_summary(String link) {
+		manager.checkout.PickUpEditClick();
+	    //manager.global.clickOnByXpath("//pink-collect-in-store-pickup//*[text()=\'"+link+"\']");
 	}
 }

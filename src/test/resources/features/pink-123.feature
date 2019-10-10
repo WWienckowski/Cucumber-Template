@@ -5,7 +5,8 @@ Feature: View Shopping Bag from Checkout (UI)
   they must navigate to the shopping bag to make amendments to it.
 
   Background: 
-    Given the user is on the checkout page
+  	Given I put a cart into local storage
+    And the user is on the checkout page
 
   Scenario: The user expands the Shopping Bag
     And the Shopping Bag control is minimised
