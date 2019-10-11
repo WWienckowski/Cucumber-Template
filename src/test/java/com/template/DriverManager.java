@@ -30,10 +30,10 @@ public class DriverManager {
 			String selenium = System.getProperty("selenium");
 			selenium = selenium==null ? "http://localhost:4444/wd/hub" : selenium; 
 			driver = new RemoteWebDriver(new URL(selenium), new ChromeOptions());
-			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			driver.manage().deleteAllCookies();
 			driver.manage().window().maximize();
-			wait = new WebDriverWait(driver, 10);
+			wait = new WebDriverWait(driver, 15);
 		} catch(MalformedURLException e){
 			System.out.println("Error"+e);
 		}
@@ -86,9 +86,9 @@ public class DriverManager {
 		chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
 
 		driver = new RemoteWebDriver(new URL(selenium), chromeOptions);
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	    driver.manage().deleteAllCookies();
-	    wait = new WebDriverWait(driver, 5);
+	    wait = new WebDriverWait(driver, 15);
 		} catch(MalformedURLException e){
 			System.out.println("Error"+e);
 		}

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Point;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -53,6 +53,8 @@ public class CheckoutPage {
 	
 	@FindBy(xpath = "//div[@class='wrapper alternate-layout']") private WebElement checkoutFooter;
 	
+	@FindBy(className = "checkout-shopping-bag_button") private WebElement bagButton;
+	
 	@FindAll ( {
 		@FindBy(className = "help") 
 	}) private List<WebElement> helpLines;
@@ -68,6 +70,8 @@ public class CheckoutPage {
 	@FindAll ( {
 		@FindBy(xpath = "//a[text()='See store details']")
 	}) private List<WebElement> detailLinks;
+	
+	@FindBy(tagName = "pink-checkout-shopping-bag") private WebElement bag;
 	
 	public CheckoutPage(WebDriver driver, WebDriverWait wait, Scenario scenario) {
 		 this.driver = driver;
@@ -253,20 +257,17 @@ public class CheckoutPage {
 	}
 
 	public void bagControlIsOpen(Boolean open) {
-		Boolean actual;
 		String state = open==false ? "closed" : "open";
 		scenario.write("Expecting Shopping Bag Summary to be "+state);
-		try {
-			driver.findElement(By.xpath("//*[contains(@class,'is-open')]"));
-			actual = true;
-		} catch (Exception e) {
-			actual = false;
-		}
-		if (open!=actual) {
+		Hooks.manager.global.idleForX(500);
+		Dimension bagSize = bag.getSize();
+		//(280, 483)(280, 83)
+		System.out.print(bagSize);
+		boolean actual = bagSize.getHeight() == 483 ? true : false ;
+		if (actual!=open) {
 			Assert.fail("Shopping Bag Summary was not "+state);
-		} else {
-			scenario.write("Shopping Bag Summary was "+state);
 		}
+		scenario.write("Shopping Bag Summary was "+state);
 	}
 	
 	public void loginLocations() {
@@ -396,8 +397,9 @@ public class CheckoutPage {
 
 	public void enterPaymentSection() {
 		WebElement edit = driver.findElement(By.xpath("//*[contains(text(), 'Payment')]/a[text()='Edit']"));
+		Hooks.manager.global.idleForX(100);
 		Hooks.manager.global.scrollToElement(edit);
-		edit.click();
+		Hooks.manager.global.javascriptClick(edit);
 		Hooks.manager.global.scrollToElement(edit);
 	}
 
@@ -493,6 +495,11 @@ public class CheckoutPage {
 	public void PickUpEditClick() {
 		WebElement editLink = driver.findElement(By.xpath("//pink-collect-in-store-pickup//*[text()='Edit']"));
 		Hooks.manager.global.javascriptClick(editLink);
+	}
+
+	public void clickBagButton() {
+		wait.until(ExpectedConditions.elementToBeClickable(bagButton));
+		Hooks.manager.global.javascriptClick(bagButton);
 	}
 	
 }

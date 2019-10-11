@@ -417,7 +417,8 @@ public class CheckoutDefs {
 	
 	@Then("the gift message field is displayed underneath the associated product")
 	public void the_gift_message_field_is_displayed_underneath_the_associated_product() {
-	    manager.global.isDisplayed("//textarea", true);
+		manager.global.scrollToXpath("//textarea");
+		manager.global.isDisplayed("//textarea", true);
 	    manager.global.isXaboveYbyXpath("//img[@class='bag-item_image']",
 	    		"//textarea", true);
 	}
@@ -440,7 +441,7 @@ public class CheckoutDefs {
 	
 	@When("the user scrolls up past the original placement of the Shopping Bag header")
 	public void the_user_scrolls_up_past_the_original_placement_of_the_Shopping_Bag_header() {
-	    manager.global.scrollToXpath("//pink-guest-checkout-bar");
+	    manager.global.scrollToTop();
 	}
 
 	@Then("the Shopping Bag header is unstuck and in its original placement on the Checkout page")
@@ -498,13 +499,24 @@ public class CheckoutDefs {
 	@When("the user clicks on the {string} link in the Picking up summary")
 	public void the_user_clicks_on_the_link_in_the_summary(String link) {
 		manager.checkout.PickUpEditClick();
-	    //manager.global.clickOnByXpath("//pink-collect-in-store-pickup//*[text()=\'"+link+"\']");
+	    
 	}
 	
 	@Given("the user is in the Card payment section")
 	public void the_user_is_in_the_Card_payment_section() {
 	    manager.global.navigateTo("checkout");
-	    manager.checkout.enterPaymentSection();
-	    
+	    manager.global.idleForX(300);
+	    manager.checkout.enterPaymentSection(); 
+	    manager.global.idleForX(100);
+	}
+	
+	@Given("the user clicks on the {string} button")
+	public void the_user_clicks_on_the_button(String string) {
+	    manager.checkout.clickBagButton();
+	}
+	
+	@Given("the user clicks Continue without entering any information")
+	public void the_user_clicks_Continue_without_entering_any_information() {
+	    manager.global.clickOnByXpath("//pink-payment-options-form//button");
 	}
 }

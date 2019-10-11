@@ -3,6 +3,7 @@ Feature: Order Confirmation Page (UI)
   The UI story for the order confirmation page
 
   Background: 
+    #Given the user has gone through checkout
   	Given the user is on the confirmation page
   	
   Scenario: The user clicks the edit link in the registration section

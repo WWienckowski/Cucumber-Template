@@ -5,29 +5,29 @@ Feature: View Shopping Bag from Checkout (UI)
   they must navigate to the shopping bag to make amendments to it.
 
   Background: 
-  	Given I put a cart into local storage
+  	Given there are products in the Shopping Bag
     And the user is on the checkout page
 
   Scenario: The user expands the Shopping Bag
     And the Shopping Bag control is minimised
-    When the user clicks on 'Shopping Bag'
+    When the user clicks on the 'Shopping Bag' button
     Then the Shopping Bag control is expanded
     And the user can see the products in the Shopping Bag
 
   Scenario: The user minimises the Shopping Bag
-    When the user clicks on 'Shopping Bag'
+    When the user clicks on the 'Shopping Bag' button
     And the Shopping Bag control is expanded
-    When the user clicks on 'Shopping Bag'
+    When the user clicks on the 'Shopping Bag' button
     Then the Shopping Bag control is minimised
 
   Scenario: The user clicks the 'Edit Shopping Bag' link
-    Given the user clicks on 'Shopping Bag'
+    Given the user clicks on the 'Shopping Bag' button
     And the Shopping Bag control is expanded
     When the user clicks on 'Edit Shopping Bag' link
     Then the Shopping Bag page is loaded
 
   Scenario: Gift message is displayed
-    When the user clicks on 'Shopping Bag'
+    When the user clicks on the 'Shopping Bag' button
     Then the gift message field is displayed underneath the associated product
     And the text is greyed out and not clickable
 

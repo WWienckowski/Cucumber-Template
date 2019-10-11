@@ -5,7 +5,9 @@ Feature: Delivery Address - Field Validation (Services)
 	Current website shows error messages while typing.
 	
 	Background:
-		## Given the user has stuff in there bag, and has gone to checkout, 
+		Given there are products in the Shopping Bag
+    And the user is on the checkout page
+     
   Scenario: Title of your scenario
     GIVEN the user is in the Ship to Address section
 		AND the user is on the <country> site

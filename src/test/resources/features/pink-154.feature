@@ -28,20 +28,23 @@ Feature: Card Payment - Field Validation (Services)
 	| CVV* | test | Please enter a valid security number |	
 		
 	Scenario Outline:	The user inputs valid Card payment information for: <field>
-		Given the user is in the <field>
-		And the user has entered a valid <entry>
-		When the user clicks out of the <field>
-		Then user's <entry> is displayed in the <field>
+		Given the user has entered a valid value in the field
+		| <field> |
+		| <entry> |
+		When the user clicks out of the field
+		| <field> |
+		Then user's entry is displayed in the field
+		| <field> |
+		| <entry> |
 	Examples:
 	| field | entry | 
 	| Enter Card Number* | 12345678901234 | 
 	| Name on Card* | Test Name |
-	| Expiration (MM/YY)* | 1020 | 
+	| Expiration (MM/YY)* | 10/20 | 
 	| CVV* | 123 | 
 	
 	Scenario:	The user attempts to continue without entering Card payment information
-  	Given the user has not entered any information
-		When the user clicks 'Continue'
+  	Given the user clicks Continue without entering any information
 		Then the error_messages display as per designs
 		| Please enter a valid payment card number |
 		| Please enter the cardholder's name |
