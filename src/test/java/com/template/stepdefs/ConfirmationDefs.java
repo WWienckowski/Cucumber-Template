@@ -2,9 +2,10 @@ package com.template.stepdefs;
 
 import java.util.List;
 
-import com.template.Helpers;
 import com.template.page_objects.ConfirmationPage;
+
 import driver.SharedDriver;
+import helpers.Move;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -64,7 +65,7 @@ public class ConfirmationDefs {
 	
 	@When("the user moves the cursor off the tool tip icon")
 	public void the_user_moves_the_cursor_off_the_tool_tip_icon() {
-		Helpers.mouseOut();
+		Move.mouseOut();
 	    
 	}
 	

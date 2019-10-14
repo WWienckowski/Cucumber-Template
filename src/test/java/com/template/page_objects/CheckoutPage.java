@@ -14,9 +14,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import driver.DriverFactory;
+import helpers.Click;
+import helpers.Move;
+import helpers.Screenshot;
+import helpers.Verify;
 import io.cucumber.core.api.Scenario;
-
-import com.template.Helpers;
 
 
 public class CheckoutPage {
@@ -67,6 +69,10 @@ public class CheckoutPage {
 		@FindBy(xpath = "//a[text()='See store details']")
 	}) private List<WebElement> detailLinks;
 	
+	@FindBy(tagName = "pink-checkout-shopping-bag") private WebElement bag;
+	
+	@FindBy(className = "checkout-shopping-bag_button") private WebElement bagButton;
+	
 	public CheckoutPage() {
 		 PageFactory.initElements(DriverFactory.getDriver(), this);
 		 }
@@ -74,7 +80,7 @@ public class CheckoutPage {
 	public void checkFields(List<String> fieldNames, int fieldsetIndex) {
 		WebElement fieldset = checkoutFieldsets.get(fieldsetIndex);
 		Boolean failed = false;
-		Helpers.includeScreenshotOfElement(fieldset);
+		Screenshot.includeScreenshotOfElement(fieldset);
 		if (fieldsetIndex==3) {
 			List<WebElement> fields = fieldset.findElements(By.xpath(".//input[not(@type='checkbox')] | "
 					+ ".//select"));
@@ -84,7 +90,7 @@ public class CheckoutPage {
 			}
 		} 
 		
-		Helpers.checkInputFieldPlaceholders(fieldNames, fieldset);
+		Verify.checkInputFieldPlaceholders(fieldNames, fieldset);
 		if (failed==true) { 
 			Assert.fail("Too many fields found for this section");
 		}
@@ -137,7 +143,7 @@ public class CheckoutPage {
 				String radioText = radio.findElement(By.xpath("following-sibling::span")).getText();
 				if (radioText.contains(selection)) {
 					scenario.write(radioText+" contains "+selection);
-					Helpers.includeScreenshotOfElement(radio);
+					Screenshot.includeScreenshotOfElement(radio);
 				} else {
 					scenario.write(radioText+" does not contain "+selection);
 					Assert.fail(radioText+" does not contain "+selection);
@@ -180,14 +186,14 @@ public class CheckoutPage {
 	
 	public void clickCheckoutHeaderLogo() {
 		scenario.write("Clicking Checkout Page Header Logo");
-		Helpers.includeScreenshotOfElement(headerLogo);
+		Screenshot.includeScreenshotOfElement(headerLogo);
 		wait.until(ExpectedConditions.elementToBeClickable(headerLogo)).click();
 		scenario.write("Logo Successfully Clicked");
 		
 	}
 
 	public void verifyHeader() {
-		Helpers.includeScreenshotOfElement(header);	
+		Screenshot.includeScreenshotOfElement(header);	
 	}
 
 	public void fillOutRequiredFields(String deliveryType) {
@@ -211,12 +217,12 @@ public class CheckoutPage {
 			Assert.assertTrue(option.isDisplayed());
 		}
 		scenario.write("Delivery component is displayed");
-		Helpers.includeScreenshot();
+		Screenshot.includeScreenshot();
 	}
 
 	public void checkSummaryFields(List<String> fieldNames) {
 		WebElement summary = DriverFactory.getDriver().findElement(By.className("checkout-preview_details"));
-		Helpers.includeScreenshotOfElement(summary);
+		Screenshot.includeScreenshotOfElement(summary);
 		
 		List <WebElement> terms = summary.findElements(By.xpath(".//li/span[@class='checkout-preview_detail-term']"));
 		List<String> termsText = new ArrayList<String>();
@@ -240,7 +246,7 @@ public class CheckoutPage {
 		try {
 			WebElement textInput = deliverySection.findElement(By.xpath(".//input[@type='text']"));
 			textInput.sendKeys("Test");
-			Helpers.includeScreenshotOfElement(checkoutFieldsets.get(0));
+			Screenshot.includeScreenshotOfElement(checkoutFieldsets.get(0));
 			scenario.write("Successfully amended delivery info");
 		} catch (Exception e) {
 			Assert.fail("Unable to amend delivery fields");
@@ -276,7 +282,7 @@ public class CheckoutPage {
 		int headerLocation = header.getLocation().getY();
 		Assert.assertTrue(loginLocation>headerLocation);
 		scenario.write("Login bar (Y: "+loginLocation+") is below the header (Y: "+headerLocation+")");
-		Helpers.includeScreenshot();
+		Screenshot.includeScreenshot();
 	}
 
 	public void loginAboveShoppingBag() {
@@ -284,18 +290,18 @@ public class CheckoutPage {
 		int bagLocation = shoppingBag.getLocation().getY();
 		Assert.assertTrue(loginLocation<bagLocation);
 		scenario.write("Login bar (Y: "+loginLocation+") is above the Shopping bag (Y: "+bagLocation+")");
-		Helpers.includeScreenshot();
+		Screenshot.includeScreenshot();
 	}
 
 	public void cursorVerifyLogin() {
-		Helpers.checkCursor("pointer", loginLink);
+		Verify.checkCursor("pointer", loginLink);
 		
 	}
 	
 	public void cursorVerifyHelpLine() {
 		WebElement helpLine = helpLines.get(1);
 		WebElement helpLineNumber = helpLine.findElement(By.xpath("./*[2]"));
-		Helpers.checkCursor("pointer", helpLineNumber);
+		Verify.checkCursor("pointer", helpLineNumber);
 	}
 
 	public void checkReviewFields(List<String> fieldNames, String xpath) {
@@ -312,8 +318,8 @@ public class CheckoutPage {
 	public void footerConfirm() {
 		wait.until(ExpectedConditions.visibilityOf(checkoutFooter));
 		scenario.write("Alternate footer is visible");
-		Helpers.scrollToElement(checkoutFooter);
-		Helpers.includeScreenshot();
+		Move.scrollToElement(checkoutFooter);
+		Screenshot.includeScreenshot();
 	}
 
 	public void footerIconConfirm() {
@@ -341,7 +347,7 @@ public class CheckoutPage {
 		Assert.assertEquals(phone, helpNumber.getText());
 		scenario.write("Phone number matches acceptance criteria");
 		
-		if (Helpers.isXaboveY(total, helpLine)==false) {
+		if (Verify.isXaboveY(total, helpLine)==false) {
 			Assert.fail("Helpline was not below the "+section);
 		}
 		scenario.write("Helpline was below "+section);
@@ -350,11 +356,11 @@ public class CheckoutPage {
 	public void checkHelpLineLocation () {
 		WebElement helpLine = helpLines.get(1);
 		WebElement total = DriverFactory.getDriver().findElement(By.xpath("//div[*[contains(text(), 'Order Summary')]]//div[@class='detail total']"));
-		if (Helpers.isXaboveY(total, helpLine)==false) {
+		if (Verify.isXaboveY(total, helpLine)==false) {
 			Assert.fail("Helpline was not below the Order Summary");
 		}
 		scenario.write("Helpline is still below the Order Summary");
-		Helpers.includeScreenshot();
+		Screenshot.includeScreenshot();
 	}
 
 	public void helplineLink(int format) {
@@ -371,29 +377,29 @@ public class CheckoutPage {
 		WebElement shoppingBag = rightRail.findElement(By.xpath(".//pink-checkout-shopping-bag"));
 		WebElement orderSummary = rightRail.findElement(By.xpath(".//div[@class='checkout_order-summary']"));
 		scenario.write("Order Summary found on the right side.");
-		if (Helpers.isXaboveY(shoppingBag, orderSummary)==false) {
+		if (Verify.isXaboveY(shoppingBag, orderSummary)==false) {
 			Assert.fail("Shopping Bag is not above Order Summary");
 		}
 		scenario.write("Shopping Bag is above the Order Summary");
-		Helpers.includeScreenshot();
+		Screenshot.includeScreenshot();
 	}
 
 	public void mobileOrderSummaryLocation() {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("checkout-shopping-bag_order-summary")));
 		WebElement orderSummary = DriverFactory.getDriver().findElement(By.className("checkout-shopping-bag_order-summary"));
 		WebElement editLink = DriverFactory.getDriver().findElement(By.className("checkout-shopping-bag_edit-button"));
-		if (Helpers.isXaboveY(orderSummary, editLink)==false) {
+		if (Verify.isXaboveY(orderSummary, editLink)==false) {
 			Assert.fail("Order Summary is not above the Edit Link");
 		}
 		scenario.write("Order Summary is above the Edit Link");
-		Helpers.includeScreenshot();
+		Screenshot.includeScreenshot();
 	}
 
 	public void enterPaymentSection() {
 		WebElement edit = DriverFactory.getDriver().findElement(By.xpath("//*[contains(text(), 'Payment')]/a[text()='Edit']"));
-		Helpers.scrollToElement(edit);
+		Move.scrollToElement(edit);
 		edit.click();
-		Helpers.scrollToElement(edit);
+		Move.scrollToElement(edit);
 	}
 
 	public void choosePaymentType(String paymentType) {
@@ -418,7 +424,7 @@ public class CheckoutPage {
 
 	public void verifyPaymentAddressFields(List<String> fieldNames) {
 		WebElement fieldset = checkoutFieldsets.get(1);
-		Helpers.checkInputFieldPlaceholders(fieldNames, fieldset);
+		Verify.checkInputFieldPlaceholders(fieldNames, fieldset);
 		
 	}
 
@@ -428,7 +434,7 @@ public class CheckoutPage {
 			Assert.fail("Billing Address fields are still visible");
 		}
 		scenario.write("Billing Address fields are no longer visible");
-		Helpers.includeScreenshotOfElement(checkoutFieldsets.get(1));
+		Screenshot.includeScreenshotOfElement(checkoutFieldsets.get(1));
 	}
 
 	public void noPayPalFields() {
@@ -470,7 +476,7 @@ public class CheckoutPage {
 		WebElement CTA = active==true 
 				? DriverFactory.getDriver().findElement(By.xpath("//button[not(@disabled)]")) :
 					DriverFactory.getDriver().findElement(By.xpath("//button[@disabled]"));
-		Helpers.HoverOn(CTA);
+		Move.HoverOn(CTA);
 	}
 
 	public void eachStoreHasMap() {
@@ -483,6 +489,16 @@ public class CheckoutPage {
 		scenario.write("Stores: "+storeList.size()+" Store details links: "+detailLinks.size());
 		Assert.assertEquals("Incorrect amount of detail links:", storeList.size(), detailLinks.size());
 		
+	}
+	
+	public void PickUpEditClick() {
+		WebElement editLink = DriverFactory.getDriver().findElement(By.xpath("//pink-collect-in-store-pickup//*[text()='Edit']"));
+		Click.javascriptClick(editLink);
+	}
+
+	public void clickBagButton() {
+		wait.until(ExpectedConditions.elementToBeClickable(bagButton));
+		Click.javascriptClick(bagButton);
 	}
 	
 }

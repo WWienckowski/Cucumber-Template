@@ -5,7 +5,7 @@ Feature: Order Summary Component (UI)
   associated taxes and shipping fees, vouchers and gift cards if applicable and order total
 
   Background: 
-  	Given there are items in the cart
+    Given there are products in the Shopping Bag
     And the user is on the checkout page
 
   Scenario: The checkout page has an Order Summary

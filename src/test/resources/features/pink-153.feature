@@ -5,8 +5,8 @@ Feature: Guest Checkout Login Bar (UI)
   This is because the Shopping Bag header is sticky and will need to move down the page.
 
 	Background:
-		Given there are items in the cart
-		And the user is on the checkout page
+		Given there are products in the Shopping Bag
+    And the user is on the checkout page
   
   Scenario: The login bar appears on the desktop site
   	Then the login bar is displayed beneath the header as per designs

@@ -13,11 +13,11 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import driver.DriverFactory;
+import helpers.Click;
+import helpers.Move;
+import helpers.Screenshot;
+import helpers.Verify;
 import io.cucumber.core.api.Scenario;
-
-import com.template.Helpers;
-
-
 
 public class ConfirmationPage {
 	WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), 15);;
@@ -51,7 +51,7 @@ public class ConfirmationPage {
 				noTab++;
 				continue;
 			}
-			Helpers.javascriptClick(link);
+			Click.javascriptClick(link);
 			
 			List<String> browserTabs = new ArrayList<String> (DriverFactory.getDriver().getWindowHandles());
 			if (browserTabs.size()>1) {
@@ -76,7 +76,7 @@ public class ConfirmationPage {
 
 	public void checkRegistrationFields(List<String> fieldNames) {
 		WebElement fieldset = DriverFactory.getDriver().findElement(By.xpath("//fieldset[@class='form-fieldset']"));
-		Helpers.checkInputFieldPlaceholders(fieldNames, fieldset);
+		Verify.checkInputFieldPlaceholders(fieldNames, fieldset);
 	}
 
 	public void checkLoginHeader() {
@@ -89,11 +89,11 @@ public class ConfirmationPage {
 		WebElement fieldset = DriverFactory.getDriver().findElement(By.xpath("//fieldset[@class='form-fieldset']"));
 		password.sendKeys("Test1234!");
 		passwordConfirm.sendKeys("Test1234!");
-		Helpers.includeScreenshotOfElement(fieldset);
+		Screenshot.includeScreenshotOfElement(fieldset);
 	}
 
 	public void hoverOnTooltip() {
-		Helpers.HoverOn(toolTipIcon);
+		Move.HoverOn(toolTipIcon);
 		
 	}
 
@@ -102,28 +102,28 @@ public class ConfirmationPage {
 		Assert.assertTrue(message.equals(tooltip.getText()));
 		Assert.assertTrue(tooltip.isDisplayed());
 		scenario.write("Tool tip is visible");
-		Helpers.includeScreenshot();
+		Screenshot.includeScreenshot();
 	}
 
 	public void tooltipMessageDismissed() {
 		Assert.assertFalse(tooltip.isDisplayed());
 		scenario.write("Tool tip is not visible");
-		Helpers.includeScreenshot();
+		Screenshot.includeScreenshot();
 	}
 
 	public void tapToolTip() {
 		WebElement element = DriverFactory.getDriver().findElement(By.tagName("pink-confirmation-create-account"));
-		Helpers.scrollToElement(element);
+		Move.scrollToElement(element);
 		Actions action = new Actions(DriverFactory.getDriver());
 		action.pause(2000);
 		action.click(toolTipIcon);
 		action.pause(2000);
 		action.perform();
-		Helpers.includeScreenshot();
+		Screenshot.includeScreenshot();
 	}
 
 	public void enterPaymentDetails() {
 		WebElement button = DriverFactory.getDriver().findElement(By.xpath("//button[text()='continue']"));
-		Helpers.javascriptClick(button);
+		Click.javascriptClick(button);
 	}
 }

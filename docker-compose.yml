@@ -6,8 +6,8 @@ services:
     ports:
       - "4444:4444"
     environment:
-      - GRID_TIMEOUT=90
-      - GRID_BROWSER_TIMEOUT=90 
+      - GRID_TIMEOUT=60
+      - GRID_BROWSER_TIMEOUT=45
   chrome:
     image: selenium/node-chrome:3.141.59-vanadium
     volumes:

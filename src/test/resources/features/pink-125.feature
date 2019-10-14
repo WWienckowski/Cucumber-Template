@@ -5,7 +5,7 @@ Feature: Ship to Address (UI)
   this can then be amended later for the US and International sites
 
 	Background:
-		Given there are items in the cart
+		Given there are products in the Shopping Bag
 		And the user is on the checkout page
 
   Scenario: UK Ship to Address fields display correctly

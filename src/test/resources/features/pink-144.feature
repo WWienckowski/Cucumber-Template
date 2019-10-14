@@ -4,7 +4,7 @@ Feature: Billing Address (UI)
   if it differs to the shipping address they have already inputted
 
   Background: 
-  	Given there are items in the cart
+    Given there are products in the Shopping Bag
     And the user is on the checkout page
     And the user is in the payment section of checkout
 

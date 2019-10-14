@@ -20,6 +20,7 @@ public class SharedDriver {
 				WebDriver driver = new RemoteWebDriver(new URL(selenium), new ChromeOptions());
 				driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 				driver.manage().window().maximize();
+				driver.manage().deleteAllCookies();
 				DriverFactory.addDriver(driver);
 			} catch(MalformedURLException e){
 				System.out.println("Error"+e);

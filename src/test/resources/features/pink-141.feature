@@ -4,7 +4,7 @@ Feature: Payment Type Selection (UI)
   Each option will present different values underneath when selected.
 
   Background: 
-  	Given there are items in the cart
+  	Given there are products in the Shopping Bag
     And the user is on the checkout page
 
   Scenario: Payment options are initially disabled during checkout

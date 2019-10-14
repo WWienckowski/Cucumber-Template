@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.template.Helpers;
 import com.template.page_objects.CheckoutPage;
+
 import driver.SharedDriver;
+import helpers.Click;
+import helpers.Move;
+import helpers.Navigate;
+import helpers.Screenshot;
+import helpers.Verify;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -21,7 +26,7 @@ public class CheckoutDefs {
 	
 	@When("the Ship to Address section of the UK checkout page loads")
 	public void the_Ship_to_Address_section_of_the_UK_checkout_page_loads() {
-		Helpers.isActiveByText("Ship to Address");
+		Verify.isActiveByText("Ship to Address");
 		checkout.locationIs("UK");
 	}
 
@@ -33,12 +38,12 @@ public class CheckoutDefs {
 
 	@Given("the user is in the Ship to Address section of the checkout page")
 	public void the_user_is_in_the_Ship_to_Address_section_of_the_checkout_page() {
-		Helpers.isActiveByText("Ship to Address");
+		Verify.isActiveByText("Ship to Address");
 	}
 
 	@When("the user clicks the {string}")
 	public void the_user_clicks_the_title_field(String element) {
-		Helpers.clickOnByText(element);
+		Click.byText(element);
 	}
 
 	@Then("a drop down list of title options will appear")
@@ -58,12 +63,12 @@ public class CheckoutDefs {
 
 	@When("the user selects the {string} link underneath the address lookup field")
 	public void the_user_selects_the_link_underneath_the_address_lookup_field(String link) {
-	    Helpers.clickOnByText(link);
+	    Click.byText(link);
 	}
 
 	@Then("a {string} link should appear below the last field")
 	public void a_link_should_appear_below_the_last_field(String link) {
-	    Helpers.findLinkByText(link);
+	    Verify.findLinkByText(link);
 	}
 
 	@Then("the {string} radio button should be selected")
@@ -73,7 +78,7 @@ public class CheckoutDefs {
 
 	@Then("the selected button will be a black ring surrounding a filled-in black circle")
 	public void the_button_will_be_a_color_ring_surrounding_a_filled_in_color_circle() {
-		Helpers.includeScreenshot();
+		Screenshot.includeScreenshot();
 	}
 	
 	@Then("the user is presented with delivery options")
@@ -84,35 +89,35 @@ public class CheckoutDefs {
 	@When("the user selects a {string} that is not already selected")
 	public void the_user_selects_a_delivery_option_that_is_not_already_selected(String element) {
 	    // Write code here that turns the phrase above into concrete actions
-	    Helpers.isInactiveByText(element);
-		Helpers.clickOnByText(element);
+	    Verify.isInactiveByText(element);
+		Click.byText(element);
 	}
 	
 	@Then("that {string} should be highlighted in black as per designs")
 	public void that_delivery_option_should_be_highlighted_in_black_as_per_designs(String element) {
-	    Helpers.isActiveByText(element);
+	    Verify.isActiveByText(element);
 	}
 	
 	@When("the user selects a {string} that is already selected")
 	public void the_user_selects_a_that_is_already_selected(String element) {
-	    Helpers.clickOnByText(element);
-	    Helpers.isActiveByText(element);
-	    Helpers.clickOnByText(element);
+	    Click.byText(element);
+	    Verify.isActiveByText(element);
+	    Click.byText(element);
 	}
 
 	@Then("that {string} should remain active")
 	public void that_should_remain_active(String element) {
-	    Helpers.isActiveByText(element);
+	    Verify.isActiveByText(element);
 	}
 	
 	@When("the user clicks on the {string} section")
 	public void the_user_clicks_on_the_section(String element) {
-	    Helpers.clickOnByText(element);
+	    Click.byText(element);
 	}
 	
 	@Then("there will be a {string} component")
 	public void there_will_be_a_component(String elementName) {
-	    Helpers.findComponentByText(elementName);
+	    Verify.findComponentByText(elementName);
 	}
 	
 	@Then("the page will display all fields for {string}")
@@ -172,7 +177,7 @@ public class CheckoutDefs {
 	@Given("the site is showing the summary field")
 	public void the_site_is_showing_the_summary_field() {
 	    // TODO Actually fill out form fields when that becomes necessary
-		Helpers.clickOnByText("continue");
+		Click.byText("continue");
 		checkout.verifySummary();
 	}
 	
@@ -204,8 +209,8 @@ public class CheckoutDefs {
 	
 	@Then("the Review component is greyed out and not clickable")
 	public void the_Review_component_is_greyed_out_and_not_clickable() {
-	    Helpers.isButtonEnabledByText("Place order", false);
-	    Helpers.checkCSS("//div[pink-order-summary]", "0.5", "opacity");
+	    Verify.isButtonEnabledByText("Place order", false);
+	    Verify.checkCSS("//div[pink-order-summary]", "0.5", "opacity");
 	}
 	
 	@Then("the cursor becomes a finger")
@@ -215,7 +220,7 @@ public class CheckoutDefs {
 
 	@Then("the Review section is active")
 	public void the_Review_section_is_active() {
-	   Helpers.checkCSS("//div[pink-order-summary]", "1", "opacity");
+	   Verify.checkCSS("//div[pink-order-summary]", "1", "opacity");
 	}
 	
 	@Then("the Review section has the appropriate fields")
@@ -281,7 +286,7 @@ public class CheckoutDefs {
 	
 	@Then("the Order Summary is no longer displayed")
 	public void the_Order_Summary_is_no_longer_displayed() {
-	    Helpers.isDisplayed("//div[@class='checkout-shopping-bag_order-summary']", false);
+	    Verify.isDisplayed("//div[@class='checkout-shopping-bag_order-summary']", false);
 	}
 	
 	@Then("the Order Summary is pushed down the page immediately beneath the Shopping Bag summary")
@@ -307,7 +312,7 @@ public class CheckoutDefs {
 	
 	@Then("the checkbox should display under the card details fields as per designs")
 	public void the_checkbox_should_display_under_the_card_details_fields_as_per_designs() {
-	    Helpers.isXaboveYbyXpath("//pink-payment-options-form//input[@name='expirationDate']",
+	    Verify.isXaboveYbyXpath("//pink-payment-options-form//input[@name='expirationDate']",
 	    		"//pink-payment-options-form//input[@type='checkbox']", true);
 	}
 	
@@ -325,14 +330,14 @@ public class CheckoutDefs {
 	
 	@Then("the {string}, {string} and {string} payment options should display with radio buttons as per designs")
 	public void the_and_payment_options_should_display_with_radio_buttons_as_per_designs(String creditCard, String paypal, String giftCard) {
-	    Helpers.findComponentByText(creditCard);
-	    Helpers.findComponentByText(paypal);
-	    Helpers.findComponentByText(giftCard);
+	    Verify.findComponentByText(creditCard);
+	    Verify.findComponentByText(paypal);
+	    Verify.findComponentByText(giftCard);
 	}
 	
 	@Then("the payment section should be greyed out as per designs")
 	public void the_payment_section_should_be_greyed_out_as_per_designs() {
-	    Helpers.checkCSS("//pink-payment-options-selector//fieldset", "", "disabled");
+	    Verify.checkCSS("//pink-payment-options-selector//fieldset", "", "disabled");
 	}
 	
 	@Then("the relevant payment fields will be displayed")
@@ -342,21 +347,21 @@ public class CheckoutDefs {
 	
 	@Then("the {string} checkbox will appear checked below the fields")
 	public void the_checkbox_will_appear_checked_below_the_fields(String string) {
-	    Helpers.isSelectedByText(string, true);
-	    Helpers.isXaboveYbyXpath("//pink-payment-options-form//input[@name='expirationDate']", 
+	    Verify.isSelectedByText(string, true);
+	    Verify.isXaboveYbyXpath("//pink-payment-options-form//input[@name='expirationDate']", 
 	    		"//pink-payment-options-form//input[@type='checkbox']", true);
 	}
 	
 	@Then("the gift card fields will be displayed")
 	public void the_gift_card_fields_will_be_displayed(List<String> fieldNames) {
 	    for (String fieldName : fieldNames) {
-	    	Helpers.findElementByPlaceholder(fieldName);
+	    	Verify.findElementByPlaceholder(fieldName);
 	    }
 	}
 	
 	@Then("the Captcha security check will be displayed beneath the fields")
 	public void the_Captcha_security_check_will_be_displayed_beneath_the_fields() {
-	    	Helpers.findElementByXpath("//*[contains(@class, 'captcha')]");
+	    	Verify.findElementByXpath("//*[contains(@class, 'captcha')]");
 	}
 	
 	@Then("no payment fields will display underneath")
@@ -366,8 +371,8 @@ public class CheckoutDefs {
 	
 	@Then("a paragraph of text will appear beneath the radio buttons")
 	public void a_paragraph_of_text_will_appear_beneath_the_radio_buttons() {
-	    Helpers.findElementByXpath("//p[contains(@class,'paypal-copy')]");
-	    Helpers.getTextByXpath("//p[contains(@class,'paypal-copy')]");
+	    Verify.findElementByXpath("//p[contains(@class,'paypal-copy')]");
+	    Verify.getTextByXpath("//p[contains(@class,'paypal-copy')]");
 	}
 	
 	@Then("the Review section of the Checkout page will not display")
@@ -392,62 +397,62 @@ public class CheckoutDefs {
 	@Then("the cursor hovering over an active CTA button will be a pointing finger icon")
 	public void the_cursor_hovering_over_an_active_CTA_button_will_be_a_pointing_finger_icon() {
 	    checkout.hoverCTA(true);
-	    Helpers.checkCSS("//button[not(@disabled)]", "pointer", "cursor");
+	    Verify.checkCSS("//button[not(@disabled)]", "pointer", "cursor");
 	}
 	
 	@Then("the cursor hovering over an inactive CTA button will be the default mouse cursor")
 	public void the_cursor_hovering_over_an_inactive_CTA_button_will_be_the_default_mouse_cursor() {
 		checkout.hoverCTA(false);
-	    Helpers.checkCSS("//button[@disabled]", "auto", "cursor");
+	    Verify.checkCSS("//button[@disabled]", "auto", "cursor");
 	}
 	
 	@When("the user moves the cursor off the active CTA button")
 	public void the_user_moves_the_cursor_off_the_active_CTA_button() {
-	    Helpers.hoverOnByText("Country");
+	    Move.hoverOnByText("Country");
 	}
 	
 	@Then("the user can see the products in the Shopping Bag")
 	public void the_user_can_see_the_products_in_the_Shopping_Bag() {
-	    Helpers.isDisplayed("//div[@class='checkout-shopping-bag_items']", true);
+	    Verify.isDisplayed("//div[@class='checkout-shopping-bag_items']", true);
 	}
 	
 	@Then("the gift message field is displayed underneath the associated product")
 	public void the_gift_message_field_is_displayed_underneath_the_associated_product() {
-	    Helpers.isDisplayed("//textarea", true);
-	    Helpers.isXaboveYbyXpath("//img[@class='checkout-shopping-bag-item_image']",
+	    Verify.isDisplayed("//textarea", true);
+	    Verify.isXaboveYbyXpath("//img[@class='checkout-shopping-bag-item_image']",
 	    		"//textarea", true);
 	}
 
 	@Then("the text is greyed out and not clickable")
 	public void the_text_is_greyed_out_and_not_clickable() {
-	    Helpers.checkCSS("//textarea", "", "disabled");
+	    Verify.checkCSS("//textarea", "", "disabled");
 	}
 	
 	@When("the user scrolls down past the Shopping Bag header")
 	public void the_user_scrolls_down_past_the_Shopping_Bag_header() {
-	    Helpers.scrollToXpath("//pink-footer");
+	    Move.scrollToXpath("//pink-footer");
 	}
 	
 	@Then("the Shopping Bag header is stuck to the top of the screen")
 	public void the_Shopping_Bag_header_is_stuck_to_the_top_of_the_screen() {
-	    Helpers.isDisplayed("//button[@class='checkout-shopping-bag_button']", true);
+	    Verify.isDisplayed("//button[@class='checkout-shopping-bag_button']", true);
 	    
 	}
 	
 	@When("the user scrolls up past the original placement of the Shopping Bag header")
 	public void the_user_scrolls_up_past_the_original_placement_of_the_Shopping_Bag_header() {
-	    Helpers.scrollToXpath("//div[@class='container simple-header']");
+	    Move.scrollToTop();
 	}
 
 	@Then("the Shopping Bag header is unstuck and in its original placement on the Checkout page")
 	public void the_Shopping_Bag_header_is_unstuck_and_in_its_original_placement_on_the_Checkout_page() {
-	    Helpers.findElementByXpath("//div[@class='checkout_shopping-bag']");
+	    Verify.findElementByXpath("//div[@class='checkout_shopping-bag']");
 	}
 	
 	@Then("the {string} field is displayed beneath it as per wireframe")
 	public void the_field_is_displayed_beneath_it_as_per_wireframe(String placeholder) {
-	    Helpers.findElementByXpath("//input[@placeholder=\'"+placeholder+"\']");
-	    Helpers.isXaboveYbyXpath("//div[@class='form-button-selector']",
+	    Verify.findElementByXpath("//input[@placeholder=\'"+placeholder+"\']");
+	    Verify.isXaboveYbyXpath("//div[@class='form-button-selector']",
 	    		"//input[@placeholder=\'"+placeholder+"\']", true);
 	}
 	
@@ -458,14 +463,14 @@ public class CheckoutDefs {
 
 	@Then("beneath the {string} field there is text that says {string}")
 	public void beneath_the_field_there_is_text_that_says(String string1, String string2) {
-	    Helpers.findElementByXpath("//*[text()='or ' ] | //*[text()='use my location']");
-	    Helpers.isXaboveYbyXpath("//input[@placeholder=\'"+string1+"\']",
+	    Verify.findElementByXpath("//*[text()='or ' ] | //*[text()='use my location']");
+	    Verify.isXaboveYbyXpath("//input[@placeholder=\'"+string1+"\']",
 	    		"//*[text()='or ' ] | //*[text()='use my location']", true);
 	}
 	
 	@Given("a list of Pink stores is displayed")
 	public void a_list_of_Pink_stores_is_displayed() {
-	    Helpers.isDisplayed("//pink-collect-in-store-list", true);
+	    Verify.isDisplayed("//pink-collect-in-store-list", true);
 	}
 	
 	@Given("each Pink store cell has a clickable ‘Show on map’ link")
@@ -481,18 +486,36 @@ public class CheckoutDefs {
 	
 	@Then("the system will load the map component")
 	public void the_system_will_load_the_map_component() {
-	    Helpers.isDisplayed("//pink-gmap", true);
+	    Verify.isDisplayed("//pink-gmap", true);
 	}
 	
 	@Then("the {string} summary and {string} link are displayed")
 	public void the_summary_and_link_are_displayed(String summary, String link) {
-	    Helpers.findComponentByText(summary);
-	    Helpers.findElementByXpath("//pink-collect-in-store-pickup//*[text()=\'"+link+"\']");
-	    Helpers.getTextByXpath("//pink-collect-in-store-pickup//span[@class='checkout-preview_detail-description']");
+	    Verify.findComponentByText(summary);
+	    Verify.findElementByXpath("//pink-collect-in-store-pickup//*[text()=\'"+link+"\']");
+	    Verify.getTextByXpath("//pink-collect-in-store-pickup//span[@class='checkout-preview_detail-description']");
 	}
 	
 	@When("the user clicks on the {string} link in the Picking up summary")
 	public void the_user_clicks_on_the_link_in_the_summary(String link) {
-		Helpers.javascriptClickXpath("//a[@class='edit-link']");
+		Click.javascriptClickXpath("//a[@class='edit-link']");
+	}
+	
+	@Given("the user is in the Card payment section")
+	public void the_user_is_in_the_Card_payment_section() {
+	    Navigate.to("checkout");
+	    Move.idleForX(300);
+	    checkout.enterPaymentSection(); 
+	    Move.idleForX(100);
+	}
+	
+	@Given("the user clicks on the {string} button")
+	public void the_user_clicks_on_the_button(String string) {
+	    checkout.clickBagButton();
+	}
+	
+	@Given("the user clicks Continue without entering any information")
+	public void the_user_clicks_Continue_without_entering_any_information() {
+	    Click.clickOnByXpath("//pink-payment-options-form//button");
 	}
 }

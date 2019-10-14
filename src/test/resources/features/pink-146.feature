@@ -3,7 +3,8 @@ Feature: Checkout Button Behavior (UI)
   CTA buttons throughout checkout must all behave in the same way
 
   Background: 
-    Given the user is on the checkout page
+    Given there are products in the Shopping Bag
+    And the user is on the checkout page
 
   Scenario: Checkout CTA buttons display correctly
     Then an active CTA button will be displayed with a black outline, black fill and white text

@@ -3,8 +3,8 @@ Feature: Order Confirmation Page (UI)
   The UI story for the order confirmation page
 
   Background: 
-  	Given there are items in the cart
-  	And the user is on the confirmation page
+    #Given the user has gone through checkout
+  	Given the user is on the confirmation page
   	
   Scenario: The user clicks the edit link in the registration section
 		When the user clicks on 'Edit' link
