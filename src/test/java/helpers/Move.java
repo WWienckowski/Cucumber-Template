@@ -9,11 +9,11 @@ import driver.DriverFactory;
 
 public class Move {
 	public static void mouseOut() {
-		MoveCursor(50, 50);
+		moveCursor(50, 50);
 	}
 
 	public static void hoverOnByText(String text) {
-		WebElement element = DriverFactory.getDriver().findElement(By.xpath("//*[contains(text(), \'"+text+"\')]"));
+		WebElement element = DriverFactory.getDriver().findElement(By.xpath("//*[contains(text(), \""+text+"\")]"));
 		HoverOn(element);
 	}
 
@@ -31,9 +31,15 @@ public class Move {
 	    .executeScript("window.scrollTo(0, 0)");
 	}
 	
-	public static void MoveCursor(int x, int y) {
+	public static void moveCursor(int x, int y) {
 		Actions pointer = new Actions(DriverFactory.getDriver());
 		pointer.moveByOffset(x, y).perform();
+	}
+	
+	public static void moveToXpath(String xpath) {
+		WebElement target = DriverFactory.getDriver().findElement(By.xpath(xpath));
+		Actions pointer = new Actions(DriverFactory.getDriver());
+		pointer.moveToElement(target).perform();
 	}
 	
 	public static void HoverOn(WebElement element) {

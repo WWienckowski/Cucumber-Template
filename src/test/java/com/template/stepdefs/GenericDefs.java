@@ -37,9 +37,9 @@ public class GenericDefs {
 	public void navigate_to_page_url(String urlSuffix) {
 		urlSuffix = urlSuffix.equals("PDP") ? "detail" : urlSuffix;
 		urlSuffix = urlSuffix.contentEquals("bag") ? "basket/viewbasket" : urlSuffix;
-		urlSuffix = urlSuffix.contentEquals("homepage") ? "" : urlSuffix;
+		urlSuffix = urlSuffix.contentEquals("home") ? "" : urlSuffix;
 		Navigate.to(urlSuffix);
-		Move.idleForX(300);
+		Move.idleForX(1000);
 	}
 	
 	@When("the user clicks on {string}")
@@ -72,8 +72,9 @@ public class GenericDefs {
 	    Click.byLinkText(linkText);
 	}
 	
-	@Then("the user is re-directed to the {word}")
+	@Then("the user is re-directed to the {string}")
 	public void the_user_is_redirected(String page) {
+		page = page.contentEquals("Shopping Bag") ? "basket/viewbasket" : page;
 		Navigate.checkUrl(page);
 	}
 	

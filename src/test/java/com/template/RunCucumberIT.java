@@ -10,10 +10,10 @@ import io.cucumber.junit.CucumberOptions;
 		tags = "not @ignore",
 		features = "src/test/resources/features",
 		glue = "com.template.stepdefs",
-		plugin = {"html:target/cucumber-reports","json:target/cucumber-json/cucumber.json"},
+		plugin = {"json:target/cucumber-json/cucumber.json"},
 		monochrome = true)
 
-public class RunnerTestCase {
+public class RunCucumberIT {
 	
 	
 

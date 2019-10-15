@@ -30,11 +30,11 @@ public class Input {
 	
 	public static void setCart(String item) {
 		Navigate.to("");
-		Move.idleForX(500);
+		new WebDriverWait(DriverFactory.getDriver(), 15).until(ExpectedConditions.visibilityOfElementLocated
+				(By.xpath("//picture[@class='background-image']")));
 		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
 		executor.executeScript(String.format("window.localStorage.setItem('pink-shopper','%s');", item));
 		Move.idleForX(300);
-		getConsole();
 	}
 	
 	public static void clearLocal() {

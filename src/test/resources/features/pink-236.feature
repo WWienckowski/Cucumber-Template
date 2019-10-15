@@ -6,8 +6,8 @@ Feature: Mini Shopping Bag (UI)
   If the user does not interact with the mini shopping bag then it must disappear after 5 seconds.
 
   Background: 
-    Given the user is on the home page
-    And there are products in the Shopping Bag
+    Given there are products in the Shopping Bag
+    And the user is on the home page
 
   Scenario: The mini shopping bag contains the correct elements
     When the user expands the mini shopping bag
@@ -47,15 +47,13 @@ Feature: Mini Shopping Bag (UI)
 
   Scenario: The mini shopping bag has an active checkout button
     When the user expands the mini shopping bag
-    Then there is a 'checkout' button as per designs
-    And the 'checkout' button is black with white text
-    And the 'checkout' button is active
+    Then there is a 'checkout' button in the mini bag as per designs
+    And the mini bag's 'checkout' button is active
 
   Scenario: The mini shopping bag has an active view bag button
     When the user expands the mini shopping bag
-    Then there is a 'view bag' button as per designs
-    And the 'view bag' button is white with black text and black outline
-    And the 'view bag' button is active
+    Then there is a 'view bag' button in the mini bag as per designs
+    And the mini bag's 'view bag' button is active
 
   Scenario: The mini shopping bag is dismissable
     Given the user expands the mini shopping bag
@@ -69,4 +67,4 @@ Feature: Mini Shopping Bag (UI)
 
   Scenario: The shopping bag icon takes the user to the Shopping Bag page
     When the user CLICKS on the shopping bag icon in the header
-    Then the user is re-directed to the "Shopping Bag" page
+    Then the user is re-directed to the "Shopping Bag"

@@ -16,7 +16,7 @@ public class Click {
 	public static void byText(String elementText) {
 		DriverFactory.getScenario().write("Clicking: "+elementText);
 		try {
-		WebElement element = DriverFactory.getDriver().findElement(By.xpath("//*[contains(text(), \'"+elementText+"\')]"));
+		WebElement element = DriverFactory.getDriver().findElement(By.xpath("//*[contains(text(), \""+elementText+"\")]"));
 		WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), 15);
 		wait.until(ExpectedConditions.elementToBeClickable(element)).click();
 		} catch (NoSuchElementException e) {

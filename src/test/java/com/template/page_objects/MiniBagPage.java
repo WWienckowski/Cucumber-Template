@@ -3,12 +3,11 @@ package com.template.page_objects;
 import java.util.List;
 
 import org.junit.Assert;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import driver.DriverFactory;
 import helpers.Move;
@@ -17,13 +16,11 @@ import io.cucumber.core.api.Scenario;
 public class MiniBagPage {
 	Scenario scenario = DriverFactory.getScenario();
 	
-	@FindBy(className = "icon-cart")WebElement bagIcon;
-	
-	@FindBy(xpath = "//*[@class='header-bag']")WebElement miniBag;
+	@FindBy(xpath = "//*[@class='header-bag is-open']") private WebElement miniBag;
 	
 	@FindAll({
 		@FindBy(tagName = ("pink-bag-item"))
-	}) List<WebElement> bagItems;
+	}) private List<WebElement> bagItems;
 	
 	@FindAll({
 		@FindBy(className =("bag-item_name")),
@@ -35,7 +32,13 @@ public class MiniBagPage {
 		@FindBy(xpath =("//li[dt[text()='Collar:']]")),
 		@FindBy(tagName =("pink-quantity-selector")),
 		@FindBy(className =("bag-item_remove-link"))
-	}) List<WebElement> bagElements;
+	}) private List<WebElement> bagElements;
+	
+	@FindBy(xpath = "//button[text()='checkout']") private WebElement checkoutButton;
+	
+	@FindBy(xpath = "//button[text()='view bag']") private WebElement viewBagButton;
+	
+	@FindBy(xpath = "//a[span[text()='Shopping Cart']]") private WebElement bagIcon;
 	
 	public MiniBagPage() {
 		 PageFactory.initElements(DriverFactory.getDriver(), this);
@@ -43,7 +46,7 @@ public class MiniBagPage {
 	
 	public void expandBag() {
 		Move.HoverOn(bagIcon);
-		new WebDriverWait(DriverFactory.getDriver(), 15).until(ExpectedConditions.visibilityOf(miniBag));
+		Assert.assertTrue(miniBag.isDisplayed());
 		scenario.write("Bag is expanded.");
 	}
 
@@ -55,10 +58,37 @@ public class MiniBagPage {
 	}
 
 	public void bagIsMinimized() {
-		if (miniBag.isDisplayed()==true) {
-			Assert.fail("Mini bag is not minimized.");
-		} else {
+		Move.idleForX(1000);
+		try {
+			boolean displayed = !miniBag.isDisplayed();
+			Assert.assertTrue("Mini bag is not minimized.", displayed);
+		} catch(NoSuchElementException e) {
 			scenario.write("Mini bag is minimized.");
 		}
 	}
+
+	public void checkMiniBagButtons(String button) {
+		switch (button) {
+		case "checkout":
+			Assert.assertTrue("Checkout button not found", checkoutButton.isDisplayed());
+			Assert.assertEquals("Background is not black,",
+					"rgba(0, 0, 0, 1)", checkoutButton.getCssValue("background-color"));
+			Assert.assertEquals("Text is not white,", 
+					"rgba(255, 255, 255, 1)", checkoutButton.getCssValue("color"));
+			scenario.write("Checkout button is present, the background is black, and the text is white.");
+		case "view bag":
+			Assert.assertTrue("View Bag button not found", viewBagButton.isDisplayed());
+			Assert.assertEquals("Background is not white,",
+					"rgba(255, 255, 255, 1)", viewBagButton.getCssValue("background-color"));
+			Assert.assertEquals("Text is not black,", 
+					"rgba(0, 0, 0, 1)", viewBagButton.getCssValue("color"));
+			Assert.assertEquals("Outline is not black,", 
+					"rgb(0, 0, 0)", viewBagButton.getCssValue("border-color"));
+			scenario.write("Checkout button is present, the background is white, the outline is black, and the text is black.");
+		}
+		
+	}
+
 }
+
+
