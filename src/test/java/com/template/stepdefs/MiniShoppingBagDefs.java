@@ -81,5 +81,16 @@ public class MiniShoppingBagDefs {
 	public void the_user_has_not_clicked_tapped_on_any_element_within_the_mini_shopping_bag_for_seconds(Integer time) {
 		Move.idleForX(time*1000);
 	}
+	
+	@Then("the user can scroll up and down over the mini shopping bag")
+	public void the_user_scrolls_up_and_down_over_the_mini_shopping_bag() {
+	    miniBag.scrollInMiniBag();
+	}
+	
+	@Then("the user can scroll up and down over the main page without scrolling the mini bag.")
+	public void the_user_can_scroll_up_and_down_over_the_main_page_without_scrolling_the_mini_bag() {
+	    miniBag.scrollMainPage();
+	}
+
 
 }

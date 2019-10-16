@@ -1,4 +1,4 @@
-@PINK-143 @CheckoutUI
+@PINK-143 @CheckoutUI @Sprint4
 Feature: Order Summary Component (UI)
   When the user is on desktop, there should be an order summary component on the 
   right hand side of the screen that specifies sub total of products in shopping bag,

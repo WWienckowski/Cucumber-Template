@@ -1,4 +1,4 @@
-@PINK-236 @ShoppingBagUI
+@PINK-236 @ShoppingBagUI @Sprint6
 Feature: Mini Shopping Bag (UI)
   The user must be able to view the products in their shopping bag by hovering over 
   or tapping on the Shopping bag icon in the header. The product cells in the mini shopping bag 
@@ -26,24 +26,13 @@ Feature: Mini Shopping Bag (UI)
     When the user hovers over the Shopping Bag icon
     Then the mini shopping bag is expanded
 
-  #Scenario: The mini shopping bag is scrollable
-  #Given the user expands the mini shopping bag
-  #When the user scrolls up and down over the mini shopping bag
-  #Then the mini shopping bag scrolls up and down
-  #And the scroll bar moves to reflect user's placement in the mini shopping bag
-  #Scenario: The mini shopping bag scroll bar is independent of the main page's scrollbar
-  #Given the user expands the mini shopping bag
-  #When the user scrolls up and down over the main page
-  #Then the mini shopping bag does not scroll
-  Scenario Outline: The mini shopping bag controls behave correctly
-    Given the user expands the mini shopping bag
-    When the user interacts with <control>, the behaviour will be identical to that on the Shopping Bag page
-
-    Examples: 
-      | control             |
-      | "Quantity Selector" |
-      | "Remove Item Link"  |
-      | "Size Selector"     |
+  Scenario: The mini shopping bag is scrollable
+  	Given the user expands the mini shopping bag
+  	Then the user can scroll up and down over the mini shopping bag
+  
+  Scenario: The mini shopping bag scroll bar is independent of the main page's scrollbar
+  	Given the user expands the mini shopping bag
+  	Then the user can scroll up and down over the main page without scrolling the mini bag.
 
   Scenario: The mini shopping bag has an active checkout button
     When the user expands the mini shopping bag

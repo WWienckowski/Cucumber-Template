@@ -1,4 +1,4 @@
-@PINK-146 @CheckoutUI
+@PINK-146 @CheckoutUI @Sprint4
 Feature: Checkout Button Behavior (UI)
   CTA buttons throughout checkout must all behave in the same way
 

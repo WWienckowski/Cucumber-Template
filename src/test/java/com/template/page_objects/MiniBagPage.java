@@ -11,6 +11,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import driver.DriverFactory;
 import helpers.Move;
+import helpers.Screenshot;
+import helpers.Verify;
 import io.cucumber.core.api.Scenario;
 
 public class MiniBagPage {
@@ -87,6 +89,36 @@ public class MiniBagPage {
 			scenario.write("Checkout button is present, the background is white, the outline is black, and the text is black.");
 		}
 		
+	}
+
+	public void scrollInMiniBag() {
+		WebElement lastItem = bagItems.get(bagItems.size()-1);
+		WebElement firstItem = bagItems.get(0);
+		Move.scrollToElement(lastItem);
+		Move.idleForX(1000);
+		Assert.assertTrue("Mini bag window did not scroll down properly, y location = "+lastItem.getLocation().getY(),
+				lastItem.getLocation().getY()<=101);
+		scenario.write("Mini bag window has scrolled down");
+		Screenshot.includeScreenshot();
+		Move.scrollToElement(firstItem);
+		Move.idleForX(1000);
+		Assert.assertTrue("Mini bag window did not scroll up properly, y location = "+firstItem.getLocation().getY(),
+				firstItem.getLocation().getY()<=101);
+		scenario.write("Mini bag window has scrolled up");
+		Screenshot.includeScreenshot();
+	}
+
+	public void scrollMainPage() {
+		WebElement lastItem = bagItems.get(2);
+		Move.scrollToBottom();
+		Move.idleForX(500);
+		Assert.assertTrue("Mini bag scrolled with the main page while scrolling down",
+				Verify.isXaboveY(checkoutButton, lastItem));
+		Move.scrollToTop();
+		Move.idleForX(500);
+		Assert.assertTrue("Mini bag scrolled with the main page while scrolling up",
+				Verify.isXaboveY(checkoutButton, lastItem));
+		scenario.write("Main page scrolls independently of Mini bag");
 	}
 
 }

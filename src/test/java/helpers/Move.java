@@ -31,6 +31,11 @@ public class Move {
 	    .executeScript("window.scrollTo(0, 0)");
 	}
 	
+	public static void scrollToBottom() {
+		((JavascriptExecutor) DriverFactory.getDriver())
+	    .executeScript("window.scrollTo(0, document.body.scrollHeight)");
+	}
+	
 	public static void moveCursor(int x, int y) {
 		Actions pointer = new Actions(DriverFactory.getDriver());
 		pointer.moveByOffset(x, y).perform();

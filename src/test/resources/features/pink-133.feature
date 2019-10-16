@@ -1,4 +1,4 @@
-@PINK-133 @CheckoutUI
+@PINK-133 @CheckoutUI @Sprint4
 Feature: Review Order Component (UI)
   Users must be able to review the sub-total, shipping and total fees they are paying prior to
   placing their order in the checkout, as well as agreeing to the Terms and Conditions of Sale.

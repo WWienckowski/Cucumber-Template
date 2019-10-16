@@ -1,4 +1,4 @@
-@PINK-145 @CheckoutUI
+@PINK-145 @CheckoutUI @Sprint5
 Feature: Collect in Pink Store (UI)
   The UI story for the Collect in Pink store fulfilment option
 

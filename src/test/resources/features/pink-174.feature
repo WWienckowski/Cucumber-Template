@@ -1,4 +1,4 @@
-@PINK-174 @CheckoutUI
+@PINK-174 @CheckoutUI @Sprint4
 Feature: Helpline Message (UI)
   The placement of the Pink helpline number message on desktop and mobile
 

@@ -43,7 +43,7 @@ public class CheckoutPage {
 	
 	@FindBy(className = "simple-header_logo") private WebElement headerLogo;
 	
-	@FindBy(xpath = "//div[@class='wrapper background-to-white']") private WebElement header;
+	@FindBy(xpath = "//header[@class='opaque simple']") private WebElement header;
 	
 	@FindBy(xpath= "//pink-guest-checkout-bar") private WebElement loginBanner;
 	

@@ -1,4 +1,4 @@
-@PINK-141 @CheckoutUI
+@PINK-141 @CheckoutUI @Sprint4
 Feature: Payment Type Selection (UI)
   Users must be able to select their preferred Payment method.
   Each option will present different values underneath when selected.
