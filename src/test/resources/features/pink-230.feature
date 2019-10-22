@@ -1,4 +1,4 @@
-@PINK-230 @ShoppingBagUI @ShoppingBagServices @Sprint6
+@PINK-230 @ShoppingBag @Sprint6
 Feature: Quantity Selector on Shopping Bag (UI & Integration)
   As a user, 
   I want to be able to change the quantity of my items in my shopping bag, 
@@ -8,7 +8,7 @@ Feature: Quantity Selector on Shopping Bag (UI & Integration)
     Given the cart has 1 item with of quantity 2
     And the user is on the bag page
 
-  Scenario Outline: The user's cart reflects changes made by increasing the quantity selector
+  Scenario Outline: The user's cart reflects changes made by increasing the quantity selector (<country>)
     Given the user is in <country> locale
     When the user increases the quantity using the quantity selector
     Then the user's cart is updated to include the increased quantity
@@ -21,7 +21,7 @@ Feature: Quantity Selector on Shopping Bag (UI & Integration)
       | UK      | Subtotal, Total                |
       | ROW     | Subtotal, Est. Tax, Est. Total |
 
-  Scenario Outline: The user's cart reflects changes made by decreasing the quantity selector
+  Scenario Outline: The user's cart reflects changes made by decreasing the quantity selector (<country>)
     Given the user is in <country> locale
     When the user decreases the quantity using the quantity selector
     Then the user's cart is updated to include the decreased quantity

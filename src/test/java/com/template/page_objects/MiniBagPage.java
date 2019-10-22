@@ -46,6 +46,10 @@ public class MiniBagPage {
 		 PageFactory.initElements(DriverFactory.getDriver(), this);
 		 }
 	
+	public void hoverOnBagIcon() {
+		Move.HoverOn(bagIcon);
+	}
+	
 	public void expandBag() {
 		Move.HoverOn(bagIcon);
 		Assert.assertTrue(miniBag.isDisplayed());

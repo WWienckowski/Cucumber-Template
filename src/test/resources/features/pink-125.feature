@@ -1,4 +1,4 @@
-@PINK-125 @CheckoutUI @Sprint4
+@PINK-125 @Checkout @Sprint4
 Feature: Ship to Address (UI)
   UI functionality relating to the 'Ship to Address' section of checkout.
   We will build it as per the UK site design for now, 

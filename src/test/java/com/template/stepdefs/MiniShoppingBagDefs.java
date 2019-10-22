@@ -47,7 +47,7 @@ public class MiniShoppingBagDefs {
 	
 	@When("the user hovers over the Shopping Bag icon")
 	public void the_user_hovers_over_the_Shopping_Bag_icon() {
-	    // this is intentionally empty
+	    miniBag.hoverOnBagIcon();
 	}
 	
 	@Then("the mini shopping bag is expanded")

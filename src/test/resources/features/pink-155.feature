@@ -1,4 +1,4 @@
-@PINK-155 @CheckoutServices
+@PINK-155 @Checkout
 Feature: Delivery Address - Field Validation (Services)
   The system must alert the customer if any of their entries in the delivery address fields are invalid.
 	NOTE: in-line validation should wait until field is not in focus to show error messages. 
@@ -7,146 +7,124 @@ Feature: Delivery Address - Field Validation (Services)
 	Background:
 		Given there are products in the Shopping Bag
     And the user is on the checkout page
+    And the user is in the Ship to Address section
      
-  Scenario: Title of your scenario
-    GIVEN the user is in the Ship to Address section
-		AND the user is on the <country> site
-		AND the user is in the <field>
-		AND the user has entered a valid entry
-		WHEN the user clicks out of the <field>
-		THEN user's entry is displayed in the <field>
+  Scenario Outline: Valid entries show in the <field> field (UK)
+		Given the user is on the UK site
+		When the user has entered a valid entry into the <field> field
+		| <entry> |
+		Then user's entry is displayed in the field after leaving that field
+		| <entry> |
+	Examples:
+		| field | entry |
+		| First name* | Test |
+		| Last name* | Test |
+		| Address 1* | 123 Test Lane |
+		| Town/City* | Testshire |
+		| Postcode* | 123456 |   
 		
-		GIVEN the user is in the Ship to Address section
-		AND the user is on the <country> site
-		AND the user is in the <field>
-		AND the user has entered an invalid <entry>
-		WHEN the user clicks out of the <field>
-		THEN the <error_message> displays as per designs
-		AND the field is underlined in red
+	Scenario Outline: Valid entries show in the <field> field (US)
+		Given the user is on the US site
+		When the user has entered a valid entry into the <field> field
+		| <entry> |
+		Then user's entry is displayed in the field after leaving that field
+		| <entry> |
+	Examples:
+		| field | entry |
+		| First name* | Test |
+		| Last name* | Test |
+		| Address 1* | 123 Test Street |
+		| Town/City* | Testville |
+		| Zipcode* | 12345 |                
 		
-		GIVEN the user is in the Ship to Address section
-		AND the user is on the <country> site
-		AND the user has not entered anything in the <field>
-		WHEN the user clicks 'Continue'
-		THEN the <error_message> is displayed
-		AND the user is in the Ship to Address section
+	Scenario Outline:	Invalid <field> values result in an appropriate error message (US)
+		Given the user is on the US site
+		And the user is in the <field> field
+		And the user has entered an invalid entry
+		| <entry> |
+		When the user clicks out of the field
+		Then the error_message displays as per designs
+		| <error_message> |
+		And the field is underlined in red
+	Examples:
+		| field | error_message | entry |
+		| First name* | Please enter your first name | "123$%,.+-@" |
+		| Last name* | Please enter your last name | "123$%,.+-@" |
+		| Address 1* | Please enter the first line of your address | "@#$%" |
+		| Town/City* | Please enter your Town/City | "123$%,.+-@" |
+		| Postcode* |  Please enter a valid ZIP code | zip code |    
+		
+		Scenario Outline:	Invalid <field> values result in an appropriate error message (UK)
+		Given the user is on the UK site
+		And the user is in the <field> field
+		And the user has entered an invalid entry
+		| <entry> |
+		When the user clicks out of the field
+		Then the error_message displays as per designs
+		| <error_message> |
+		And the field is underlined in red
+	Examples:
+		| field | error_message | entry |
+		| First name* | Please enter your first name | "123$%,.+-@" |
+		| Last name* | Please enter your last name | "123$%,.+-@" |
+		| Address 1* | Please enter the first line of your address | "@#$%" |
+		| Town/City* | Please enter your Town/City | "123$%,.+-@" |
+		| Postcode* |  Please enter a valid postcode | post code |             
+		
+	Scenario Outline:	
+		Given the user is on the <country> site
+		And the user has not entered anything in the the fields
+		When the user clicks 'Continue'
+		Then the error messages are displayed
+		And the user remains in the Ship to Address section	
+	Examples:
+		| country | 
+		| UK |
+		| US |
+                                 
 
-country     
+                  
+   
+	Scenario Outline: Dropdown error messages work on UK site
+		Given the user is on the UK site
+		And the user has not selected <drop_down>
+		When the user clicks 'Continue'
+		Then the <error_message> is displayed
+		And the field is underlined in red
+		And the user is in the Ship to Address section
+		And the user is anchored back up to the first error message
+	Examples:
+		| drop_down | error_message |
+		| Select a Title* | Please select a Title |
+		| County | Please select your County |	
+		
+	Scenario Outline:	Dropdown error messages work on US site
+		Given the user is on the US site
+		And the user has not selected a <drop_down>
+		When the user clicks 'Continue'
+		Then the error message is displayed
+		| <error_message> |
+		And the field is underlined in red
+		And the user is in the Ship to Address section
+		And the user is anchored back up to the first error message
+	Examples:
+		| drop_down | error_message |
+		| Select a Title* | Please select a Title |
+		| State | Please select your State |
+ 
+	Scenario:
+		Given the user is on the Ship to Address section
+		And the user has provided valid entries and selections for all fields
+		And the user has not yet completed the Payment section
+		When the user clicks 'Continue'
+		Then the user is on the Payment section
+		And the user's Delivery Address entries are saved
 
-field                                
-
-error_message                                  
-
-UK            
-
-First name*                     
-
-Please enter the first line of your address        
-
-UK            
-
-Last name*                    
-
-Please enter your Town/City         
-
-UK            
-
-Address 1*                     
-
-Please enter the first line of your address        
-
-UK            
-
-Town/City*                    
-
-Please enter your Town/City         
-
-UK            
-
-Postcode*                    
-
-Please enter a valid postcode      
-
-US           
-
-First name*                     
-
-Please enter the first line of your address        
-
-US           
-
-Last name*                    
-
-Please enter your Town/City         
-
-US            
-
-Address 1*                    
-
-Please enter the first line of your address        
-
-US            
-
-Town/City*                    
-
-Please enter your Town/City         
-
-US            
-
-ZIP code*                    
-
-Please enter a valid ZIP code      
-
-GIVEN the user is in the Ship to Address section
-AND the user is on the <country> site
-AND the user has not selected a <drop_down>
-WHEN the user clicks 'Continue'
-THEN the <error_message> is displayed
-AND the field is underlined in red
-AND the user is in the Ship to Address section
-AND the user is anchored back up to the first error message
-
-country     
-
-drop_down           
-
-error_message                  
-
-UK            
-
-Select a Title*       
-
-Please select a Title          
-
-UK            
-
-County*                
-
-Please select your County 
-
-US            
-
-Select a Title*       
-
-Please select a Title          
-
-US            
-
-State*                    
-
-Please select your State   
-
-GIVEN the user is on the Ship to Address section
-AND the user has provided valid entries and selections for all fields
-AND the user has not yet completed the Payment section
-WHEN the user clicks 'Continue'
-THEN the user is on the Payment section
-AND the user's Delivery Address entries are saved
-
-GIVEN the user is on the Ship to Address section
-AND the user has provided valid entries and selections for all fields
-AND the user has completed the Payment section
-WHEN the user clicks 'Continue'
-THEN the user is on the Review section
-AND the user's Delivery Address entries are saved
+	Scenario:
+		Given the user is on the Ship to Address section
+		And the user has provided valid entries and selections for all fields
+		And the user has completed the Payment section
+		When the user clicks 'Continue'
+		Then the user is on the Review section
+		And the user's Delivery Address entries are saved
 

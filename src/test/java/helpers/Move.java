@@ -52,9 +52,9 @@ public class Move {
 		pointer.moveToElement(element).perform();
 	}
 	
-	public static void idleForX(Integer seconds) {
+	public static void idleForX(Integer milliseconds) {
 		Actions idle = new Actions(DriverFactory.getDriver());
-		idle.pause(seconds);
+		idle.pause(milliseconds);
 		idle.perform();
 	}
 }

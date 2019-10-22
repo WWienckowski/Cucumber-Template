@@ -1,4 +1,4 @@
-@PINK-122 @CheckoutUI @ignore
+@PINK-122 @Checkout @Sprint3
 Feature: Checkout text fields (UI)
   This story covers all free text fields in Checkout into which the user can enter information.
   The user must be able to know what to enter in each text field, 

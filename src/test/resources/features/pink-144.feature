@@ -1,4 +1,4 @@
-@PINK-144 @CheckoutUI @Sprint4
+@PINK-144 @Checkout @Sprint4
 Feature: Billing Address (UI)
   Users must be able to edit their billing address in the Payment section of checkout
   if it differs to the shipping address they have already inputted

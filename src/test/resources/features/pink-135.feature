@@ -1,4 +1,4 @@
-@PINK-135 @CheckoutUI @ignore
+@PINK-135 @Checkout @Sprint3
 Feature: Checkout Header (UI)
   Users will be provided with a simplified header when in the checkout
 

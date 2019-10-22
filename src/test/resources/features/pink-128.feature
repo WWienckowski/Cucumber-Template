@@ -1,4 +1,4 @@
-@PINK-128 @CheckoutUI @ignore
+@PINK-128 @Checkout @Sprint3
 Feature: Delivery Speed Control (UI)
   This is the UI story for the delivery speed control in the 'Ship to Address' section of the checkout flow
 

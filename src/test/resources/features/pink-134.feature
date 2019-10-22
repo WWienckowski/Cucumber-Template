@@ -1,4 +1,4 @@
-@PINK-134 @CheckoutUI @Sprint4
+@PINK-134 @Checkout @Sprint4
 Feature: Order Confirmation Page (UI)
   The UI story for the order confirmation page
 

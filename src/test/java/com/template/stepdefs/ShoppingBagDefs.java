@@ -3,10 +3,16 @@ package com.template.stepdefs;
 import java.util.Arrays;
 import java.util.List;
 
-import com.template.World;
+import org.junit.Assert;
+
+import com.template.BagState;
 import com.template.page_objects.BagPage;
 
+import driver.DriverFactory;
 import driver.SharedDriver;
+import helpers.Cart;
+import helpers.Click;
+import helpers.Move;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,11 +20,11 @@ import io.cucumber.java.en.When;
 public class ShoppingBagDefs {
 	
 private BagPage bag;
-private World world;
+private BagState bagState;
 	
-	public ShoppingBagDefs(SharedDriver driver, BagPage bag, World world) {
+	public ShoppingBagDefs(SharedDriver driver, BagPage bag, BagState bagState) {
 		this.bag = bag;
-		this.world = world;
+		this.bagState = bagState;
 	}
 	
 	@When("the user {word} the quantity using the quantity selector")
@@ -45,5 +51,24 @@ private World world;
 	@Then("the product quantity will remain 1")
 	public void the_product_quantity_will_remain() {
 		bag.cartUpdatesQuantity("decreased");
+	}
+	
+	@Then("the product cell will contain the appropriate elements as per designs")
+	public void the_product_cell_will_contain_the_appropriate_elements_as_per_designs(List<String> elements) {
+	    bag.checkProductElements(elements);
+	}
+	
+	@When("the user clicks on the {string} link in the bag")
+	public void the_user_clicks_on_the_link_in_the_bag(String link) {
+	    bagState.setLineItems(Cart.getLineItemCount());
+		bagState.setProductsDisplayed(bag.getItemNumber());
+	    Click.byLinkText("Remove Item");
+	}
+	
+	@Then("the entire selected quantity of that product is removed from the cart")
+	public void the_entire_selected_quantity_of_that_product_is_removed_from_the_cart() {
+		Move.idleForX(1000);
+		Assert.assertEquals("Cart value was not updated", bagState.getLineItems()-1, Cart.getLineItemCount());
+		DriverFactory.getScenario().write("Cart quantity is correct.");
 	}
 }

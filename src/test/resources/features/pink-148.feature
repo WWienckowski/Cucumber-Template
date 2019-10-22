@@ -1,4 +1,4 @@
-@PINK-148 @CheckoutUI @Sprint4
+@PINK-148 @Checkout @Sprint4
 Feature: Tool Tip on password field (UI)
   In the password field on the Confirmation page,
   there must be a tool tip icon which when hovered over or clicked on states the minimum password requirements

@@ -1,4 +1,4 @@
-@PINK-124 @CheckoutUI @ignore
+@PINK-124 @Checkout @Sprint3
 Feature: Interact with Delivery Options (UI)
   Users must be able to change their preferred delivery method based on the options presented to them in checkout.
   Each option will have different fields presented under

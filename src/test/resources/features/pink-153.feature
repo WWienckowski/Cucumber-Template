@@ -1,4 +1,4 @@
-@PINK-153 @CheckoutUI @Sprint4
+@PINK-153 @Checkout @Sprint4
 Feature: Guest Checkout Login Bar (UI)
   This is the UI story for the login bar that appears below the header on the Checkout page.
   PLEASE NOTE that the login bar appears ABOVE the Shopping Bag header when the user is on mobile.

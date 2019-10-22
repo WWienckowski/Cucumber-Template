@@ -6,12 +6,10 @@ Feature: Shopping Bag Product Display (UI & Integration)
 	The integration for these elements are covered in other stories, as is the integration for Size/Collar Size selection in Shopping Bag.
 	
 	Background:
-		# The user has specific items with certain attributes in the bag and goes to the bag
+		Given there is a shirt and a tie in the bag
+		And the user is on the bag page
 		
-  Scenario: Shopping Bag Product Display (UI & Integration)
-    Given the user is navigating to the Shopping Bag page
-		And there is one or more product in the Shopping Bag
-		When the Shopping Bag page loads
+  Scenario: The appropriate product attributes are displayed for each item
 		Then the product cell will contain the user's selected <attribute> where each product has a value for the <attribute> in Commercetools
 		And where the product does not contain a value for <attribute> in Commercetools that <attribute> field is not displayed
 			| attribute |
@@ -24,12 +22,8 @@ Feature: Shopping Bag Product Display (UI & Integration)
 			| Sleeve Length | 
 			| Price |
 
-	Scenario:
-		Given the user is navigating to the Shopping Bag page
-		And there is one or more product in the Shopping Bag
-		When the Shopping Bag page loads
-		Then the product cell will contain the following <elements> as per designs
-		| element |
-		| Quantity Selector | 
-		| Remove Item Link |
-		| Gift Wrap Check Box |
+	Scenario: Each item in the bag has the appropriate elements
+		Then the product cell will contain the appropriate elements as per designs
+			| Quantity Selector | 
+			| Remove Item Link |
+			| Gift Wrap Check Box |

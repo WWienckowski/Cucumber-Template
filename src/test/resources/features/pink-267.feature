@@ -4,31 +4,32 @@ Feature: Remove Item from Bag (Integration)
   both from the shopping bag page and in the mini-shopping bag.
 
   Scenario: Remove Item from bag with multiple items
-		Given the user has more than one item in the bag
+		Given there are products in the Shopping Bag
 		And the user is on the bag page 
-		When the user clicks 'Remove Item' in a product cell
+		When the user clicks on the 'Remove Item' link in the bag
 		Then the entire selected quantity of that product is removed from the cart
-		And the selected product cell disappears
+		And the product is no longer displayed in the mini shopping bag
 		And the Order Summary values are updated
 			| fields |
 		
 	Scenario: Remove Item from bag with one item
-		Given the user has only one product in their shopping bag
+		Given the user has a shirt in the bag
 		And the user is on the bag page
-		When the user clicks 'Remove Item'
+		When the user clicks on 'Remove Item' link
 		Then the empty shopping bag page is displayed
 		
 	Scenario: Remove Item from mini bag with multiple items
-		Given the user has more than one item in the bag
+		Given the user has a shirt in the bag
+		And the user has a tie in the bag
 		And the user is on the home page
-		And the user has expanded the mini shopping bag
-		When the user clicks the 'Remove Item' button on a product line
+		And the mini shopping bag is expanded
+		When the user clicks on the 'Remove Item' link in the mini bag
 		Then the entire selected quantity of that product is removed from the cart
 		And the product is no longer displayed in the mini shopping bag
 		
 	Scenario:	Remove Item from mini bag with one item
-		Given the user has only one product in their shopping bag
+		Given the user has a shirt in the bag
 		And the user is on the home page
 		And the mini shopping bag is expanded
-		When the user clicks the 'Remove Item' button
+		When the user clicks on 'Remove Item' link
 		Then the mini shopping bag is minimised

@@ -1,6 +1,7 @@
 package helpers;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -41,6 +42,8 @@ public class Navigate {
 	public static void to(String urlSuffix) {
 		DriverFactory.getScenario().write("Navigating to: "+baseUrl+urlSuffix);
 		DriverFactory.getDriver().get(baseUrl+urlSuffix);
+		new WebDriverWait(DriverFactory.getDriver(), 15).until(ExpectedConditions.presenceOfElementLocated
+				(By.tagName("header")));
 	}
 	
 	public static void checkUrl(String page) {
@@ -50,5 +53,10 @@ public class Navigate {
 		Assert.assertTrue(page+" is the expected URL\n"+DriverFactory.getDriver().getCurrentUrl()+" is the actual URL",
 				wait.until(ExpectedConditions.urlContains(page)));
 		DriverFactory.getScenario().write("Current URL is: "+DriverFactory.getDriver().getCurrentUrl());
+	}
+
+	public static void start() {
+		DriverFactory.getDriver().get(baseUrl);
+		Move.idleForX(5000);
 	}
 }

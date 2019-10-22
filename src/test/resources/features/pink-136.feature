@@ -1,4 +1,4 @@
-@PINK-136 @CheckoutUI @Sprint4
+@PINK-136 @Checkout @Sprint4
 Feature: Checkout Footer (UI)
   Users will be provided with a simplified footer when in the checkout
   

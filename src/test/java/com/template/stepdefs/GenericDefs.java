@@ -2,7 +2,9 @@ package com.template.stepdefs;
 
 import java.util.List;
 
+import driver.DriverFactory;
 import driver.SharedDriver;
+import helpers.Cart;
 import helpers.Click;
 import helpers.Input;
 import helpers.Move;
@@ -20,22 +22,55 @@ public class GenericDefs {
 	public GenericDefs(SharedDriver driver) {
 		
 	}
+	@Given("the user does not have an item in their bag")
+	public void the_user_does_not_have_an_item_in_their_bag() {
+	    Navigate.to("");
+	    Move.idleForX(1000);
+	}
+	
+	@Given("the user has a shirt in the bag")
+	public void the_user_has_an_item_in_the_bag() {
+		Navigate.to("");
+		Navigate.to("product/poplin-button-cuff/10500040B1X");
+		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Move.idleForX(500);
+	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Move.idleForX(500);
+	}
+	
+	@Given("the user has a tie in the bag")
+	public void there_is_a_shirt_and_a_tie_in_the_bag() {
+		Navigate.to("product/club-stripe-woven-silk-tie/70111185G2P");
+		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Move.idleForX(500);
+	}
 	
 	@Given("there are products in the Shopping Bag")
 	public void there_are_products_in_the_Shopping_Bag() {
-		String item = "{\"accessToken\":\"cEbj57qXmU7122xlQ7t6YPg4W-wk4XEd\",\"expiresIn\":172800,\"anonymous\":true,\"scope\":\"manage_project:pink-shirtmaker-dev\",\"tokenType\":\"Bearer\",\"tokenGen\":1571149067296,\"bag\":{\"type\":\"Cart\",\"id\":\"e37a8c97-749d-483a-83c3-5f9d809405d6\",\"version\":13,\"createdAt\":\"2019-10-15T14:25:26.973Z\",\"lastModifiedAt\":\"2019-10-15T20:10:20.740Z\",\"lastModifiedBy\":{\"clientId\":\"Ey8F16RwTXKwxCh9568CRzlQ\",\"isPlatformClient\":false},\"createdBy\":{\"clientId\":\"Ey8F16RwTXKwxCh9568CRzlQ\",\"isPlatformClient\":false},\"lineItems\":[{\"id\":\"f4dec028-bf36-44ce-9da0-0b189b4eea91\",\"productId\":\"bef24234-e5bb-4f61-a613-296d4a198480\",\"name\":{\"en-US\":\"End on End Button Cuff Shirt\"},\"productType\":{\"typeId\":\"product-type\",\"id\":\"93f256a9-aef1-450e-8f01-03430afb2061\",\"version\":139},\"productSlug\":{\"en-US\":\"end-on-end-button-cuff-shirt-10500045\"},\"variant\":{\"id\":7,\"sku\":\"10500045B2X170R\",\"prices\":[{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"EUR\",\"centAmount\":14500,\"fractionDigits\":2},\"id\":\"8c2ab73b-b514-4a07-b50e-df28d69081cc\",\"country\":\"FR\",\"channel\":{\"typeId\":\"channel\",\"id\":\"89de900c-1cac-4d66-913c-31acb3a0ae6d\"}},{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"GBP\",\"centAmount\":13000,\"fractionDigits\":2},\"id\":\"9844d269-c36b-4f5b-a94a-b397d0bebf11\",\"country\":\"GB\",\"channel\":{\"typeId\":\"channel\",\"id\":\"9e41116c-4636-46fd-924e-4092e60d3915\"}},{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":21000,\"fractionDigits\":2},\"id\":\"15aad4e8-05cf-4482-b3c4-176f61fbea34\",\"country\":\"US\",\"channel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"}}],\"images\":[],\"attributes\":[{\"name\":\"ARTICLE_CODE\",\"value\":\"10500045\"},{\"name\":\"MASTER_COLOUR\",\"value\":\"Blue\"},{\"name\":\"SEASON\",\"value\":\"AW18\"},{\"name\":\"AVAILABLE_COLLECTION\",\"value\":true},{\"name\":\"AVAILABLE_HD\",\"value\":true},{\"name\":\"WEB_COLLAR\",\"value\":\"semi cutaway\"},{\"name\":\"WEB_CUFF\",\"value\":\"button\"},{\"name\":\"WEB_FABRIC\",\"value\":\"Cotton\"},{\"name\":\"WEB_FIT\",\"value\":\"Slim\"},{\"name\":\"WEB_SLEEVE\",\"value\":\"long sleeve\"},{\"name\":\"WEB_STYLE\",\"value\":\"unspecified style\"},{\"name\":\"PRODUCT_ID\",\"value\":\"10500045B2X\"},{\"name\":\"WEB_CATEGORY\",\"value\":[\"business_shirts\",\"shirts\",\"casual_slimfit\",\"baynote\"]},{\"name\":\"GIFT_WRAP1\",\"value\":true},{\"name\":\"INT_NAME\",\"value\":\"End on End Button Cuff Shirt\"},{\"name\":\"USSLSTXB2C\",\"value\":\"4\"},{\"name\":\"RELATED_COLOR_VARIANTS\",\"value\":[\"10500045B2X\"]},{\"name\":\"WEB_PUBLISHTOWEB\",\"value\":true},{\"name\":\"COLOUR\",\"value\":\"Blue\"},{\"name\":\"SIZE\",\"value\":\"17\"},{\"name\":\"WEB_POSITION\",\"value\":55},{\"name\":\"TAX_PRODUCT_CODE\",\"value\":\"PC040100\"}],\"assets\":[],\"availability\":{\"channels\":{\"072f015f-cbad-4042-ba3b-52b4a863238b\":{\"isOnStock\":true,\"availableQuantity\":5},\"89de900c-1cac-4d66-913c-31acb3a0ae6d\":{\"isOnStock\":true,\"availableQuantity\":16},\"9e41116c-4636-46fd-924e-4092e60d3915\":{\"isOnStock\":true,\"availableQuantity\":19}}}},\"price\":{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":21000,\"fractionDigits\":2},\"id\":\"15aad4e8-05cf-4482-b3c4-176f61fbea34\",\"country\":\"US\",\"channel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"}},\"quantity\":2,\"discountedPricePerQuantity\":[],\"distributionChannel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"},\"state\":[{\"quantity\":2,\"state\":{\"typeId\":\"state\",\"id\":\"8a268083-d42b-490c-9068-4f562490d3d2\"}}],\"priceMode\":\"Platform\",\"totalPrice\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":42000,\"fractionDigits\":2},\"lineItemMode\":\"Standard\"},{\"id\":\"eee9e53e-12b9-40be-98ea-20d891d8c20d\",\"productId\":\"11360b76-dd7d-42d4-b9f5-bf6e33831001\",\"name\":{\"en-US\":\"Grid Check Poplin Button Cuff Shirt\"},\"productType\":{\"typeId\":\"product-type\",\"id\":\"93f256a9-aef1-450e-8f01-03430afb2061\",\"version\":139},\"productSlug\":{\"en-US\":\"grid-check-poplin-button-cuff-shirt-10500066\"},\"variant\":{\"id\":7,\"sku\":\"10500066B1P170R\",\"prices\":[{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"EUR\",\"centAmount\":15500,\"fractionDigits\":2},\"id\":\"5353a789-526e-4be7-8776-c5474e2ed3fc\",\"country\":\"FR\",\"channel\":{\"typeId\":\"channel\",\"id\":\"89de900c-1cac-4d66-913c-31acb3a0ae6d\"}},{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"GBP\",\"centAmount\":14000,\"fractionDigits\":2},\"id\":\"5431ffc8-f18d-4caf-abca-a6ea64bc4c17\",\"country\":\"GB\",\"channel\":{\"typeId\":\"channel\",\"id\":\"9e41116c-4636-46fd-924e-4092e60d3915\"}},{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":22500,\"fractionDigits\":2},\"id\":\"0ebaf2f9-f907-4453-9580-cdf563cd3193\",\"country\":\"US\",\"channel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"}}],\"images\":[],\"attributes\":[{\"name\":\"ARTICLE_CODE\",\"value\":\"10500066\"},{\"name\":\"MASTER_COLOUR\",\"value\":\"Blue\"},{\"name\":\"SEASON\",\"value\":\"AW18\"},{\"name\":\"AVAILABLE_COLLECTION\",\"value\":true},{\"name\":\"AVAILABLE_HD\",\"value\":true},{\"name\":\"WEB_COLLAR\",\"value\":\"semi cutaway\"},{\"name\":\"WEB_CUFF\",\"value\":\"button\"},{\"name\":\"WEB_FABRIC\",\"value\":\"Cotton\"},{\"name\":\"WEB_FIT\",\"value\":\"Slim\"},{\"name\":\"WEB_SLEEVE\",\"value\":\"long sleeve\"},{\"name\":\"WEB_STYLE\",\"value\":\"unspecified style\"},{\"name\":\"PRODUCT_ID\",\"value\":\"10500066B1P\"},{\"name\":\"WEB_CATEGORY\",\"value\":[\"shirts\",\"check-shirts\",\"slimfit_shirts\",\"business_shirts\",\"baynote\"]},{\"name\":\"GIFT_WRAP1\",\"value\":true},{\"name\":\"INT_NAME\",\"value\":\"Grid Check Poplin Button Cuff Shirt\"},{\"name\":\"USSLSTXB2C\",\"value\":\"4\"},{\"name\":\"RELATED_COLOR_VARIANTS\",\"value\":[\"10500066B1P\"]},{\"name\":\"WEB_PUBLISHTOWEB\",\"value\":true},{\"name\":\"COLOUR\",\"value\":\"Pale Blue/Pink\"},{\"name\":\"SIZE\",\"value\":\"17\"},{\"name\":\"WEB_POSITION\",\"value\":55},{\"name\":\"TAX_PRODUCT_CODE\",\"value\":\"PC040100\"}],\"assets\":[],\"availability\":{\"channels\":{\"9e41116c-4636-46fd-924e-4092e60d3915\":{\"isOnStock\":true,\"availableQuantity\":1}}}},\"price\":{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":22500,\"fractionDigits\":2},\"id\":\"0ebaf2f9-f907-4453-9580-cdf563cd3193\",\"country\":\"US\",\"channel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"}},\"quantity\":1,\"discountedPricePerQuantity\":[],\"distributionChannel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"},\"state\":[{\"quantity\":1,\"state\":{\"typeId\":\"state\",\"id\":\"8a268083-d42b-490c-9068-4f562490d3d2\"}}],\"priceMode\":\"Platform\",\"totalPrice\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":22500,\"fractionDigits\":2},\"lineItemMode\":\"Standard\"},{\"id\":\"7f3298b6-a497-4e5c-850e-d1f534c88d23\",\"productId\":\"56383fe7-e219-46d9-92af-2a9a9c2d450b\",\"name\":{\"en-US\":\"Slim Horizontal Stripe Woven Tie\"},\"productType\":{\"typeId\":\"product-type\",\"id\":\"93f256a9-aef1-450e-8f01-03430afb2061\",\"version\":139},\"productSlug\":{\"en-US\":\"slim-horizontal-stripe-woven-tie-70111204\"},\"variant\":{\"id\":1,\"sku\":\"70111204B2L0000\",\"prices\":[{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"EUR\",\"centAmount\":11500,\"fractionDigits\":2},\"id\":\"9174266c-544e-45be-b6e0-7eff4f977b71\",\"country\":\"FR\",\"channel\":{\"typeId\":\"channel\",\"id\":\"89de900c-1cac-4d66-913c-31acb3a0ae6d\"}},{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"GBP\",\"centAmount\":9500,\"fractionDigits\":2},\"id\":\"4233e560-5e31-41c6-a06b-0689af029c98\",\"country\":\"GB\",\"channel\":{\"typeId\":\"channel\",\"id\":\"9e41116c-4636-46fd-924e-4092e60d3915\"}},{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":16500,\"fractionDigits\":2},\"id\":\"009963ed-71c4-4b47-aeb8-36377801986e\",\"country\":\"US\",\"channel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"}}],\"images\":[],\"attributes\":[{\"name\":\"ARTICLE_CODE\",\"value\":\"70111204\"},{\"name\":\"MASTER_COLOUR\",\"value\":\"Blue\"},{\"name\":\"SEASON\",\"value\":\"AW18\"},{\"name\":\"AVAILABLE_COLLECTION\",\"value\":true},{\"name\":\"AVAILABLE_HD\",\"value\":true},{\"name\":\"WEB_FABRIC\",\"value\":\"Silk\"},{\"name\":\"WEB_STYLE\",\"value\":\"woven silk tie\"},{\"name\":\"PRODUCT_ID\",\"value\":\"70111204B2L\"},{\"name\":\"WEB_CATEGORY\",\"value\":[\"ties-woven\",\"all-accessories\",\"ties\",\"baynote\"]},{\"name\":\"GIFT_WRAP1\",\"value\":true},{\"name\":\"INT_NAME\",\"value\":\"Slim Horizontal Stripe Woven Tie\"},{\"name\":\"USSLSTXB2C\",\"value\":\"4\"},{\"name\":\"RELATED_COLOR_VARIANTS\",\"value\":[\"70111204B2L\"]},{\"name\":\"WEB_PUBLISHTOWEB\",\"value\":true},{\"name\":\"COLOUR\",\"value\":\"Blue/Navy\"},{\"name\":\"SIZE\",\"value\":\"One Size\"},{\"name\":\"WEB_POSITION\",\"value\":1},{\"name\":\"TAX_PRODUCT_CODE\",\"value\":\"PC040134\"}],\"assets\":[],\"availability\":{\"channels\":{\"9e41116c-4636-46fd-924e-4092e60d3915\":{\"isOnStock\":true,\"availableQuantity\":104},\"89de900c-1cac-4d66-913c-31acb3a0ae6d\":{\"isOnStock\":true,\"availableQuantity\":104},\"072f015f-cbad-4042-ba3b-52b4a863238b\":{\"isOnStock\":true,\"availableQuantity\":19}}}},\"price\":{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":16500,\"fractionDigits\":2},\"id\":\"009963ed-71c4-4b47-aeb8-36377801986e\",\"country\":\"US\",\"channel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"}},\"quantity\":1,\"discountedPricePerQuantity\":[],\"distributionChannel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"},\"state\":[{\"quantity\":1,\"state\":{\"typeId\":\"state\",\"id\":\"8a268083-d42b-490c-9068-4f562490d3d2\"}}],\"priceMode\":\"Platform\",\"totalPrice\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":16500,\"fractionDigits\":2},\"lineItemMode\":\"Standard\"}],\"cartState\":\"Active\",\"totalPrice\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":81000,\"fractionDigits\":2},\"country\":\"US\",\"customLineItems\":[],\"discountCodes\":[],\"inventoryMode\":\"None\",\"taxMode\":\"External\",\"taxRoundingMode\":\"HalfEven\",\"taxCalculationMode\":\"LineItemLevel\",\"refusedGifts\":[],\"origin\":\"Customer\",\"itemShippingAddresses\":[]}}";
-		Input.setCart(item);
+		Navigate.to("product/poplin-button-cuff/10500040B1X");
+		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Move.idleForX(500);
+	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Move.idleForX(500);
+	    Navigate.to("product/club-stripe-woven-silk-tie/70111185G2P");
+		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Move.idleForX(500);
 	}
 	
 	@Given("the cart has 1 item with of quantity 2")
 	public void the_cart_has_item_with_of_quantity_and_item_with_quantity_of() {
-		String item = "{\"accessToken\":\"QvjkbSTEm3eFjfLIDLVtbZFcNdE6aSCI\",\"expiresIn\":172800,\"anonymous\":true,\"scope\":\"manage_project:pink-shirtmaker-dev\",\"tokenType\":\"Bearer\",\"tokenGen\":1571067337065,\"bag\":{\"type\":\"Cart\",\"id\":\"7057216e-91b5-4b6d-a576-e0b52e9ddbce\",\"version\":53,\"createdAt\":\"2019-10-14T15:37:24.407Z\",\"lastModifiedAt\":\"2019-10-14T19:54:47.095Z\",\"lastModifiedBy\":{\"clientId\":\"Ey8F16RwTXKwxCh9568CRzlQ\",\"isPlatformClient\":false},\"createdBy\":{\"clientId\":\"Ey8F16RwTXKwxCh9568CRzlQ\",\"isPlatformClient\":false},\"lineItems\":[{\"id\":\"7d754059-789c-4532-8b28-fd1233f95d1f\",\"productId\":\"cbf7a119-0215-4af7-a127-d6fcc8e57992\",\"name\":{\"en-US\":\"Block Stripe Woven Tie\"},\"productType\":{\"typeId\":\"product-type\",\"id\":\"93f256a9-aef1-450e-8f01-03430afb2061\",\"version\":139},\"productSlug\":{\"en-US\":\"block-stripe-woven-tie-70111202\"},\"variant\":{\"id\":1,\"sku\":\"70111202L3N0000\",\"prices\":[{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"EUR\",\"centAmount\":14000,\"fractionDigits\":2},\"id\":\"5741bbd7-4f32-4091-83e5-24cd04600512\",\"country\":\"FR\",\"channel\":{\"typeId\":\"channel\",\"id\":\"89de900c-1cac-4d66-913c-31acb3a0ae6d\"}},{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"GBP\",\"centAmount\":12000,\"fractionDigits\":2},\"id\":\"3dac41d5-948e-44dc-b369-9f0f9be312c5\",\"country\":\"GB\",\"channel\":{\"typeId\":\"channel\",\"id\":\"9e41116c-4636-46fd-924e-4092e60d3915\"}},{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":19000,\"fractionDigits\":2},\"id\":\"1f0d71be-3c7c-484a-9af0-a02c90858771\",\"country\":\"US\",\"channel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"}}],\"images\":[],\"attributes\":[{\"name\":\"ARTICLE_CODE\",\"value\":\"70111202\"},{\"name\":\"MASTER_COLOUR\",\"value\":\"Navy\"},{\"name\":\"SEASON\",\"value\":\"AW18\"},{\"name\":\"AVAILABLE_COLLECTION\",\"value\":true},{\"name\":\"AVAILABLE_HD\",\"value\":true},{\"name\":\"WEB_FABRIC\",\"value\":\"Silk\"},{\"name\":\"WEB_STYLE\",\"value\":\"woven silk tie\"},{\"name\":\"PRODUCT_ID\",\"value\":\"70111202L3N\"},{\"name\":\"WEB_CATEGORY\",\"value\":[\"ties-woven\",\"ties\",\"all-accessories\",\"baynote\"]},{\"name\":\"GIFT_WRAP1\",\"value\":true},{\"name\":\"INT_NAME\",\"value\":\"Block Stripe Woven Tie\"},{\"name\":\"USSLSTXB2C\",\"value\":\"4\"},{\"name\":\"RELATED_COLOR_VARIANTS\",\"value\":[\"70111202L3N\"]},{\"name\":\"WEB_PUBLISHTOWEB\",\"value\":true},{\"name\":\"COLOUR\",\"value\":\"Navy/Neutral\"},{\"name\":\"SIZE\",\"value\":\"One Size\"},{\"name\":\"WEB_POSITION\",\"value\":1},{\"name\":\"TAX_PRODUCT_CODE\",\"value\":\"PC040134\"}],\"assets\":[],\"availability\":{\"channels\":{\"072f015f-cbad-4042-ba3b-52b4a863238b\":{\"isOnStock\":true,\"availableQuantity\":13},\"89de900c-1cac-4d66-913c-31acb3a0ae6d\":{\"isOnStock\":true,\"availableQuantity\":10},\"9e41116c-4636-46fd-924e-4092e60d3915\":{\"isOnStock\":true,\"availableQuantity\":10}}}},\"price\":{\"value\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":19000,\"fractionDigits\":2},\"id\":\"1f0d71be-3c7c-484a-9af0-a02c90858771\",\"country\":\"US\",\"channel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"}},\"quantity\":2,\"discountedPricePerQuantity\":[],\"distributionChannel\":{\"typeId\":\"channel\",\"id\":\"072f015f-cbad-4042-ba3b-52b4a863238b\"},\"state\":[{\"quantity\":2,\"state\":{\"typeId\":\"state\",\"id\":\"8a268083-d42b-490c-9068-4f562490d3d2\"}}],\"priceMode\":\"Platform\",\"totalPrice\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":38000,\"fractionDigits\":2},\"lineItemMode\":\"Standard\"}],\"cartState\":\"Active\",\"totalPrice\":{\"type\":\"centPrecision\",\"currencyCode\":\"USD\",\"centAmount\":38000,\"fractionDigits\":2},\"country\":\"US\",\"customLineItems\":[],\"discountCodes\":[],\"inventoryMode\":\"None\",\"taxMode\":\"External\",\"taxRoundingMode\":\"HalfEven\",\"taxCalculationMode\":\"LineItemLevel\",\"refusedGifts\":[],\"origin\":\"Customer\",\"itemShippingAddresses\":[]}}";
-		Input.setCart(item);
+		Navigate.to("product/poplin-button-cuff/10500040B1X");
+		Move.idleForX(1000);
+		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Move.idleForX(500);
+	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Move.idleForX(500);
+	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Move.idleForX(500);
 	}
 	
 	@Given("the user is on the {word} page")
 	public void navigate_to_page_url(String urlSuffix) {
-		urlSuffix = urlSuffix.equals("PDP") ? "detail" : urlSuffix;
 		urlSuffix = urlSuffix.contentEquals("bag") ? "basket/viewbasket" : urlSuffix;
 		urlSuffix = urlSuffix.contentEquals("home") ? "" : urlSuffix;
 		Navigate.to(urlSuffix);
@@ -213,5 +248,44 @@ public class GenericDefs {
 	    }
 	}
 	
+	@When("I make a cart")
+	public void i_make_a_cart() {
+	    Move.idleForX(3000);
+	    String token = Input.getPinkShopper().substring(16, 48);
+	    System.out.println(token);
+		Cart.makeCart(token);
+	}
+	
+
+	@Then("The pink-shopper should have a cart")
+	public void the_pink_shopper_should_have_a_cart() {
+	    System.out.println(Input.getPinkShopper());
+	}
+	
+	@Then("I can add items to the cart")
+	public void i_can_add_items_to_the_cart() {
+	    Navigate.to("product/poplin-button-cuff/10500040B1X");
+	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Move.idleForX(1000);
+	    DriverFactory.getScenario().write(Input.getPinkShopper());
+	}
+	
+	@Given("the user goes to a product page")
+	public void the_user_goes_to_a_product_page() {
+		Navigate.to("product/poplin-button-cuff/10500040B1X");
+		Move.idleForX(1000);
+	}
+
+	@Given("adds an item to the card")
+	public void adds_an_item_to_the_card() {
+		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Move.idleForX(1000);
+	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	}
+
+	@Then("there will be an item in the cart")
+	public void there_will_be_an_item_in_the_cart() {
+		DriverFactory.getScenario().write(Input.getPinkShopper());
+	}
 	
 }

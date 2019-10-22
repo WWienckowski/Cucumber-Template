@@ -1,4 +1,4 @@
-@PINK-142 @CheckoutUI @ignore
+@PINK-142 @Checkout @Sprint3
 Feature: Payment Summary Messaging (UI)
   This is the UI story for the Payment summary section
   which will provide a non-interactive set of fields summarising the payment information supplied by the user.
