@@ -2,9 +2,14 @@ package com.template.stepdefs;
 
 import java.util.List;
 
+import org.junit.Assert;
+
+import com.template.BagState;
 import com.template.page_objects.MiniBagPage;
 
+import driver.DriverFactory;
 import driver.SharedDriver;
+import helpers.Cart;
 import helpers.Click;
 import helpers.Move;
 import helpers.Verify;
@@ -13,9 +18,11 @@ import io.cucumber.java.en.When;
 
 public class MiniShoppingBagDefs {
 	private MiniBagPage miniBag;
+	private BagState bagState;
 	
-	public MiniShoppingBagDefs(SharedDriver driver, MiniBagPage miniBag) {
+	public MiniShoppingBagDefs(SharedDriver driver, MiniBagPage miniBag, BagState bagState) {
 		this.miniBag = miniBag;
+		this.bagState = bagState;
 	}
 	
 	@When("the user expands the mini shopping bag")
@@ -91,6 +98,23 @@ public class MiniShoppingBagDefs {
 	public void the_user_can_scroll_up_and_down_over_the_main_page_without_scrolling_the_mini_bag() {
 	    miniBag.scrollMainPage();
 	}
-
-
+	
+	@When("the user clicks on the {string} link in the mini bag")
+	public void the_user_clicks_on_the_link_in_the_mini_bag(String string) {
+		bagState.setLineItems(Cart.getLineItemCount());
+		bagState.setProductsDisplayed(miniBag.getItemNumber());
+		Click.byLinkText("Remove Item");
+	}
+	
+	@Then("the product is no longer displayed in the mini shopping bag")
+	public void the_product_is_no_longer_displayed_in_the_mini_shopping_bag() {
+	    Assert.assertEquals("Incorrect number of products displayed", 1, miniBag.getItemNumber());
+		DriverFactory.getScenario().write("Correct number of products displayed");
+	}
+	
+	@Then("the mini bag will display the item\\(s) in their bag")
+	public void the_mini_bag_will_display_the_item_s_in_their_bag() {
+		Assert.assertEquals("Incorrect number of products displayed", Cart.getLineItemCount(), miniBag.getItemNumber());
+		DriverFactory.getScenario().write("Correct number of products displayed");
+	}
 }

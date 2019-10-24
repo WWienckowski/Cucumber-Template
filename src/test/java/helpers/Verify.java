@@ -67,6 +67,7 @@ public class Verify {
 		} catch (NoSuchElementException e) {
 			Assert.fail(element+" not found");
 		}
+		DriverFactory.getScenario().write(element+" found");
 	}
 	
 	public static void findComponentByText(String componentText) {
@@ -132,10 +133,19 @@ public class Verify {
 	}
 
 	public static void isDisplayed(String xpath, Boolean expected) {
-		WebElement element = (new WebDriverWait(DriverFactory.getDriver(), 10))
-				  .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
-		Assert.assertTrue("Element is displayed: "+expected, expected==element.isDisplayed());
-		DriverFactory.getScenario().write("Element is displayed: "+expected);
+		List<WebElement> elements = DriverFactory.getDriver().findElements(By.xpath(xpath));
+		if (elements.size()==0) {
+			if (expected==true) {
+				Assert.fail("Element not found");
+			} else {
+				DriverFactory.getScenario().write("Element not found");
+				return;
+			}
+		}
+		String message = elements.get(0).isDisplayed() 
+				? "Element is displayed" : "Element is present, but not displayed";
+		Assert.assertEquals(message, expected, elements.get(0).isDisplayed());
+		DriverFactory.getScenario().write(message);
 	}
 	
 	public static void checkCSS(String xpath, String expectedValue, String cssValue) {

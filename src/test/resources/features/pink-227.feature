@@ -6,20 +6,19 @@ Feature: Shopping Bag Product Display (UI & Integration)
 	The integration for these elements are covered in other stories, as is the integration for Size/Collar Size selection in Shopping Bag.
 	
 	Background:
-		Given there is a shirt and a tie in the bag
+		Given the user has a shirt in the bag
+		And the user has a tie in the bag
 		And the user is on the bag page
 		
   Scenario: The appropriate product attributes are displayed for each item
-		Then the product cell will contain the user's selected <attribute> where each product has a value for the <attribute> in Commercetools
-		And where the product does not contain a value for <attribute> in Commercetools that <attribute> field is not displayed
-			| attribute |
+		Then each product will display the following attributes if it has that attribute. 
 			| Primary Product Image |
 			| Name |
 			| Colour |
-			| Size | 
+			| Size |
 			| Collar Size |
 			| Fit |
-			| Sleeve Length | 
+			| Sleeve |
 			| Price |
 
 	Scenario: Each item in the bag has the appropriate elements

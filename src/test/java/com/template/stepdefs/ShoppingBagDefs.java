@@ -1,7 +1,9 @@
 package com.template.stepdefs;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 
@@ -13,6 +15,7 @@ import driver.SharedDriver;
 import helpers.Cart;
 import helpers.Click;
 import helpers.Move;
+import helpers.Verify;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -68,7 +71,57 @@ private BagState bagState;
 	@Then("the entire selected quantity of that product is removed from the cart")
 	public void the_entire_selected_quantity_of_that_product_is_removed_from_the_cart() {
 		Move.idleForX(1000);
-		Assert.assertEquals("Cart value was not updated", bagState.getLineItems()-1, Cart.getLineItemCount());
+		Assert.assertEquals("Unexpected amount of products in cart", 1, Cart.getLineItemCount());
 		DriverFactory.getScenario().write("Cart quantity is correct.");
+		System.out.println(bagState.getLineItems());
 	}
+	
+	@Then("the product is no longer displayed in the shopping bag")
+	public void the_product_is_no_longer_displayed_in_the_shopping_bag() {
+		Assert.assertEquals("Incorrect number of products displayed", bagState.getProductsDisplayed()-1, bag.getItemNumber());
+		DriverFactory.getScenario().write("Correct number of products displayed");
+	}
+	
+	@Then("the empty shopping bag page is displayed")
+	public void the_empty_shopping_bag_page_is_displayed() {
+	    Assert.fail("There is currently no empty bag page");
+	}
+	
+	@Then("each product will display the following attributes if it has that attribute.")
+	public void each_product_will_display_the_following_attributes_if_it_has_that_attribute(List<String> attributes) {
+	    List<String> attNames = Arrays.asList
+	    		("PRODUCT_ID", "INT_NAME", "COLOUR", "SIZE", "SKU_COLLAR_SIZE", "WEB_FIT", "SKU_SLEEVE_LENGTH", "price");
+	    Map<String,String> attributeMap = new LinkedHashMap<String,String>();
+	    for (int i=0; i<attributes.size(); i++) {
+	        attributeMap.put(attributes.get(i), attNames.get(i));
+	    }
+	    bag.verifyProductAttributes(attributeMap);
+	}
+	
+	@Then("no product cells will display")
+	public void no_product_cells_will_display() {
+	    Assert.assertEquals("Product cells are displayed", 0, bag.getItemNumber());
+	    DriverFactory.getScenario().write("No product cells found");
+	}
+
+	@Then("the {string} button is displayed beneath the message")
+	public void continue_Shopping_button_is_displayed_beneath(String button) {
+	    Verify.checkForElementByText(button);
+	}
+
+	@Then("the Order Summary does not display")
+	public void the_Order_Summary_does_not_display() {
+	    Verify.isDisplayed("//pink-order-summary", false);
+	}
+
+	@Then("the Checkout buttons do not display")
+	public void the_Checkout_buttons_do_not_display() {
+		Verify.isDisplayed("//pink-shopping-bag-checkout-buttons", false);
+	}
+
+	@Then("the Helpline component does not display")
+	public void the_Helpline_component_does_not_display() {
+		Verify.isDisplayed("//pink-shopping-bag-checkout-help", false);
+	}
+
 }

@@ -18,7 +18,7 @@ public class SharedDriver {
 				String selenium = System.getProperty("selenium");
 				selenium = selenium==null ? "http://localhost:4444/wd/hub" : selenium;
 				WebDriver driver = new RemoteWebDriver(new URL(selenium), new ChromeOptions());
-				driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+				driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 				driver.manage().window().maximize();
 				driver.manage().deleteAllCookies();
 				DriverFactory.addDriver(driver);

@@ -8,7 +8,7 @@ Feature: Remove Item from Bag (Integration)
 		And the user is on the bag page 
 		When the user clicks on the 'Remove Item' link in the bag
 		Then the entire selected quantity of that product is removed from the cart
-		And the product is no longer displayed in the mini shopping bag
+		And the product is no longer displayed in the shopping bag
 		And the Order Summary values are updated
 			| fields |
 		
@@ -19,8 +19,7 @@ Feature: Remove Item from Bag (Integration)
 		Then the empty shopping bag page is displayed
 		
 	Scenario: Remove Item from mini bag with multiple items
-		Given the user has a shirt in the bag
-		And the user has a tie in the bag
+		Given there are products in the Shopping Bag
 		And the user is on the home page
 		And the mini shopping bag is expanded
 		When the user clicks on the 'Remove Item' link in the mini bag

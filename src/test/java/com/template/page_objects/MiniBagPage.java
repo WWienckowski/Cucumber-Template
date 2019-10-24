@@ -42,6 +42,8 @@ public class MiniBagPage {
 	
 	@FindBy(xpath = "//a[span[text()='Shopping Cart']]") private WebElement bagIcon;
 	
+	@FindBy(className ="bag-item_remove-link") private WebElement removeItem;
+	
 	public MiniBagPage() {
 		 PageFactory.initElements(DriverFactory.getDriver(), this);
 		 }
@@ -55,6 +57,14 @@ public class MiniBagPage {
 		Assert.assertTrue(miniBag.isDisplayed());
 		scenario.write("Bag is expanded.");
 	}
+	
+	public void removeItem() {
+		removeItem.click();
+	}
+	
+	public int getItemNumber() {
+		return bagItems.size();
+	}
 
 	public void miniBagElements(List<String> elements) {
 		int items = bagItems.size();
@@ -64,7 +74,7 @@ public class MiniBagPage {
 	}
 
 	public void bagIsMinimized() {
-		Move.idleForX(1000);
+		Move.idleForX(3000);
 		try {
 			boolean displayed = !miniBag.isDisplayed();
 			Assert.assertTrue("Mini bag is not minimized.", displayed);

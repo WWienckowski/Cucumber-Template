@@ -11,6 +11,7 @@ import org.openqa.selenium.Dimension;
 
 import driver.DriverFactory;
 import driver.SharedDriver;
+import helpers.Input;
 import helpers.Navigate;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
@@ -70,7 +71,7 @@ public class Hooks {
 	  
 	  @After(order=0)
 	  public void clearCookies() {
-		  DriverFactory.getDriver().manage().deleteAllCookies();
+		  Input.clearLocal();
 	  }
 	  
 }

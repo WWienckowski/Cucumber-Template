@@ -35,26 +35,30 @@ public class GenericDefs {
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(500);
 	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(500);
+	    Move.idleForX(1000);
+	    System.out.println(Cart.getLineItemCount());
 	}
 	
 	@Given("the user has a tie in the bag")
 	public void there_is_a_shirt_and_a_tie_in_the_bag() {
 		Navigate.to("product/club-stripe-woven-silk-tie/70111185G2P");
+		Move.idleForX(1000);
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(500);
+	    Move.idleForX(1000);
+	    System.out.println(Cart.getLineItemCount());
 	}
 	
 	@Given("there are products in the Shopping Bag")
 	public void there_are_products_in_the_Shopping_Bag() {
 		Navigate.to("product/poplin-button-cuff/10500040B1X");
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(500);
+	    Move.idleForX(1000);
 	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(500);
+	    Move.idleForX(1000);
 	    Navigate.to("product/club-stripe-woven-silk-tie/70111185G2P");
+	    Move.idleForX(1000);
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(500);
+	    Move.idleForX(1000);
 	}
 	
 	@Given("the cart has 1 item with of quantity 2")
@@ -286,6 +290,11 @@ public class GenericDefs {
 	@Then("there will be an item in the cart")
 	public void there_will_be_an_item_in_the_cart() {
 		DriverFactory.getScenario().write(Input.getPinkShopper());
+	}
+	
+	@Then("the user is presented with the {string} message")
+	public void the_user_is_presented_with_the_Your_Shopping_Bag_is_empty_message(String message) {
+	    Verify.checkForElementByText(message);
 	}
 	
 }

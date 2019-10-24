@@ -1,5 +1,8 @@
 package helpers;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.openqa.selenium.JavascriptExecutor;
 
 import driver.DriverFactory;
@@ -41,7 +44,7 @@ public class Cart {
 	// adds the quantity of all line items in the cart and returns the total
 	public static int getTotalQuantity() {
 		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
-		int totalQuantity = (int) executor.executeScript(
+		long totalQuantity = (long) executor.executeScript(
 				"var shopper = localStorage.getItem('pink-shopper');\n" + 
 				"shopper = JSON.parse(shopper);\n" + 
 				"var count = 0;\n" + 
@@ -49,36 +52,81 @@ public class Cart {
 				"count += shopper['bag']['lineItems'][i]['quantity'];\n" + 
 				"};\n" + 
 				"return count;");
-		return totalQuantity;
+		return Math.toIntExact(totalQuantity);
 	}
 	
 	// get the quantity of a particular lineItem in the cart
 	public static int getItemQuantity(int lineItem) {
 		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
-		int quantity = (int) executor.executeScript(
+		long quantity = (long) executor.executeScript(
 				"var shopper = localStorage.getItem('pink-shopper');\n" + 
 				"shopper = JSON.parse(shopper);\n" + 
 				"return shopper['bag']['lineItems']["+lineItem+"]['quantity'];");
-		return quantity;
+		return Math.toIntExact(quantity);
 	}
 	
 	// get the price of a particular lineItem in the cart
 	public static int getItemPrice(int lineItem) {
 		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
-		int quantity = (int) executor.executeScript(
+		long price = (long) executor.executeScript(
 				"var shopper = localStorage.getItem('pink-shopper');\n" + 
 				"shopper = JSON.parse(shopper);\n" + 
 				"return shopper['bag']['lineItems']["+lineItem+"]['price']['value'];");
-		return quantity;
+		return Math.toIntExact(price);
 	}
+	
+	// get the price of a line item	in cents
+	public static int getLineItemPrice(int index) {
+		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
+		long price = (long) executor.executeScript(
+				"var shopper = localStorage.getItem('pink-shopper');\n" + 
+				"shopper = JSON.parse(shopper);\n" + 
+				"return shopper['bag']['lineItems']["+index+"]['price']['value']['centAmount'];");
+		return Math.toIntExact(price);
+	}
+	
+	// get the total price of a line item in cents
+	public static int getLineItemTotalPrice(int index) {
+		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
+		long totalPrice = (long) executor.executeScript(
+				"var shopper = localStorage.getItem('pink-shopper');\n" + 
+				"shopper = JSON.parse(shopper);\n" + 
+				"return shopper['bag']['lineItems']["+index+"]['totalPrice']['centAmount'];");
+		return Math.toIntExact(totalPrice);
+		}
 		
 	// get the total price of the cart	
 	public static int getTotalPrice() {
 		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
-		int quantity = (int) executor.executeScript(
+		long price = (long) executor.executeScript(
 				"var shopper = localStorage.getItem('pink-shopper');\n" + 
 				"shopper = JSON.parse(shopper);\n" + 
 				"return shopper['bag']['totalPrice']['centAmount'];");
-		return quantity;
+		return Math.toIntExact(price);
+	}
+	
+	// get an ArrayList of the line item's attributes	
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Map<String, Object>> getLineItemAttributes(int index) {
+		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
+		Object attributes = (Object) executor.executeScript(
+				"var shopper = localStorage.getItem('pink-shopper');\n" + 
+				"shopper = JSON.parse(shopper);\n" + 
+				"return shopper['bag']['lineItems']["+index+"]['variant']['attributes'];");
+		ArrayList<Map<String, Object>> attList = new ArrayList<Map<String, Object>>();
+		attList = (ArrayList<Map<String, Object>>) attributes;
+		return attList;
+	}
+	
+	// return a specific lineItem attribute's value from it's name
+	public static String getAttributeValue(ArrayList<Map<String, Object>> attributes, String name) {
+		String value = "Not Found";
+		for (Map<String, Object> map : attributes) {
+			if (map.get("name").equals(name)) {
+				value = map.get("value").toString();
+				break;
+			}
+		}
+		return value;
 	}
 }
