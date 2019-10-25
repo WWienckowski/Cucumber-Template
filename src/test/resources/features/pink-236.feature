@@ -1,4 +1,4 @@
-@PINK-236 @ShoppingBag @Sprint6
+@PINK-236 @ShoppingBag @Sprint6 @parallel
 Feature: Mini Shopping Bag (UI)
   The user must be able to view the products in their shopping bag by hovering over 
   or tapping on the Shopping bag icon in the header. The product cells in the mini shopping bag 

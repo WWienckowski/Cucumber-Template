@@ -1,8 +1,9 @@
-@PINK-267 @ShoppingBag @Sprint6
+@PINK-267 @ShoppingBag @Sprint6 @parallel
 Feature: Remove Item from Bag (Integration)
   User must be able to remove products from their shopping bag,
   both from the shopping bag page and in the mini-shopping bag.
-
+	
+	@incomplete
   Scenario: Remove Item from bag with multiple items
 		Given there are products in the Shopping Bag
 		And the user is on the bag page 

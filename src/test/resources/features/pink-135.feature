@@ -10,8 +10,8 @@ Feature: Checkout Header (UI)
 
   Scenario: The user clicks the Pink Shirtmaker logo in the header
     When the user clicks on Pink Shirtmaker logo in checkout header
-    Then the user is re-directed to the Homepage
+    Then the user is re-directed to the 'Homepage'
 
   Scenario: The user clicks the 'Continue Shopping' link in the header
     When the user clicks on 'Continue Shopping'
-    Then the user is re-directed to the Bag
+    Then the user is re-directed to the 'Bag'

@@ -1,4 +1,4 @@
-@PINK-161 @Checkout @Sprint6
+@PINK-161 @Checkout @Sprint6 @incomplete
 Feature: View Shopping Bag from Checkout (Services)
   The user must be able to review what products are in their shopping bag, 
   attributes for each product and any gift messaging, all without leaving the Checkout page

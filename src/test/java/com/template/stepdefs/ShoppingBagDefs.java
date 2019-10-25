@@ -84,7 +84,7 @@ private BagState bagState;
 	
 	@Then("the empty shopping bag page is displayed")
 	public void the_empty_shopping_bag_page_is_displayed() {
-	    Assert.fail("There is currently no empty bag page");
+		Verify.checkForElementByText("Your Shopping Bag is empty.");
 	}
 	
 	@Then("each product will display the following attributes if it has that attribute.")

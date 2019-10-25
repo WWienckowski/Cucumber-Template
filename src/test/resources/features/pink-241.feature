@@ -1,4 +1,4 @@
-@PINK-241 @ShoppingBag @Sprint6
+@PINK-241 @ShoppingBag @Sprint6 @incomplete
 Feature: Gift Wrap & Gift Message (UI & Integration)
   Users can add complimentary gift wrap or gift message to their products 
   (done at line level not order level).

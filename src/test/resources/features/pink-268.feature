@@ -1,4 +1,4 @@
-@PINK-268 @ShoppingBag @Sprint6
+@PINK-268 @ShoppingBag @Sprint6 @ignore
 Feature: Quantity/price update on bag (Integration)
   Users will see updated price on the product cells and summary on the
   shopping bag when changing the quantity of products

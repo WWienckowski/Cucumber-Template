@@ -1,4 +1,4 @@
-@PINK-154 @Checkout @Sprint5
+@PINK-154 @Checkout @Sprint5 @parallel
 Feature: Card Payment - Field Validation (Services)
   The system must alert the customer if any of their entries in the card payment 
   fields are not in a valid format.

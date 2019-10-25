@@ -37,6 +37,7 @@ public class Hooks {
 		  Dimension d = new Dimension(375,812);
 		  DriverFactory.getDriver().manage().window().setSize(d);
 	      DriverFactory.setScenario(scenario);
+	      Navigate.start();
 	  }
 	  
 	  @After(order=1)

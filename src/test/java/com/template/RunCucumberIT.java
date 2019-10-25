@@ -7,10 +7,10 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		tags = "not @ignore",
+		tags = "not @incomplete",
 		features = "src/test/resources/features",
 		glue = "com.template.stepdefs",
-		plugin = {"json:target/cucumber-json/cucumber.json"},
+		plugin = {"pretty", "json:target/cucumber-json/cucumber.json"},
 		monochrome = true)
 
 public class RunCucumberIT {
