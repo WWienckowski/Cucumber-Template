@@ -46,6 +46,12 @@ private BagState bagState;
 	    bag.summaryUpdateQuantity(fields);
 	}
 	
+	@Then("the Shopping Bag Order Summary values are updated")
+	public void the_shopping_bag_order_summary_values_are_updated() {
+		String total = Integer.toString(Cart.getTotalPrice()).replace("00", "");
+		bag.verifyTotal(total);
+	}
+	
 	@Given("the user has a quantity of 1 selected for a product")
 	public void the_user_has_a_quantity_of_selected_for_a_product() {
 		bag.clickQuantitySelect("decreases");
@@ -122,6 +128,88 @@ private BagState bagState;
 	@Then("the Helpline component does not display")
 	public void the_Helpline_component_does_not_display() {
 		Verify.isDisplayed("//pink-shopping-bag-checkout-help", false);
+	}
+	
+	@Given("the user clicks on the gift wrap checkbox")
+	public void the_user_clicks_on_the_gift_wrap_checkbox() {
+		Move.idleForX(500);
+	    Click.javascriptClickXpath("//div[@class='actions']//input[@type='checkbox']");
+	}
+	
+	@Then("the Optional Gift Message field opens")
+	public void the_Optional_Gift_Message_field_opens() {
+		bag.verifyGiftMessageOpen();
+	}
+	
+	@Then("the field will include ghost text of {string} \\(differs to designs)")
+	public void the_field_will_include_ghost_text_of_differs_to_designs(String placeholder) {
+	    Verify.checkCSS("//textarea", placeholder, "placeholder");
+	}
+
+	@Then("there is a character counter that displays {string}")
+	public void there_is_a_character_counter_that_displays(String counter) {
+	    Verify.checkForElementByText(counter);
+	}
+	
+	@Then("the user is not able to resize the Optional Gift Message field")
+	public void the_user_is_not_able_to_resize_the_Optional_Gift_Message_field() {
+	    Move.idleForX(1000);
+		Verify.checkCSS("//textarea", "none", "resize");
+	}
+	
+	@Then("the gift wrap checkbox displays the cursor as a pointing finger icon")
+	public void the_gift_wrap_checkbox_displays_the_cursor_as_a_pointing_finger_icon() {
+	    bag.verifyGiftWrapCheckboxCursor();
+	}
+	
+	@When("the user starts typing in the Optional Gift Message field")
+	public void the_user_starts_typing_in_the_Optional_Gift_Message_field() {
+	    bag.enterGiftMessage("Test");
+	}
+	
+	@Then("the character counter displays the number of characters entered out of the 200 allowed")
+	public void the_character_counter_displays_the_number_of_characters_entered_out_of_the_allowed() {
+	    bag.checkCharacterCount();
+	}
+	
+	@Then("the Optional Gift Message field closes")
+	public void the_Optional_Gift_Message_field_closes() {
+	    bag.verifyGiftMessageClosed();
+	}
+	
+	@Given("the user has added a gift message")
+	public void the_user_has_added_a_gift_message(String message) {
+		bag.enterGiftMessage(message);
+	}
+	
+	@Then("the gift message they added previously will be displayed")
+	public void the_gift_message_they_added_previously_will_be_displayed(String message) {
+	    bag.checkGiftMessagePersists(message);
+	}
+	
+	@Then("the Gift Wrap checkbox is unchecked")
+	public void the_checkbox_is_unchecked() {
+		Move.idleForX(1000);
+	    Verify.checkCSS("//div[@class='actions']//input[@type='checkbox']", "", "checked");
+	}
+	
+	@Given("the user has typed 200 characters in the Optional Gift Message field")
+	public void the_user_has_typed_characters_in_the_Optional_Gift_Message_field() {
+	    String message = bagState.getMaxGiftMessage();
+	    DriverFactory.getScenario().write(Integer.toString(message.length())+" characters entered");
+		bag.enterGiftMessage(message);
+	}
+
+	@When("the user enters an additional character to the gift message")
+	public void the_user_enters_an_additional_character_to_the_gift_message() {
+		String message = bag.enterCharToGiftMessage();
+		bagState.setGiftMessage(message);
+	}
+
+	@Then("no character is added to the gift message field")
+	public void no_character_is_added_to_the_field() {
+	    Assert.assertEquals("Gift message changed", bagState.getMaxGiftMessage(), bagState.getGiftMessage());
+	    DriverFactory.getScenario().write("Gift message was unchanged");
 	}
 
 }

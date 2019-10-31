@@ -1,4 +1,4 @@
-@PINK-251 @MiniShoppingBag @Sprint6 @parallel
+@PINK-251 @MiniShoppingBag @Sprint7
 Feature: Mini Shopping Bag (Integration)
   On all pages other than the shopping bag, when user is on desktop, 
   on hover of shopping bag icon display the mini bag as per designs. 

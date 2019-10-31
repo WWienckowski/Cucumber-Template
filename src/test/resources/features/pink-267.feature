@@ -1,17 +1,15 @@
-@PINK-267 @ShoppingBag @Sprint6 @parallel
+@PINK-267 @ShoppingBag @Sprint6 
 Feature: Remove Item from Bag (Integration)
   User must be able to remove products from their shopping bag,
   both from the shopping bag page and in the mini-shopping bag.
 	
-	@incomplete
   Scenario: Remove Item from bag with multiple items
 		Given there are products in the Shopping Bag
 		And the user is on the bag page 
 		When the user clicks on the 'Remove Item' link in the bag
 		Then the entire selected quantity of that product is removed from the cart
 		And the product is no longer displayed in the shopping bag
-		And the Order Summary values are updated
-			| fields |
+		And the Shopping Bag Order Summary values are updated
 		
 	Scenario: Remove Item from bag with one item
 		Given the user has a shirt in the bag

@@ -42,7 +42,7 @@ public class Navigate {
 	public static void to(String urlSuffix) {
 		DriverFactory.getScenario().write("Navigating to: "+baseUrl+urlSuffix);
 		DriverFactory.getDriver().get(baseUrl+urlSuffix);
-		new WebDriverWait(DriverFactory.getDriver(), 15).until(ExpectedConditions.presenceOfElementLocated
+		new WebDriverWait(DriverFactory.getDriver(), 15).until(ExpectedConditions.visibilityOfElementLocated
 				(By.tagName("header")));
 	}
 	

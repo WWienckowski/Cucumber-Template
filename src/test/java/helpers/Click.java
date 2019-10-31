@@ -70,12 +70,14 @@ public class Click {
 		wait.until(ExpectedConditions.elementToBeClickable(element));
 		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
 		executor.executeScript("arguments[0].click();", element);	
+		DriverFactory.getScenario().write("Element clicked");
 	}
 	
 	public static void javascriptClickXpath(String xpath) {
 		WebElement element = DriverFactory.getDriver().findElement(By.xpath(xpath));
 		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
 		executor.executeScript("arguments[0].click();", element);
+		DriverFactory.getScenario().write("Element clicked");
 	}
 	
 	public static void clickOnByXpath(String xpath) {

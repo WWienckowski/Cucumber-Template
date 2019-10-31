@@ -156,7 +156,7 @@ public class Verify {
 	
 	public static void checkCursor(String expected, WebElement element) {
 		String cursor = element.getCssValue("cursor");
-		Assert.assertTrue(expected.equals(cursor));
+		Assert.assertEquals("Unexpected cursor value:", expected, cursor);
 		DriverFactory.getScenario().write("Cursor is "+cursor);
 		
 	}

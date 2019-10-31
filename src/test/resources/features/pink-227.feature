@@ -1,4 +1,4 @@
-@PINK-227 @ShoppingBag @Sprint6 @parallel
+@PINK-227 @ShoppingBag @Sprint7
 Feature: Shopping Bag Product Display (UI & Integration)
   This story defines what product attributes must display upon page load of the shopping bag. 
 	It also covers the behaviours around removing products from the shopping bag.

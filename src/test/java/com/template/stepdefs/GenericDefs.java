@@ -2,6 +2,9 @@ package com.template.stepdefs;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+
 import driver.DriverFactory;
 import driver.SharedDriver;
 import helpers.Cart;
@@ -71,6 +74,29 @@ public class GenericDefs {
 	    Move.idleForX(500);
 	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(500);
+	}
+	
+	@Given("the shirt has been gift wrapped")
+	public void the_shirt_has_been_gift_wrapped() {
+		Click.javascriptClickXpath("//span[@class='icon-cart']");
+		Move.idleForX(1500);
+	    Click.javascriptClickXpath("//div[@class='actions']//input[@type='checkbox']");
+	    DriverFactory.getScenario().write("The shirt has been gift wrapped");
+	    Move.idleForX(1500);
+	}
+
+	@Given("the shirt has a gift message")
+	public void the_shirt_has_a_gift_message() {
+		Click.javascriptClickXpath("//span[@class='icon-cart']");
+		Move.idleForX(1500);
+	    Click.javascriptClickXpath("//div[@class='actions']//input[@type='checkbox']");
+	    Move.idleForX(1000);
+	    DriverFactory.getDriver().findElement(By.tagName("textarea")).click();
+		Move.idleForX(500);
+		DriverFactory.getDriver().findElement(By.tagName("textarea")).sendKeys("test message");
+		DriverFactory.getDriver().findElement(By.tagName("textarea")).sendKeys(Keys.TAB);
+		DriverFactory.getScenario().write("Entered: \"test message\"");
+		Move.idleForX(500);
 	}
 	
 	@Given("the user is on the {word} page")
@@ -145,6 +171,11 @@ public class GenericDefs {
 	@Then("there is a {string} checkbox")
 	public void there_is_a_checkbox(String componentText) {
 	    Verify.findComponentByText(componentText);
+	}
+	
+	@Given("the user has not left the page")
+	public void the_user_has_not_left_the_page() {
+	    Move.idleForX(3000);
 	}
 	
 	@Then("there is a {string} button that is grey with white text")

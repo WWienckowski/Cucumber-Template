@@ -3,10 +3,16 @@ package com.template.stepdefs;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import org.junit.Assert;
+import org.openqa.selenium.By;
 
 import com.template.page_objects.CheckoutPage;
 
+import driver.DriverFactory;
 import driver.SharedDriver;
+import helpers.Cart;
 import helpers.Click;
 import helpers.Move;
 import helpers.Navigate;
@@ -517,5 +523,59 @@ public class CheckoutDefs {
 	@Given("the user clicks Continue without entering any information")
 	public void the_user_clicks_Continue_without_entering_any_information() {
 	    Click.clickOnByXpath("//pink-payment-options-form//button");
+	}
+	
+	@When("the user expands the Shopping Bag summary")
+	public void the_user_expands_the_Shopping_Bag_summary() {
+	    checkout.clickBagButton();
+	}
+	
+	@Then("the Gift Wrap check box is not displayed")
+	public void the_Gift_Wrap_check_box_is_not_displayed() {
+	    checkout.verifyGiftWrapCheckbox(false);
+	}
+	
+	@Then("the Gift Wrap box is displayed")
+	public void the_Gift_Wrap_box_is_displayed() {
+		checkout.verifyGiftWrapCheckbox(true);
+	}
+	
+	@Then("the Bag Summary gift message field is not displayed")
+	public void the_Bag_Summary_gift_message_field_is_not_displayed() {
+		checkout.verifyGiftMessageDisplayed(false);
+	}
+	
+	@Then("the gift message field is displayed with the gift message")
+	public void the_gift_message_field_is_displayed_with_the_gift_message() {
+		checkout.verifyGiftMessageDisplayed(true);
+	}
+	
+	@Then("the Bag Summary gift message field is greyed out")
+	public void the_Bag_Summary_gift_message_field_is_greyed_out() {
+	    Verify.checkCSS("//div[@class= 'bag-item_text-area form-control']", "rgba(151, 151, 151, 1)", "color");
+	}
+
+	@Then("the Gift Wrap box is checked and greyed out")
+	public void the_Gift_Wrap_box_is_checked_and_greyed_out() {
+	    Verify.checkCSS("//input[contains(@name, 'CheckoutItemMessage')]", "true", "checked");
+	    Verify.checkCSS("//input[contains(@name, 'CheckoutItemMessage')]", "true", "disabled");
+	}
+	
+	@Then("the user's products are displayed in the Shopping Bag summary")
+	public void the_user_s_products_are_displayed_in_the_Shopping_Bag_summary() {
+	    Assert.assertEquals("Incorrect number of products in summary",
+	    		DriverFactory.getDriver().findElements(By.tagName("pink-bag-item")).size(),
+	    		Cart.getLineItemCount());
+	    DriverFactory.getScenario().write("All items shown");
+	}
+
+	@Then("the primary image for each product is displayed in the Shopping Bag summary")
+	public void the_primary_image_for_each_product_is_displayed_in_the_Shopping_Bag_summary() {
+	    checkout.verifySummaryImages();
+	}
+	
+	@Then("each applicable chosen attribute is displayed for each product")
+	public void each_applicable_chosen_attribute_is_displayed_for_each_product(List<Map<String, String>> attributes) {
+	    checkout.checkDisplayedAttributes(attributes); 
 	}
 }

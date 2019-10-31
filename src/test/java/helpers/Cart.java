@@ -129,4 +129,18 @@ public class Cart {
 		}
 		return value;
 	}
+
+	public static String getLineItemAttribute(int index, String attributeName) {
+		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
+		String attributeValue = (String) executor.executeScript(
+				"var shopper = localStorage.getItem('pink-shopper');\n" + 
+				"shopper = JSON.parse(shopper); \n" + 
+				"shopper = shopper['bag']['lineItems']['"+index+"']['variant']['attributes'];\n" + 
+				"for (i = 0; i<shopper.length ; i++) {\n" + 
+				"	if (shopper[i].name == '"+attributeName+"') {\n" + 
+				"		return shopper[i].value;\n" + 
+				"        }\n" + 
+				"}");
+		return attributeValue;
+	}
 }

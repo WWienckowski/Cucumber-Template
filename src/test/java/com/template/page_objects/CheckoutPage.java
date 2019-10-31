@@ -3,9 +3,11 @@ package com.template.page_objects;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -14,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import driver.DriverFactory;
+import helpers.Cart;
 import helpers.Click;
 import helpers.Move;
 import helpers.Screenshot;
@@ -68,6 +71,18 @@ public class CheckoutPage {
 	@FindAll ( {
 		@FindBy(xpath = "//a[text()='See store details']")
 	}) private List<WebElement> detailLinks;
+	
+	@FindAll ( {
+		@FindBy(xpath = "//input[contains(@name, 'CheckoutItemMessage')]")
+	}) private List<WebElement> giftWrapCheckbox;
+	
+	@FindAll ( {
+		@FindBy(xpath = "//div[@class='bag-item_text-area form-control']")
+	}) private List<WebElement> giftMessageTextbox;
+	
+	@FindAll ( {
+		@FindBy(tagName = "pink-bag-item")
+	}) private List<WebElement> bagItems;
 	
 	@FindBy(tagName = "pink-checkout-shopping-bag") private WebElement bag;
 	
@@ -499,6 +514,75 @@ public class CheckoutPage {
 	public void clickBagButton() {
 		wait.until(ExpectedConditions.elementToBeClickable(bagButton));
 		Click.javascriptClick(bagButton);
+		Move.idleForX(1000);
+	}
+
+	public void verifyGiftWrapCheckbox(boolean expected) {
+		if (giftWrapCheckbox.size() == 0) {
+			scenario.write("Gift wrap checkbox is not displayed");
+			if (expected == false) {
+				return;
+			} else {
+				Assert.fail("Gift wrap checkbox should be displayed");
+			}
+		} else if (giftWrapCheckbox.size() > 0) {
+			scenario.write("Gift wrap checkbox is displayed");
+			if (expected == true) {
+				return;
+			} else {
+				Assert.fail("Gift wrap checkbox should not be displayed");
+			}
+		}
+		
+	}
+
+	public void verifyGiftMessageDisplayed(boolean expected) {
+		if (expected == true) {
+			Assert.assertEquals("Unexpected number of textboxes", 1, giftMessageTextbox.size());
+			Assert.assertEquals("Incorrect message displayed", "test message", giftMessageTextbox.get(0).getText());
+			scenario.write("Gift message is displayed correctly");
+		} else if (expected == false) {
+			Assert.assertEquals("Unexpected number of textboxes", 0, giftMessageTextbox.size());
+			scenario.write("Gift message is not displayed");
+		}
+	}
+
+	public void verifySummaryImages() {
+		for (int i=0; i<Cart.getLineItemCount(); i++) {
+			String id = Cart.getLineItemAttribute(i, "PRODUCT_ID");
+			String imgSrc = bagItems.get(i).findElement(By.xpath(".//img[@class='bag-item_image']")).getAttribute("src");
+			scenario.write("Product ID = "+id+", Product Image Source = "+imgSrc);
+			Assert.assertTrue(imgSrc.contains(id));
+			scenario.write("Image is correct");
+		}
+	}
+
+	public void checkDisplayedAttributes(List<Map<String, String>> attributes) {
+		int errors = 0;
+		for (int i=0; i<Cart.getLineItemCount(); i++) {
+			for (Map<String, String> map : attributes) {
+				for (Map.Entry<String, String> attribute : map.entrySet()) {
+					String productValue = Cart.getLineItemAttribute(i, attribute.getValue());
+					scenario.write(attribute.getKey()+" = "+productValue);
+					try {
+						String text = bagItems.get(i).findElement
+							(By.xpath("//dt[contains(text(), \'"+attribute.getKey()+"\')]/following-sibling::dd")).getText();
+						scenario.write("Displayed = "+text);
+						if (!text.equals(productValue)) {
+							scenario.write("FAILED");
+							errors+=1;
+						}
+					} catch (NoSuchElementException e) {
+						scenario.write("Not Displayed");
+						if (productValue != null) {
+							scenario.write("FAILED");
+							errors+=1;
+						}
+					}
+				}
+			}
+		}
+		Assert.assertTrue(errors+" item properties displayed incorrectly", errors==0);
 	}
 	
 }

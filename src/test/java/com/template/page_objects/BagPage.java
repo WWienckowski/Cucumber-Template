@@ -7,16 +7,20 @@ import java.util.Map;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import driver.DriverFactory;
 import helpers.Cart;
 import helpers.Click;
 import helpers.Move;
 import helpers.Screenshot;
+import helpers.Verify;
 import io.cucumber.core.api.Scenario;
 
 public class BagPage {
@@ -34,11 +38,14 @@ public class BagPage {
 	@FindBy(xpath = "//pink-shopping-bag-item//pink-quantity-selector//a[span[text()='Remove one more']]") 
 	private WebElement minusItem;
 	
-	@FindBy(className = "detail subtotal") private WebElement subtotal;
+	@FindBy(xpath = "//*[contains(@class, 'detail subtotal')]") 
+	private WebElement subtotal;
 	
-	@FindBy(className = "detail tax") private WebElement tax;
+	@FindBy(xpath = "//*[contains(@class, 'detail tax')]") 
+	private WebElement tax;
 	
-	@FindBy(className = "detail total") private WebElement total;
+	@FindBy(xpath = "//*[contains(@class, 'detail total')]") 
+	private WebElement total;
 	
 	@FindAll({
 		@FindBy(tagName = "pink-shopping-bag-item") 
@@ -55,6 +62,15 @@ public class BagPage {
 	@FindAll({
 		@FindBy(xpath = "//pink-shopping-bag-item//pink-quantity-selector") 
 	}) private List<WebElement> quantitySelectors;
+	
+	@FindBy(xpath = "//pink-shopping-bag-item//textarea") 
+	private WebElement giftMessageTextArea;
+	
+	@FindBy(xpath = "//pink-shopping-bag-item//div[@class='character-count']") 
+	private WebElement giftMessageCharCount;
+	
+	@FindBy(xpath = "//div[@class='actions']//input[@type='checkbox']") 
+	private WebElement giftMessageCheckbox;
 	
 	public BagPage() {
 		
@@ -224,6 +240,63 @@ public class BagPage {
 		String message = price.contains(displayPrice) ? "PASS" : "FAIL";
 		scenario.write(message);
 		return price.contains(displayPrice);
+	}
+
+	public void verifyGiftMessageOpen() {
+		new WebDriverWait(DriverFactory.getDriver(), 5).until
+		(ExpectedConditions.visibilityOfElementLocated(By.tagName("textarea")));
+		Assert.assertTrue("Gift Message textarea is not open.", 
+				DriverFactory.getDriver().findElement(By.tagName("textarea")).isDisplayed());
+		scenario.write("Gift message textarea is open and displayed.");
+	}
+
+	public void verifyGiftWrapCheckboxCursor() {
+		Verify.checkCursor("pointer", giftMessageCheckbox);
+	}
+
+	public void enterGiftMessage(String message) {
+		DriverFactory.getDriver().findElement(By.tagName("textarea")).click();
+		Move.idleForX(500);
+		DriverFactory.getDriver().findElement(By.tagName("textarea")).sendKeys(""+message);
+		scenario.write("Entered: "+message);
+	}
+
+	public void checkCharacterCount() {
+		String message = DriverFactory.getDriver().findElement(By.tagName("textarea")).getAttribute("value");
+		scenario.write("Gift message: \'"+message+"\' Length: "+message.length());
+		int charCount = Integer.parseInt(giftMessageCharCount.getText().replace("/ 200", "").trim());
+		scenario.write("Character Count: "+charCount);
+		Assert.assertEquals("Character counter did not match text length", message.length(), charCount);
+	}
+
+	public void verifyGiftMessageClosed() {
+		new WebDriverWait(DriverFactory.getDriver(), 5).until
+		(ExpectedConditions.invisibilityOfElementLocated(By.tagName("textarea")));
+		try {
+			Assert.assertFalse("Gift Message textarea is open.", 
+					DriverFactory.getDriver().findElement(By.tagName("textarea")).isDisplayed());
+		} catch (StaleElementReferenceException e) {
+			
+		}
+		scenario.write("Gift message textarea is closed and no longer displayed.");
+	}
+
+	public void checkGiftMessagePersists(String message) {
+		Move.idleForX(1000);
+		Assert.assertEquals("Message has not been saved correctly",
+				message, DriverFactory.getDriver().findElement(By.tagName("textarea")).getAttribute("value"));
+		scenario.write("Message saved correctly: \'"+message+"\'");
+	}
+
+	public String enterCharToGiftMessage() {
+		DriverFactory.getDriver().findElement(By.tagName("textarea")).sendKeys("Q");
+		return DriverFactory.getDriver().findElement(By.tagName("textarea")).getAttribute("value");
+	}
+
+	public void verifyTotal(String totalPrice) {
+		Move.idleForX(500);
+		Assert.assertTrue("Total was not updated", total.getText().contains(totalPrice));
+		scenario.write("Total was updated");
 	}
 
 }
