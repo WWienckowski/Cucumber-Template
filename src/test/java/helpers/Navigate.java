@@ -31,6 +31,10 @@ public class Navigate {
 			baseUrl="http://localhost:4200/";
 			System.out.println("Running tests on LOCAL environment\n"+baseUrl);
 			break;
+		case "CI":
+			baseUrl="http://pink-test.s3-website-us-east-1.amazonaws.com/";
+			System.out.println("Running tests on CI environment\n"+baseUrl);
+			break;
 		default:
 			baseUrl="http://pink-develop.s3-website.us-east-2.amazonaws.com/";
 			System.out.println("Unknown location argument, running tests on DEV environment\n"+baseUrl);
