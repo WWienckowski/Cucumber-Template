@@ -1,4 +1,4 @@
-@PINK-229 @Sprint6 @ShoppingBag @parallel
+@PINK-229 @Sprint6 @ShoppingBag
 Feature: Empty Shopping Bag Page (UI & Integration)
   Behaviour when user is in shopping bag page and there are no products in the bag. 
   Please note that this ticket includes the integration and requires that the user is 

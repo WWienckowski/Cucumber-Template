@@ -35,11 +35,10 @@ public class GenericDefs {
 	public void the_user_has_an_item_in_the_bag() {
 		Navigate.to("");
 		Navigate.to("product/poplin-button-cuff/10500040B1X");
+		Move.idleForX(1000);
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(500);
-	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(1000);
-	    System.out.println(Cart.getLineItemCount());
+	    DriverFactory.getScenario().write(Integer.toString(Cart.getLineItemCount()));
 	}
 	
 	@Given("the user has a tie in the bag")
@@ -48,7 +47,7 @@ public class GenericDefs {
 		Move.idleForX(1000);
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(1000);
-	    System.out.println(Cart.getLineItemCount());
+	    DriverFactory.getScenario().write(Integer.toString(Cart.getLineItemCount()));
 	}
 	
 	@Given("there are products in the Shopping Bag")
@@ -56,24 +55,23 @@ public class GenericDefs {
 		Navigate.to("product/poplin-button-cuff/10500040B1X");
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(1000);
-	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(1000);
+	    DriverFactory.getScenario().write("Line item 0 quantity: "+Integer.toString(Cart.getItemQuantity(0)));
 	    Navigate.to("product/club-stripe-woven-silk-tie/70111185G2P");
 	    Move.idleForX(1000);
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(1000);
+	    DriverFactory.getScenario().write(Integer.toString(Cart.getLineItemCount())+" line items in bag");
 	}
 	
 	@Given("the cart has 1 item with of quantity 2")
 	public void the_cart_has_item_with_of_quantity_and_item_with_quantity_of() {
 		Navigate.to("product/poplin-button-cuff/10500040B1X");
 		Move.idleForX(1000);
-		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(500);
 	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(500);
 	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(500);
+	    DriverFactory.getScenario().write(Integer.toString(Cart.getItemQuantity(0)));
 	}
 	
 	@Given("the shirt has been gift wrapped")

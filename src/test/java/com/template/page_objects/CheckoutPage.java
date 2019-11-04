@@ -13,6 +13,7 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import driver.DriverFactory;
@@ -41,7 +42,7 @@ public class CheckoutPage {
 	}) private List<WebElement> deliverySpeedRadios;
 	
 	@FindAll( { // A list of the delivery option selectors
-		@FindBy(className = "checkout_delivery-option")
+		@FindBy(xpath = "//pink-delivery-options-selector//div[@class='checkout_delivery-option']")
 	}) private List<WebElement> deliveryOptions;
 	
 	@FindBy(className = "simple-header_logo") private WebElement headerLogo;
@@ -53,6 +54,8 @@ public class CheckoutPage {
 	@FindBy(className = "checkout-shopping-bag") private WebElement shoppingBag;
 	
 	@FindBy(linkText = "login") private WebElement loginLink;
+	
+	@FindBy(xpath = "//button[text()='continue']") private WebElement continueButton;
 	
 	@FindBy(xpath = "//div[@class='wrapper alternate-layout']") private WebElement checkoutFooter;
 	
@@ -87,6 +90,22 @@ public class CheckoutPage {
 	@FindBy(tagName = "pink-checkout-shopping-bag") private WebElement bag;
 	
 	@FindBy(className = "checkout-shopping-bag_button") private WebElement bagButton;
+	
+	@FindBy(xpath = "//pink-order-summary//span[@class='subtotal-detail']") private WebElement deskSub;
+	
+	@FindBy(xpath = "//div[@class='checkout-shopping-bag_list is-open']//span[@class='subtotal-detail']") private WebElement mobileSub;
+	
+	@FindBy(xpath = "//input[@name='userLoqateFinder']") private WebElement addressSearch;
+	
+	@FindAll ({
+		@FindBy(xpath = "//div[@class='address-finder_addresses']//button")
+	}) private List<WebElement> addressSuggestions;
+	
+	@FindBy(xpath = "//a[text()=' enter address manually ']") private WebElement manualAddress;
+	
+	@FindAll ({
+		@FindBy(xpath = "//pink-ship-to-address-form//fieldset")
+	})  private List<WebElement> shipToAddressFieldsets;
 	
 	public CheckoutPage() {
 		 PageFactory.initElements(DriverFactory.getDriver(), this);
@@ -411,10 +430,45 @@ public class CheckoutPage {
 	}
 
 	public void enterPaymentSection() {
-		WebElement edit = DriverFactory.getDriver().findElement(By.xpath("//*[contains(text(), 'Payment')]/a[text()='Edit']"));
-		Move.scrollToElement(edit);
-		edit.click();
-		Move.scrollToElement(edit);
+		enterShippingAddress();
+		Click.javascriptClick(continueButton);
+		Move.idleForX(1000);
+		Move.scrollToTop();
+	}
+
+	private void enterShippingAddress() {
+		// enter SHIPPING ADDRESS
+		expandManualAddressEntry();
+		WebElement shippingAddress = shipToAddressFieldsets.get(0);
+		List<WebElement> inputs = shippingAddress.findElements(By.xpath(".//input"));
+		// select a title
+		Select shipTitle = new Select (shippingAddress.findElement(By.xpath(".//select[@id='shippingTitle']")));
+		shipTitle.selectByValue("Ms.");
+		// select a state
+		Select shipState = new Select (shippingAddress.findElement(By.xpath(".//select[@name='userState']")));
+		shipState.selectByValue("VA");
+		// enter first name
+		inputs.get(0).sendKeys("test");
+		// enter last name
+		inputs.get(1).sendKeys("test");
+		// enter address
+		inputs.get(2).sendKeys("123 Test Street");
+		// enter city
+		inputs.get(4).sendKeys("Testville");
+		// enter zipcode
+		inputs.get(5).sendKeys("23225");
+		// enter CONTACT FOR ORDER
+		WebElement contactInfo = shipToAddressFieldsets.get(2);
+		List<WebElement> contactInputs = contactInfo.findElements(By.xpath(".//input"));
+		// select a title
+		Select userTitle = new Select (contactInfo.findElement(By.xpath(".//select[@id='userTitle']")));
+		userTitle.selectByVisibleText("Ms.");
+		// enter full name
+		contactInputs.get(0).sendKeys("Test Test");
+		// enter email address
+		contactInputs.get(1).sendKeys("Test@test.com");
+		// enter mobile number
+		contactInputs.get(3).sendKeys("123-456-7890");
 	}
 
 	public void choosePaymentType(String paymentType) {
@@ -583,6 +637,97 @@ public class CheckoutPage {
 			}
 		}
 		Assert.assertTrue(errors+" item properties displayed incorrectly", errors==0);
+	}
+
+	public void verifySubtotal(Boolean mobile) {
+		String displayedSubtotal = mobile==true 
+				? mobileSub.getText().replace("$", "") : deskSub.getText().replace("$", "");
+		String actualSubtotal = Cart.getSubtotal();
+		Assert.assertEquals("Subtotal did not match cart", actualSubtotal, displayedSubtotal);
+		scenario.write("Subtotal was correct");
+	}
+
+	public void addressSearchEntry(Integer chars) {
+		int i = 1;
+		while (i<=chars) {
+			addressSearch.sendKeys(Integer.toString(i));
+			i++;
+			Move.idleForX(500);
+		}
+		scenario.write("Entered: "+addressSearch.getAttribute("value"));
+	}
+
+	public void addressSuggestionDisplayed(boolean displayed) {
+		Move.idleForX(1000);
+		int suggestions = addressSuggestions.size();
+		if (displayed==false) {
+			Assert.assertEquals("There are address suggestions", 0, suggestions);
+		} else if (displayed==true) {
+			Assert.assertNotEquals("There are not address suggestions", 0, suggestions);
+		}
+		scenario.write(Integer.toString(suggestions)+" address suggestions displayed");
+	}
+
+	public String selectSuggestedAddress() {
+		String addressInfo = addressSuggestions.get(0).getText();
+		scenario.write(addressInfo);
+		Click.javascriptClick(addressSuggestions.get(0));
+		return addressInfo;
+	}
+
+	public void selectAddressExpandsFields(List<String> fields) {
+		for (String field : fields) {
+			scenario.write("looking for "+field);
+		}
+	}
+
+	public void selectAddressFillsFields(List<String> fields, String address) {
+		scenario.write("Selected Address: "+address);
+		for (String field : fields) {
+			String value =
+					DriverFactory.getDriver().findElement
+					(By.xpath("//*[@placeholder=\'"+field+"\']")).getAttribute("value");
+			scenario.write(value);
+			Assert.assertTrue("Displayed address does not match selected address", address.contains(value.toUpperCase()));
+			scenario.write(field+" displayed correctly");
+		}
+	}
+
+	public void shipToAddressIsActive() {
+		WebElement shipToAddress = deliveryOptions.get(0).findElement(By.xpath(".//label"));
+		if (shipToAddress.getAttribute("class").contains("is-active")) {
+			scenario.write("Ship to Address is active.");
+		} else {
+			scenario.write("Ship to Address is not active");
+			Click.javascriptClick(shipToAddress);
+		}
+	}
+
+	public void expandManualAddressEntry() {
+		Click.javascriptClick(manualAddress);
+		wait.until(ExpectedConditions.numberOfElementsToBeMoreThan
+				(By.xpath("//pink-ship-to-address-form//fieldset[legend[text()=' Shipping address ']]//input"), 4));
+		scenario.write("Ship to address fields expanded");
+	}
+
+	public void enterAddressValue(String field, String entry) {
+		WebElement addressField = shipToAddressFieldsets.get(0).findElement(By.xpath(".//input[@placeholder=\'"+field+"\']"));
+		addressField.sendKeys(entry);
+		Assert.assertEquals(entry, addressField.getAttribute("value"));
+		scenario.write("Entered: "+entry);
+	}
+
+	public void validEntryRemains(String field, String entry) {
+		WebElement addressField = shipToAddressFieldsets.get(0).findElement(By.xpath(".//input[@placeholder=\'"+field+"\']"));
+		Assert.assertEquals("Entry was incorrect", entry, addressField.getAttribute("value"));
+		scenario.write(field+" value: "+entry);
+	}
+
+	public void invalidEntryShowsError(String errorMessage) {
+		int error = shipToAddressFieldsets.get(0).findElements
+				(By.xpath(".//div[contains(text(), \'"+errorMessage+"\' ]")).size();
+		Assert.assertTrue("Error message not displayed", error>0);
+		scenario.write("Error message displayed.");
 	}
 	
 }

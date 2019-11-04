@@ -106,7 +106,12 @@ public class Verify {
 	
 	public static void findElementByPlaceholder(String placeholder) {
 		DriverFactory.getScenario().write("Looking for: "+placeholder);
-		findElementByXpath("//pink-payment-options-form//input[@placeholder=\'"+placeholder+"\']");
+		try {
+			findElementByXpath("//pink-payment-options-form//input[@placeholder=\'"+placeholder+"\']");
+		} catch (Exception e) {
+			DriverFactory.getScenario().write("NOT FOUND");
+		}
+		
 	}
 	
 	public static void findLinkByText(String link) {

@@ -143,4 +143,18 @@ public class Cart {
 				"}");
 		return attributeValue;
 	}
+
+	public static String getSubtotal() {
+		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
+		long subtotal = (long) executor.executeScript(
+				"var shopper = localStorage.getItem('pink-shopper');\n" + 
+				"shopper = JSON.parse(shopper); \n" + 
+				"var items = shopper['bag']['lineItems'].length;\n" + 
+				"var subtotal = 0;\n" + 
+				"for (i=0; i<items; i++) {\n" + 
+				"	subtotal+= shopper['bag']['lineItems'][i]['totalPrice']['centAmount']\n" + 
+				"}\n" + 
+				"return subtotal/100;");
+		return Long.toString(subtotal);
+	}
 }

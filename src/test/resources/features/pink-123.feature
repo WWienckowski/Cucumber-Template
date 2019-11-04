@@ -1,4 +1,4 @@
-@PINK-123 @Checkout @Sprint5 @parallel
+@PINK-123 @Checkout @Sprint5
 Feature: View Shopping Bag from Checkout (UI)
   When the user is on the checkout page they must be able to see a summary of what is in their shopping bag.
   The user cannot make changes to their bag from the checkout page,

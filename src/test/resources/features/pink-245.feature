@@ -1,4 +1,4 @@
-@PINK-267 @ShoppingBag @Sprint6 
+@PINK-245 @ShoppingBag @Sprint7 @Confirmed
 Feature: Remove Item from Bag (Integration)
   User must be able to remove products from their shopping bag,
   both from the shopping bag page and in the mini-shopping bag.

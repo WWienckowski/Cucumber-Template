@@ -1,4 +1,4 @@
-@PINK-230 @ShoppingBag @Sprint6
+@PINK-230 @ShoppingBag @Sprint6 @incomplete
 Feature: Quantity Selector on Shopping Bag (UI & Integration)
   As a user, 
   I want to be able to change the quantity of my items in my shopping bag, 

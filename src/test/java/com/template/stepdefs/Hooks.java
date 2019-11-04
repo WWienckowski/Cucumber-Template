@@ -12,7 +12,6 @@ import org.openqa.selenium.Dimension;
 import driver.DriverFactory;
 import driver.SharedDriver;
 import helpers.Input;
-import helpers.Navigate;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -28,7 +27,6 @@ public class Hooks {
 	  public void initialize(Scenario scenario) {
 	      DriverFactory.getDriver().manage().window().maximize();
 		  DriverFactory.setScenario(scenario);
-		  Navigate.start();
 	  }
 	  
 	  @Before("@mobile")
@@ -37,7 +35,6 @@ public class Hooks {
 		  Dimension d = new Dimension(375,812);
 		  DriverFactory.getDriver().manage().window().setSize(d);
 	      DriverFactory.setScenario(scenario);
-	      Navigate.start();
 	  }
 	  
 	  @After(order=1)

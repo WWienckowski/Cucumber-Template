@@ -8,7 +8,6 @@ services:
     environment:
       - GRID_TIMEOUT=20
       - GRID_SESSION_TIMEOUT=20
-      - GRID_BROWSER_TIMEOUT=15
   chrome:
     image: selenium/node-chrome:3.141.59-vanadium
     volumes:
@@ -19,4 +18,3 @@ services:
       - HUB_HOST=selenium-hub
       - HUB_PORT=4444
       - NODE_TIMEOUT=20
-      - NODE_BROWSER_TIMEOUT=15

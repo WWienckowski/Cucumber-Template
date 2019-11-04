@@ -111,27 +111,27 @@ public class MiniBagPage {
 		Move.scrollToElement(lastItem);
 		Move.idleForX(1000);
 		Assert.assertTrue("Mini bag window did not scroll down properly, y location = "+lastItem.getLocation().getY(),
-				lastItem.getLocation().getY()<=101);
+				lastItem.getLocation().getY()<=170);
 		scenario.write("Mini bag window has scrolled down");
 		Screenshot.includeScreenshot();
 		Move.scrollToElement(firstItem);
 		Move.idleForX(1000);
 		Assert.assertTrue("Mini bag window did not scroll up properly, y location = "+firstItem.getLocation().getY(),
-				firstItem.getLocation().getY()<=101);
+				firstItem.getLocation().getY()<=170);
 		scenario.write("Mini bag window has scrolled up");
 		Screenshot.includeScreenshot();
 	}
 
 	public void scrollMainPage() {
-		WebElement lastItem = bagItems.get(2);
+		WebElement firstItem = bagItems.get(0);
 		Move.scrollToBottom();
 		Move.idleForX(500);
 		Assert.assertTrue("Mini bag scrolled with the main page while scrolling down",
-				Verify.isXaboveY(checkoutButton, lastItem));
+				Verify.isXaboveY(firstItem, checkoutButton));
 		Move.scrollToTop();
 		Move.idleForX(500);
 		Assert.assertTrue("Mini bag scrolled with the main page while scrolling up",
-				Verify.isXaboveY(checkoutButton, lastItem));
+				Verify.isXaboveY(firstItem, checkoutButton));
 		scenario.write("Main page scrolls independently of Mini bag");
 	}
 
