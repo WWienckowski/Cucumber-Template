@@ -40,10 +40,9 @@ Feature: Gift Wrap & Gift Message (UI & Integration)
 	Scenario:	The gift message textfield saves the user's message after closing
 		Given the Optional Gift Message field opens
 		And the user has added a gift message
-			| "test message" |
 		And the user clicks on the gift wrap checkbox
 		And the Optional Gift Message field closes
 		And the user has not left the page
 		When the user clicks on the gift wrap checkbox
+		And the Optional Gift Message field opens
 		Then the gift message they added previously will be displayed
-			| "test message" |

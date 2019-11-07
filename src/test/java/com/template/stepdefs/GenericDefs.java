@@ -99,6 +99,9 @@ public class GenericDefs {
 	
 	@Given("the user is on the {word} page")
 	public void navigate_to_page_url(String urlSuffix) {
+		urlSuffix = urlSuffix.contentEquals("PLP(shirts)") ? "shirts" : urlSuffix;
+		urlSuffix = urlSuffix.contentEquals("PLP(clothing)") ? "clothing" : urlSuffix;
+		urlSuffix = urlSuffix.contentEquals("PLP(accessories)") ? "accessories" : urlSuffix;
 		urlSuffix = urlSuffix.contentEquals("bag") ? "basket/viewbasket" : urlSuffix;
 		urlSuffix = urlSuffix.contentEquals("home") ? "" : urlSuffix;
 		Navigate.to(urlSuffix);
@@ -108,6 +111,11 @@ public class GenericDefs {
 	@When("the user clicks on {string}")
 	public void user_clicks_on(String element) {
 		Click.byText(element);
+	}
+	
+	@When("the user clicks the {string} button")
+	public void the_user_clicks_the_button(String text) {
+	    Click.javascriptClickXpath("//button[contains(text(),\'"+text+"\')]");
 	}
 	
 	@Given("the checkbox for {string} is not checked")
@@ -173,7 +181,7 @@ public class GenericDefs {
 	
 	@Given("the user has not left the page")
 	public void the_user_has_not_left_the_page() {
-	    Move.idleForX(3000);
+	    Move.idleForX(1000);
 	}
 	
 	@Then("there is a {string} button that is grey with white text")
@@ -252,13 +260,14 @@ public class GenericDefs {
 	}
 	
 	@Then("the error message displays as per designs")
-	public void the_error_message_displays_as_per_designs(String message) {
-	    Verify.findComponentByText(message);
+	public void the_error_message_displays_as_per_designs(String text) {
+	    Verify.checkForValidationText(text);
 	}
 	
-	@Then("the error_messages display as per designs")
+	@Then("the error messages display as per designs")
 	public void the_error_messages_display_as_per_designs(List<String> messages) {
-	    for (String message : messages) {
+	    Move.idleForX(1000);
+		for (String message : messages) {
 	    	Verify.findComponentByText(message);
 	    }
 	}
@@ -324,6 +333,11 @@ public class GenericDefs {
 	@Then("the user is presented with the {string} message")
 	public void the_user_is_presented_with_the_Your_Shopping_Bag_is_empty_message(String message) {
 	    Verify.checkForElementByText(message);
+	}
+	
+	@Then("the user is anchored back up to the first error message")
+	public void the_user_is_anchored_back_up_to_the_first_error_message(String errorMessage) {
+	    Verify.screenAnchorsToErrorMessage(errorMessage);
 	}
 	
 }

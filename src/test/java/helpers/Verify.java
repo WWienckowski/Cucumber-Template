@@ -81,6 +81,13 @@ public class Verify {
 		Screenshot.includeScreenshot();
 	}
 	
+	public static void checkForValidationText(String text) {
+		int error = DriverFactory.getDriver().findElements
+				(By.xpath(".//div[contains(text(), \'"+text+"\')]")).size();
+		Assert.assertTrue("Error message not displayed", error>0);
+		DriverFactory.getScenario().write("Error message displayed.");
+	}
+	
 	public static void isXaboveYbyXpath(String xpathX, String xpathY, Boolean expected) {
 		WebElement x = DriverFactory.getDriver().findElement(By.xpath(xpathX));
 		WebElement y = DriverFactory.getDriver().findElement(By.xpath(xpathY));
@@ -199,5 +206,10 @@ public class Verify {
 	
 	public static void getTextByXpath(String xpath) {
 		DriverFactory.getScenario().write(DriverFactory.getDriver().findElement(By.xpath(xpath)).getText());		
+	}
+
+	public static void screenAnchorsToErrorMessage(String errorMessage) {
+		System.out.println(DriverFactory.getDriver()
+				.findElement(By.xpath("//*[contains(text(), \'"+errorMessage+"\')]")).getLocation());
 	}
 }

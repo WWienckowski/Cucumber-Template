@@ -26,11 +26,6 @@ Feature: View Shopping Bag from Checkout (UI)
     When the user clicks on 'Edit Shopping Bag' link
     Then the Shopping Bag page is loaded
 
-  Scenario: Gift message is displayed
-    When the user clicks on the 'Shopping Bag' button
-    Then the gift message field is displayed underneath the associated product
-    And the text is greyed out and not clickable
-
   @mobile
   Scenario: The mobile shopping bag header is sticky
     When the user scrolls down past the Shopping Bag header

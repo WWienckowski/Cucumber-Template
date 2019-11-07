@@ -23,7 +23,7 @@ public class Click {
 			Assert.fail("No element found with this text."
 					+ " \nThere may be a misspelling or a difference in wording or capitalization.");
 		} catch (Exception f) {
-			f.printStackTrace();
+			Assert.fail(f.getMessage());
 		}
 		DriverFactory.getScenario().write("Success");
 	}

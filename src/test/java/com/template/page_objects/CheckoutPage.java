@@ -436,17 +436,17 @@ public class CheckoutPage {
 		Move.scrollToTop();
 	}
 
-	private void enterShippingAddress() {
+	public void enterShippingAddress() {
 		// enter SHIPPING ADDRESS
 		expandManualAddressEntry();
 		WebElement shippingAddress = shipToAddressFieldsets.get(0);
 		List<WebElement> inputs = shippingAddress.findElements(By.xpath(".//input"));
 		// select a title
 		Select shipTitle = new Select (shippingAddress.findElement(By.xpath(".//select[@id='shippingTitle']")));
-		shipTitle.selectByValue("Ms.");
+		shipTitle.selectByVisibleText("Ms.");
 		// select a state
 		Select shipState = new Select (shippingAddress.findElement(By.xpath(".//select[@name='userState']")));
-		shipState.selectByValue("VA");
+		shipState.selectByVisibleText("AL");
 		// enter first name
 		inputs.get(0).sendKeys("test");
 		// enter last name
@@ -702,6 +702,16 @@ public class CheckoutPage {
 			Click.javascriptClick(shipToAddress);
 		}
 	}
+	
+	public void collectInStoreIsActive() {
+		WebElement collectInStore = deliveryOptions.get(1).findElement(By.xpath(".//label"));
+		if (collectInStore.getAttribute("class").contains("is-active")) {
+			scenario.write("Ship to Address is active.");
+		} else {
+			scenario.write("Ship to Address is not active");
+			Click.javascriptClick(collectInStore);
+		}
+	}
 
 	public void expandManualAddressEntry() {
 		Click.javascriptClick(manualAddress);
@@ -725,9 +735,39 @@ public class CheckoutPage {
 
 	public void invalidEntryShowsError(String errorMessage) {
 		int error = shipToAddressFieldsets.get(0).findElements
-				(By.xpath(".//div[contains(text(), \'"+errorMessage+"\' ]")).size();
+				(By.xpath(".//div[contains(text(), \'"+errorMessage+"\')]")).size();
 		Assert.assertTrue("Error message not displayed", error>0);
 		scenario.write("Error message displayed.");
 	}
+
+	public void billingAddressEntry(String field, String entry) {
+		Move.idleForX(500);
+		DriverFactory.getDriver()
+		.findElement(By.xpath("//input[@placeholder=\'"+field+"\']")).sendKeys(entry);
+		scenario.write("Entered: "+entry);
+	}
+
+	public void billingAddressEntryPersists(String field, String entry) {
+		String displayed = DriverFactory.getDriver()
+				.findElement(By.xpath("//input[@placeholder=\'"+field+"\']")).getAttribute("value");
+		Assert.assertEquals("Entry is incorrect", entry, displayed);
+		scenario.write("Entry remains and is correct.");
+	}
+
+	public void billingAddressChooseState(String entry) {
+		Select state = new Select (DriverFactory.getDriver().findElement(By.xpath
+				("//select[@name='userState']")));
+		state.selectByVisibleText(entry);
+		scenario.write("Selected: "+entry);
+	}
+
+	public void billingAddressChooseCounty(String entry) {
+		Select county = new Select (DriverFactory.getDriver().findElement(By.xpath
+				("//select[@name='userCounty']")));
+		county.selectByVisibleText(entry);
+		scenario.write("Selected: "+entry);
+	}
+
+	
 	
 }

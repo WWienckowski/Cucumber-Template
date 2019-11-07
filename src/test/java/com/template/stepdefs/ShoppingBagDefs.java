@@ -178,13 +178,14 @@ private BagState bagState;
 	}
 	
 	@Given("the user has added a gift message")
-	public void the_user_has_added_a_gift_message(String message) {
-		bag.enterGiftMessage(message);
+	public void the_user_has_added_a_gift_message() {
+		bag.enterGiftMessage("Test Message");
+		bag.exitGiftMessage();
 	}
 	
 	@Then("the gift message they added previously will be displayed")
-	public void the_gift_message_they_added_previously_will_be_displayed(String message) {
-	    bag.checkGiftMessagePersists(message);
+	public void the_gift_message_they_added_previously_will_be_displayed() {
+	    bag.checkGiftMessagePersists("Test Message");
 	}
 	
 	@Then("the Gift Wrap checkbox is unchecked")

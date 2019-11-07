@@ -15,6 +15,7 @@ import driver.DriverFactory;
 import driver.SharedDriver;
 import helpers.Cart;
 import helpers.Click;
+import helpers.Input;
 import helpers.Move;
 import helpers.Navigate;
 import helpers.Screenshot;
@@ -36,6 +37,11 @@ public class CheckoutDefs {
 	@Given("the user is in the Ship to Address section")
 	public void the_user_is_in_the_Ship_to_Address_section() {
 	    checkout.shipToAddressIsActive();
+	}
+	
+	@Given("the user is in the Collect in a Pink Store section")
+	public void the_user_is_in_the_Collect_in_a_Pink_Store_section() {
+	    checkout.collectInStoreIsActive();
 	}
 	
 	@When("the Ship to Address section of the UK checkout page loads")
@@ -315,7 +321,6 @@ public class CheckoutDefs {
 
 	@Given("the user is in the payment section of checkout")
 	public void the_user_is_in_the_payment_section_of_checkout() {
-	    // REVIEW this may need to be updated as functionality is added to the site
 		checkout.enterPaymentSection();
 		}
 	
@@ -520,7 +525,7 @@ public class CheckoutDefs {
 	    Navigate.to("checkout");
 	    Move.idleForX(300);
 	    checkout.enterPaymentSection(); 
-	    Move.idleForX(100);
+	    Move.idleForX(1000);
 	}
 	
 	@Given("the user clicks on the {string} button")
@@ -630,23 +635,81 @@ public class CheckoutDefs {
 	    checkout.expandManualAddressEntry();
 	}
 	
-	@When("the user has entered a valid entry into the {string} field")
+	@When("the user has entered a valid entry into the Ship to Address {string} field")
 	public void the_user_has_entered_a_valid_entry_into_the_Last_name_field(String field, String entry) {
 	    checkout.enterAddressValue(field, entry);
 	}
 	
-	@Then("user's entry is displayed in the {string} field after exiting that field")
+	@Then("user's entry is displayed in the Ship to Address {string} field after exiting that field")
 	public void user_s_entry_is_displayed_in_the_Last_name_field_after_exiting_that_field(String field, String entry) {
 	    checkout.validEntryRemains(field, entry);
 	}
 	
-	@Given("the user has entered an invalid entry in the {string} field.")
+	@Given("the user has entered an invalid entry in the Ship to Address {string} field.")
 	public void the_user_has_entered_an_invalid_entry_in_the_field(String field, String entry) {
 	    checkout.enterAddressValue(field, entry);
 	}
 	
-	@Then("the error_message displays as per designs")
-	public void the_error_message_displays_as_per_designs(String errorMessage) {
-	    checkout.invalidEntryShowsError(errorMessage);
+	//@Then("the error message displays as per designs")
+	//public void the_error_message_displays_as_per_designs(String errorMessage) {
+	//    checkout.invalidEntryShowsError(errorMessage);
+	//}
+	
+	@Given("the user has not entered anything in the Billing/Shipping Address fields")
+	public void the_user_has_not_entered_anything_in_the_Billing_Address_fields() {
+	    Move.idleForX(1000);
+	}
+	
+	@Given("the user has entered a valid/invalid entry in the Billing Address {string} field")
+	public void the_user_has_entered_a_valid_entry_in_the_Billing_Address_Address_field(String field, String entry) {
+	    checkout.billingAddressEntry(field, entry);
+	}
+	
+	@When("the user clicks out of the Billing Address field")
+	public void the_user_clicks_out_of_the_Billing_Address_field(String field) {
+	    Input.exitFieldByPlaceholder(field);
+	}
+	
+	@Then("user's entry is displayed in the Billing Address field")
+	public void user_s_entry_is_displayed_in_the_Billing_Address_field(List<String> data) {
+		String field = data.get(0);
+		String entry = data.get(1);
+		checkout.billingAddressEntryPersists(field, entry);
+	}
+	
+	@Given("the user has provided valid entries and selections for all Billing Address fields")
+	public void the_user_has_provided_valid_entries_and_selections_for_all_Billing_Address_fields(Map<String,String> data) {
+	    for (Map.Entry<String,String> pair : data.entrySet()) {
+	    	switch (pair.getKey()) {
+	    	case "State*":
+	    		checkout.billingAddressChooseState(pair.getValue());
+	    		break;
+	    	case "County*":
+	    		checkout.billingAddressChooseCounty(pair.getValue());
+	    		break;
+	    	default:
+	    		checkout.billingAddressEntry(pair.getKey(), pair.getValue());
+	    	}
+	    }
+	}
+	
+	@Given("the user has entered an invalid entry to the Contact for Order {string} field")
+	public void the_user_has_entered_an_invalid_entry_to_the_Contact_for_Order_Full_name_field(String field, String entry) {
+	    Input.inputTextByPlaceholder(field, entry);
+	}
+	
+	@Given("the user has not entered any contact details")
+	public void the_user_has_not_entered_any_contact_details() {
+	    Move.idleForX(500);
+	}
+	
+	@Then("the user remains in the Ship to Address section")
+	public void the_user_remains_in_the_Ship_to_Address_section() {
+	    Verify.findComponentByText("Shipping addess");
+	}
+	
+	@Given("the user has provided valid entries and selections for all Ship to Address fields")
+	public void the_user_has_provided_valid_entries_and_selections_for_all_Ship_to_Address_fields() {
+	    checkout.enterShippingAddress();
 	}
 }

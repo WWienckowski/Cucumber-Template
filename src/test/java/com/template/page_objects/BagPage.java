@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
@@ -243,8 +244,7 @@ public class BagPage {
 	}
 
 	public void verifyGiftMessageOpen() {
-		new WebDriverWait(DriverFactory.getDriver(), 5).until
-		(ExpectedConditions.visibilityOfElementLocated(By.tagName("textarea")));
+		Move.idleForX(5000);
 		Assert.assertTrue("Gift Message textarea is not open.", 
 				DriverFactory.getDriver().findElement(By.tagName("textarea")).isDisplayed());
 		scenario.write("Gift message textarea is open and displayed.");
@@ -255,9 +255,8 @@ public class BagPage {
 	}
 
 	public void enterGiftMessage(String message) {
-		DriverFactory.getDriver().findElement(By.tagName("textarea")).click();
-		Move.idleForX(500);
-		DriverFactory.getDriver().findElement(By.tagName("textarea")).sendKeys(""+message);
+		Move.idleForX(1000);
+		DriverFactory.getDriver().findElement(By.xpath("//div[@class='giftwrap-body']//textarea")).sendKeys(message);
 		scenario.write("Entered: "+message);
 	}
 
@@ -271,10 +270,10 @@ public class BagPage {
 
 	public void verifyGiftMessageClosed() {
 		new WebDriverWait(DriverFactory.getDriver(), 5).until
-		(ExpectedConditions.invisibilityOfElementLocated(By.tagName("textarea")));
+		(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@class='giftwrap-body']//textarea")));
 		try {
 			Assert.assertFalse("Gift Message textarea is open.", 
-					DriverFactory.getDriver().findElement(By.tagName("textarea")).isDisplayed());
+					DriverFactory.getDriver().findElement(By.xpath("//div[@class='giftwrap-body']//textarea")).isDisplayed());
 		} catch (StaleElementReferenceException e) {
 			
 		}
@@ -283,8 +282,9 @@ public class BagPage {
 
 	public void checkGiftMessagePersists(String message) {
 		Move.idleForX(1000);
+		String value = DriverFactory.getDriver().findElement(By.xpath("//div[@class='giftwrap-body']//textarea")).getAttribute("value");
 		Assert.assertEquals("Message has not been saved correctly",
-				message, DriverFactory.getDriver().findElement(By.tagName("textarea")).getAttribute("value"));
+				message, value);
 		scenario.write("Message saved correctly: \'"+message+"\'");
 	}
 
@@ -297,6 +297,11 @@ public class BagPage {
 		Move.idleForX(500);
 		Assert.assertTrue("Total was not updated", total.getText().contains(totalPrice));
 		scenario.write("Total was updated");
+	}
+
+	public void exitGiftMessage() {
+		DriverFactory.getDriver().findElement(By.xpath("//div[@class='giftwrap-body']//textarea")).sendKeys(Keys.TAB);
+		Move.idleForX(500);
 	}
 
 }
