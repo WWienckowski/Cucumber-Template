@@ -54,12 +54,13 @@ public class GenericDefs {
 	public void there_are_products_in_the_Shopping_Bag() {
 		Navigate.to("product/poplin-button-cuff/10500040B1X");
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(1000);
+	    Move.idleForX(2000);
 	    DriverFactory.getScenario().write("Line item 0 quantity: "+Integer.toString(Cart.getItemQuantity(0)));
 	    Navigate.to("product/club-stripe-woven-silk-tie/70111185G2P");
 	    Move.idleForX(1000);
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(1000);
+	    Move.idleForX(2000);
+	    DriverFactory.getScenario().write("Line item 1 quantity: "+Integer.toString(Cart.getItemQuantity(1)));
 	    DriverFactory.getScenario().write(Integer.toString(Cart.getLineItemCount())+" line items in bag");
 	}
 	
@@ -138,7 +139,7 @@ public class GenericDefs {
 	    Click.byAltText(altText);
 	}
 	
-	@When("the user clicks on {string} link")
+	@When("the user clicks on/the {string} link")
 	public void the_user_clicks_on_link(String linkText) {
 	    Click.byLinkText(linkText);
 	}
@@ -338,6 +339,16 @@ public class GenericDefs {
 	@Then("the user is anchored back up to the first error message")
 	public void the_user_is_anchored_back_up_to_the_first_error_message(String errorMessage) {
 	    Verify.screenAnchorsToErrorMessage(errorMessage);
+	}
+	
+	@Then("a {string} link is present")
+	public void a_link_is_present(String linkText) {
+	    Verify.linkIsPresent(linkText);
+	}
+	
+	@Then("a {string} link is not present")
+	public void a_link_is_not_present(String linkText) {
+	    Verify.linkIsAbsent(linkText);
 	}
 	
 }

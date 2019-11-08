@@ -157,4 +157,10 @@ public class Cart {
 				"return subtotal/100;");
 		return Long.toString(subtotal);
 	}
+	
+	public static String getNetworkLog() {
+		String scriptToExecute = "var performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {}; var network = performance.getEntries() || {}; return network;";
+		String netData = ((JavascriptExecutor)DriverFactory.getDriver()).executeScript(scriptToExecute).toString();
+		return netData;
+	}
 }

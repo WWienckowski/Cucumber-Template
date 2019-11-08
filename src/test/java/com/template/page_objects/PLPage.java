@@ -1,10 +1,12 @@
 package com.template.page_objects;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -13,6 +15,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import driver.DriverFactory;
+import helpers.Cart;
 import helpers.Click;
 import helpers.Move;
 import helpers.Verify;
@@ -67,6 +70,10 @@ public class PLPage {
 	@FindAll ({
 		@FindBy(xpath = "//pink-listing-facet-item//div[span[@class='choice selected']]")
 	}) private List<WebElement> activeOptions;
+	
+	@FindAll ({
+		@FindBy(className = "product-name")
+	}) private List<WebElement> productNames;
 
 	public void checkProductsHaveImagesAndSwatches() {
 		int listed = products.size();
@@ -172,6 +179,13 @@ public class PLPage {
 		Move.idleForX(500);
 	}
 
+	private String[] getPLPFilters() {
+		String[] queries = StringUtils.substringsBetween(Cart.getNetworkLog(), "filter.query", ",");
+		String query = queries[queries.length-1];
+		String[] filters = StringUtils.substringsBetween(query, ":%22", "%22");
+		return filters;
+	}
+
 	public void checkActiveAttributeText() {
 		for (WebElement option : activeOptions) {
 			String font = option.findElement(By.xpath(".//span")).getCssValue("font-family").toLowerCase();
@@ -198,6 +212,37 @@ public class PLPage {
 		String border = option.findElement(By.xpath(".//div//div")).getCssValue("borderWidth").toLowerCase();
 		Assert.assertEquals("Bullet border is still heavy", border, "1px");
 		scenario.write("Bullet border has returned to normal");
+	}
+
+	public void updatesForFilters(List<String> originalNames) {
+		String[] filters = getPLPFilters();
+		scenario.write("Filtering by:");
+		for (String filter: filters) {
+			scenario.write(filter);
+		}
+		Assert.assertEquals("Incorrect number of filters are active", filters.length-1, activeOptions.size());
+		Assert.assertFalse("Products did not update", originalNames.equals(getDisplayedProducts()));
+		scenario.write("Products have been updated.");
+	}
+
+	public void checkNoActiveFilters() {
+		Move.idleForX(1000);
+		Assert.assertEquals("There are still active filter options", 0, activeOptions.size());
+		Assert.assertEquals("The page is still filtering results", 1, getPLPFilters().length);
+		scenario.write("No active filters");
+	}
+
+	public List<String> getDisplayedProducts() {
+		List<String> originalProductNames = new ArrayList<String>();
+		for (WebElement productName : productNames) {
+			originalProductNames.add(productName.getText());
+		}
+		return originalProductNames;
+	}
+
+	public void displayOriginalProducts(List<String> originalNames) {
+		Assert.assertTrue("The unfiltered products are not displayed", originalNames.equals(getDisplayedProducts()));
+		scenario.write("The unfiltered products are displayed");
 	}
 
 }

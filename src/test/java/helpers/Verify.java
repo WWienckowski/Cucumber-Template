@@ -212,4 +212,16 @@ public class Verify {
 		System.out.println(DriverFactory.getDriver()
 				.findElement(By.xpath("//*[contains(text(), \'"+errorMessage+"\')]")).getLocation());
 	}
+
+	public static void linkIsPresent(String linkText) {
+		int link = DriverFactory.getDriver().findElements(By.linkText(linkText)).size();
+		Assert.assertNotEquals("No link found with this text: "+linkText, 0, link);
+		DriverFactory.getScenario().write("Link found.");
+	}
+
+	public static void linkIsAbsent(String linkText) {
+		int link = DriverFactory.getDriver().findElements(By.linkText(linkText)).size();
+		Assert.assertEquals(link+" Link(s) found with this text: "+linkText, 0, link);
+		DriverFactory.getScenario().write("Link is absent.");
+	}
 }

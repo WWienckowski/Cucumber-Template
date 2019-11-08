@@ -37,17 +37,18 @@ Feature: PLP Filters UI & Integration Desktop
     And the user clicks on an available attribute
     When the user clicks on that selected attribute again
     Then the attribute reverts back to its normal styling
-    And that filter attribute is removed
-    And the PLP updates to show the products meeting the attribute filter
+    And the PLP updates to show the original products
 
   Scenario: A 'Clear All' button appears when any attributes are selected
-    When the user selects 1 or more filter attributes
-    Then display a 'Clear All' button (as per designs)
+    Given the attribute accordion is expanded
+    When the user clicks on an available attribute
+    Then a 'Clear All' link is present
 
   Scenario: The 'Clear All' button removes all filters when clicked
-    And one or more filter attributes have been selected
-    And a 'Clear All' button is present
-    When the user clicks the 'Clear All' button
+    Given the attribute accordion is expanded
+    And the user clicks on an available attribute
+    And a 'Clear All' link is present
+    When the user clicks the 'Clear All' link
     Then all the filters should be removed
-    And the PLP should update to show all products
-    And the 'Clear All' button should no longer appear
+    And the PLP updates to show the original products
+    And a 'Clear All' link is not present

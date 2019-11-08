@@ -93,7 +93,13 @@ public class PLPDefs {
 	
 	@When("the user clicks on an available attribute")
 	public void the_user_clicks_on_an_available_attribute() {
-	    plp.selectAttribute(0);
+	    plpState.setOriginalProductNames(plp.getDisplayedProducts()); 
+		plp.selectAttribute(0);
+	}
+	
+	@Then("the PLP updates to show the products meeting the attribute filter")
+	public void the_PLP_updates_to_show_the_products_meeting_the_attribute_filter() {
+	    plp.updatesForFilters(plpState.getOriginalProductNames());
 	}
 
 	@Then("the attribute text will be bold")
@@ -115,4 +121,16 @@ public class PLPDefs {
 	public void the_attribute_reverts_back_to_its_normal_styling() {
 	    plp.checkInactiveFilterOptionSyle();
 	}
+	
+	@Then("all the filters should be removed")
+	public void all_the_filters_should_be_removed() {
+	    plp.checkNoActiveFilters();
+	}
+	
+	@Then("the PLP updates to show the original products")
+	public void the_PLP_updates_to_show_the_original_products() {
+	    plp.displayOriginalProducts(plpState.getOriginalProductNames());
+	}
+
+	
 }
