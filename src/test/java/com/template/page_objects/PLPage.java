@@ -22,18 +22,18 @@ import helpers.Verify;
 import io.cucumber.core.api.Scenario;
 
 public class PLPage {
-	Scenario scenario = DriverFactory.getScenario();
+	private Scenario scenario = DriverFactory.getScenario();
 	
 	// xpath variables for individual listing components
-	String masterImageXpath = ".//a[not(contains(@class, 'color-option'))]//img";
-	String colorSwatchXpath = ".//a[contains(@class, 'color-option')]//img";
-	String selectedColorSwatchXpath = ".//a[@class='color-option is-active']//img";
-	String colorVariantNameXpath = ".//span[@class='product-color']";
+	private String masterImageXpath = ".//a[not(contains(@class, 'color-option'))]//img";
+	private String colorSwatchXpath = ".//a[contains(@class, 'color-option')]//img";
+	private String selectedColorSwatchXpath = ".//a[@class='color-option is-active']//img";
+	private String colorVariantNameXpath = ".//span[@class='product-color']";
 	
 	
 	// xpath variables for product facets
-	String filterOptionXpath = ".//pink-listing-facet-item";
-	String upArrowXpath = ".//img[@src='/assets/samples/up-arrow.svg']";
+	private String filterOptionXpath = ".//pink-listing-facet-item";
+	private String upArrowXpath = ".//img[@src='/assets/samples/up-arrow.svg']";
 	
 	public PLPage() {
 		 PageFactory.initElements(DriverFactory.getDriver(), this);
@@ -83,7 +83,7 @@ public class PLPage {
 			Assert.assertNotEquals("Each product does not have a master image", 0, masterImage.size());
 			List<WebElement> swatches = product.findElements(By.xpath(colorSwatchXpath));
 			Assert.assertNotEquals("Each product does not have at least one color swatch", 0, swatches.size());
-			scenario.write(Integer.toString(swatches.size())+" swatches found for item "+(products.indexOf(product)+1));
+			scenario.write(swatches.size() +" swatches found for item "+(products.indexOf(product)+1));
 			Assert.assertTrue("Swatches were not beneath the master image", Verify.isXaboveY(masterImage.get(0), swatches.get(0)));
 			scenario.write("Swatches display beneath the master image");
 		}
@@ -95,7 +95,7 @@ public class PLPage {
 	}
 
 	public Map<String,Object> selectColorSwatch() {
-		Map<String,Object> data = new HashMap<String,Object>();
+		Map<String,Object> data = new HashMap<>();
 		// look through each product cell to find a product with multiple swatches
 		for (WebElement product : products) {
 			List<WebElement> swatches = product.findElements(By.xpath(".//a[contains(@class, 'color-option')]"));
@@ -114,17 +114,15 @@ public class PLPage {
 						break;
 					}
 				}
-				if (data !=null) {
-					break;
-				}
+				break;
 			}
 		}
 		return data;
 	}
 
-	public void checkSwatchMatchesImage(int productIndex, int swatchIndex) {
+	public void checkSwatchMatchesImage(int productIndex) {
 		WebElement product = products.get(productIndex);
-		String masterImage[] = product.findElement(By.xpath(masterImageXpath)).getAttribute("src").split("/");
+		String[] masterImage = product.findElement(By.xpath(masterImageXpath)).getAttribute("src").split("/");
 		String masterId = Arrays.asList(masterImage).get(8);
 		String[] swatch = product.findElement(By.xpath(selectedColorSwatchXpath)).getAttribute("src").split("/");
 		String swatchId = Arrays.asList(swatch).get(8);
@@ -138,34 +136,32 @@ public class PLPage {
 		Assert.assertNotEquals("Color Name did not change", originalColor, newColor);
 		scenario.write("Original color was: "+originalColor+", New color is: "+newColor);
 	}
-	
-	
 
 	public void clickAttribute(int i) {
 		Click.javascriptClick(facets.get(i).findElement(By.xpath(".//div//div")));
 		Move.idleForX(1000);
 	}
 
-	public void checkForFilterOptions(int i) {
-		scenario.write(Integer.toString(openFacets.size())+" open accordians");
+	public void checkForFilterOptions() {
+		scenario.write(openFacets.size() +" open accordions");
 		for (WebElement facet : openFacets) {
 			int filterOptions = facet.findElements(By.xpath(filterOptionXpath)).size();
 			Assert.assertNotEquals("No options shown", 0, filterOptions);
 			scenario.write
-			(Integer.toString(filterOptions)+" filter options found in accordian "+(openFacets.indexOf(facet)+1));	
+			(filterOptions +" filter options found in accordion "+(openFacets.indexOf(facet)+1));
 		}
 		
 	}
 
 	public void checkForUpArrow(int i) {
 		Assert.assertTrue(facets.get(i).findElement(By.xpath(upArrowXpath)).isDisplayed());
-		scenario.write("Up arrow is displayed for the open attribute accordian");
+		scenario.write("Up arrow is displayed for the open attribute accordion");
 	}
 
-	public void checkAllAccordiansMinimised() {
-		Assert.assertEquals("Not all accordians are minimised",
+	public void checkAllAccordionsMinimised() {
+		Assert.assertEquals("Not all accordions are minimised",
 	    		facets.size(), closedFacets.size());
-	    scenario.write("All accordians are minimised");
+	    scenario.write("All accordions are minimised");
 	}
 
 	public void checkAllArrowsPointDown() {
@@ -182,8 +178,7 @@ public class PLPage {
 	private String[] getPLPFilters() {
 		String[] queries = StringUtils.substringsBetween(Cart.getNetworkLog(), "filter.query", ",");
 		String query = queries[queries.length-1];
-		String[] filters = StringUtils.substringsBetween(query, ":%22", "%22");
-		return filters;
+		return StringUtils.substringsBetween(query, ":%22", "%22");
 	}
 
 	public void checkActiveAttributeText() {
@@ -221,7 +216,7 @@ public class PLPage {
 			scenario.write(filter);
 		}
 		Assert.assertEquals("Incorrect number of filters are active", filters.length-1, activeOptions.size());
-		Assert.assertFalse("Products did not update", originalNames.equals(getDisplayedProducts()));
+		Assert.assertNotEquals("Products did not update", originalNames, getDisplayedProducts());
 		scenario.write("Products have been updated.");
 	}
 
@@ -233,7 +228,7 @@ public class PLPage {
 	}
 
 	public List<String> getDisplayedProducts() {
-		List<String> originalProductNames = new ArrayList<String>();
+		List<String> originalProductNames = new ArrayList<>();
 		for (WebElement productName : productNames) {
 			originalProductNames.add(productName.getText());
 		}
@@ -241,7 +236,7 @@ public class PLPage {
 	}
 
 	public void displayOriginalProducts(List<String> originalNames) {
-		Assert.assertTrue("The unfiltered products are not displayed", originalNames.equals(getDisplayedProducts()));
+		Assert.assertEquals("The unfiltered products are not displayed", originalNames, getDisplayedProducts());
 		scenario.write("The unfiltered products are displayed");
 	}
 

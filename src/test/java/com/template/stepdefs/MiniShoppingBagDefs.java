@@ -26,7 +26,7 @@ public class MiniShoppingBagDefs {
 	}
 	
 	@When("the user expands the mini shopping bag")
-	public void the_user_exapands_the_mini_shopping_bag() {
+	public void the_user_expands_the_mini_shopping_bag() {
 	    miniBag.expandBag();
 	}
 	
@@ -99,8 +99,8 @@ public class MiniShoppingBagDefs {
 	    miniBag.scrollMainPage();
 	}
 	
-	@When("the user clicks on the {string} link in the mini bag")
-	public void the_user_clicks_on_the_link_in_the_mini_bag(String string) {
+	@When("the user clicks on the 'Remove Item' link in the mini bag")
+	public void the_user_clicks_on_the_link_in_the_mini_bag() {
 		bagState.setLineItems(Cart.getLineItemCount());
 		bagState.setProductsDisplayed(miniBag.getItemNumber());
 		Click.byLinkText("Remove Item");

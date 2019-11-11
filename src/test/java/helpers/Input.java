@@ -50,10 +50,4 @@ public class Input {
 	    }
 	}
 
-	public static String getPinkShopper() {
-		Move.idleForX(300);
-		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
-		return (String) executor.executeScript("return window.localStorage.getItem('pink-shopper');");
-	}
-
 }

@@ -40,8 +40,8 @@ private BagState bagState;
 		bag.cartUpdatesQuantity(quantity);
 	}
 	
-	@Then("the Order Summary fields are updated to reflect the {word} in cart quantity")
-	public void the_Order_Summary_fields_are_updated_to_reflect_the_change_in_cart_quantity(String change, String fieldsCSV) {
+	@Then("the Order Summary fields are updated to reflect the increase/decrease in cart quantity")
+	public void the_Order_Summary_fields_are_updated_to_reflect_the_change_in_cart_quantity(String fieldsCSV) {
 		List<String> fields = Arrays.asList(fieldsCSV.split("\\s*,\\s*"));
 	    bag.summaryUpdateQuantity(fields);
 	}
@@ -67,8 +67,8 @@ private BagState bagState;
 	    bag.checkProductElements(elements);
 	}
 	
-	@When("the user clicks on the {string} link in the bag")
-	public void the_user_clicks_on_the_link_in_the_bag(String link) {
+	@When("the user clicks on the 'Remove Item' link in the bag")
+	public void the_user_clicks_on_the_link_in_the_bag() {
 	    bagState.setLineItems(Cart.getLineItemCount());
 		bagState.setProductsDisplayed(bag.getItemNumber());
 	    Click.byLinkText("Remove Item");
@@ -97,7 +97,7 @@ private BagState bagState;
 	public void each_product_will_display_the_following_attributes_if_it_has_that_attribute(List<String> attributes) {
 	    List<String> attNames = Arrays.asList
 	    		("PRODUCT_ID", "INT_NAME", "COLOUR", "SIZE", "SKU_COLLAR_SIZE", "WEB_FIT", "SKU_SLEEVE_LENGTH", "price");
-	    Map<String,String> attributeMap = new LinkedHashMap<String,String>();
+	    Map<String,String> attributeMap = new LinkedHashMap<>();
 	    for (int i=0; i<attributes.size(); i++) {
 	        attributeMap.put(attributes.get(i), attNames.get(i));
 	    }
@@ -197,7 +197,7 @@ private BagState bagState;
 	@Given("the user has typed 200 characters in the Optional Gift Message field")
 	public void the_user_has_typed_characters_in_the_Optional_Gift_Message_field() {
 	    String message = bagState.getMaxGiftMessage();
-	    DriverFactory.getScenario().write(Integer.toString(message.length())+" characters entered");
+	    DriverFactory.getScenario().write(message.length() +" characters entered");
 		bag.enterGiftMessage(message);
 	}
 

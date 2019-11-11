@@ -17,20 +17,7 @@ public class Verify {
 		Assert.assertEquals("Input: "+input+"\nValue"+value,input, value);
 		DriverFactory.getScenario().write("Input: "+input+"\nValue"+value);
 	}
-	
-	public static void isSelectedByText(String text, boolean expected) {
-		try {
-			WebElement element = DriverFactory.getDriver().findElement(By.xpath("//input[following-sibling::*[contains(text(), \'"+text+"\')]]"));
-			Boolean actual = element.isSelected();
-			DriverFactory.getScenario().write("Expecting Selected to be: "+expected+"\nSelected is: "+actual);
-			Assert.assertTrue(actual==expected);
-		} catch (NoSuchElementException e) {
-			Assert.fail("No element found with label: "+text+"\nThis may be due to a difference in spelling,"
-					+ "wording, or capitalization.");
-		}
-			
-	}
-	
+
 	public static void isButtonEnabledByText(String text, Boolean expected) {
 		WebElement button = DriverFactory.getDriver().findElement(By.xpath("//button[text()=\'"+text+"\']"));
 		Assert.assertEquals(expected, button.isEnabled());
@@ -42,23 +29,11 @@ public class Verify {
 		if (isActive.getText().matches(element)) {
 			DriverFactory.getScenario().write(element+" is active.");
 		} else {
-			DriverFactory.getScenario().write(element+" is not active");
-			Assert.fail();
+			Assert.fail(element+" is not active");
 		}
 		
 	}
-	
-	public static void isInactiveByText(String element) {
-		WebElement isActive = DriverFactory.getDriver().findElement(By.className("is-active"));
-		if (!isActive.getText().matches(element)) {
-			DriverFactory.getScenario().write(element+" is inactive.");
-		} else {
-			DriverFactory.getScenario().write(element+" is active");
-			Assert.fail();
-		}
-		
-	}
-	
+
 	public static void checkForElementByText(String element) {
 		DriverFactory.getScenario().write("Looking for "+element);
 		WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), 15);
@@ -95,7 +70,7 @@ public class Verify {
 		int xBottom = x.getRect().y+x.getRect().height;
 		int yTop = y.getRect().y;
 		
-		Boolean result = xBottom<=yTop ? true : false;
+		Boolean result = xBottom <= yTop;
 		if (result!=expected) {
 			Assert.fail("Relative element locations were not as expected");
 		}
@@ -110,44 +85,18 @@ public class Verify {
 		}
 		DriverFactory.getScenario().write("Element found.");
 	}
-	
-	public static void findElementByPlaceholder(String placeholder) {
-		DriverFactory.getScenario().write("Looking for: "+placeholder);
-		try {
-			findElementByXpath("//pink-payment-options-form//input[@placeholder=\'"+placeholder+"\']");
-		} catch (Exception e) {
-			DriverFactory.getScenario().write("NOT FOUND");
-		}
-		
-	}
-	
-	public static void findLinkByText(String link) {
-		try {
-			WebElement element = DriverFactory.getDriver().findElement(By.xpath("//*[contains(text(),\'"+link+"\')]"));
-			Move.scrollToElement(element);
-			if (!element.getTagName().contentEquals("a")) {
-				Assert.fail("Expected element tag to be 'a', but it was '"+element.getTagName()+"'");
-			}
-		} catch (Exception e) {
-			Assert.fail("No element found with text: "+link);
-		} 
-		DriverFactory.getScenario().write(link+" link found");
-		Screenshot.includeScreenshot();
-	}
-	
+
 	public static Boolean isXaboveY(WebElement x, WebElement y) {
 		int xBottom = x.getRect().y+x.getRect().height;
 		int yTop = y.getRect().y;
-		
-		Boolean result = xBottom<=yTop ? true : false;
-		
-		return result;
+
+		return xBottom <= yTop;
 	}
 
 	public static void isDisplayed(String xpath, Boolean expected) {
 		List<WebElement> elements = DriverFactory.getDriver().findElements(By.xpath(xpath));
 		if (elements.size()==0) {
-			if (expected==true) {
+			if (expected) {
 				Assert.fail("Element not found");
 			} else {
 				DriverFactory.getScenario().write("Element not found");
@@ -172,38 +121,7 @@ public class Verify {
 		DriverFactory.getScenario().write("Cursor is "+cursor);
 		
 	}
-	
-	public static void verifyToolTipByFieldName(String fieldName) {
-		DriverFactory.getDriver().findElement(By.xpath("//input[contains(@placeholder,\'"+fieldName+
-				"\')]/following-sibling::a[@class='form-control_tooltip']/*[name()='svg']"));
-		Screenshot.includeScreenshot();
-		DriverFactory.getScenario().write("Tool tip icon found");
-	}
-	
-	public static void checkInputFieldPlaceholders(List<String> fieldNames, WebElement fieldset) {
-		Screenshot.includeScreenshotOfElement(fieldset);
-		int notFound = 0;
-		for (String fieldName : fieldNames) {
-			DriverFactory.getScenario().write("\nLooking for: "+fieldName);
-			try {
-				fieldset.findElement(By.xpath(".//input[@placeholder=\'"+fieldName+"\']")); 
-				} catch (Exception e) {
-					try {
-						fieldset.findElement(By.xpath(".//*[contains(text(), \'"+fieldName+"\')]"));
-					} catch (Exception f) {
-						DriverFactory.getScenario().write("NOT FOUND");
-						notFound++;
-						continue;
-					}
-			} 
-			DriverFactory.getScenario().write("Found");
-		}
-		if (notFound > 0) {
-			DriverFactory.getScenario().write(notFound+" elements not found. Scenario failed.");
-			Assert.fail(notFound+" elements not found. Scenario failed.");
-		}
-	}
-	
+
 	public static void getTextByXpath(String xpath) {
 		DriverFactory.getScenario().write(DriverFactory.getDriver().findElement(By.xpath(xpath)).getText());		
 	}

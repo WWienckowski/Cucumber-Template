@@ -139,15 +139,12 @@ public class BagPage {
 				if (attribute.getKey().equals("Price")) {
 					String price = Integer.toString(Cart.getLineItemTotalPrice(i));
 					errors = verifyPrice(price, i) ? errors : errors+1;
-					continue;
 				} else if (attribute.getKey().equals("Primary Product Image")) {
 					String id = Cart.getAttributeValue(prodAtts, attribute.getValue());
 					errors = verifyImage(id, i) ? errors : errors+1;
-					continue;
 				} else {
 					String attName = Cart.getAttributeValue(prodAtts, attribute.getValue());
 					errors = verifyAttribute(attribute.getKey(), attName, i) ? errors : errors+1;
-					continue;
 				}
 			}
 		}
@@ -157,7 +154,7 @@ public class BagPage {
 	}
 	
 	private boolean verifyAttribute(String key, String attName, int i) {
-		Boolean result;
+		boolean result;
 		switch (attName) {
 		// If the attribute is not present on the item, make sure the field is not displayed for that item
 		case "Not Found":
@@ -274,7 +271,7 @@ public class BagPage {
 		try {
 			Assert.assertFalse("Gift Message textarea is open.", 
 					DriverFactory.getDriver().findElement(By.xpath("//div[@class='giftwrap-body']//textarea")).isDisplayed());
-		} catch (StaleElementReferenceException e) {
+		} catch (StaleElementReferenceException ignored) {
 			
 		}
 		scenario.write("Gift message textarea is closed and no longer displayed.");

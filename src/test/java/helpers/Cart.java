@@ -8,29 +8,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import driver.DriverFactory;
 
 public class Cart {
-	
-	public static void makeCart(String token) {
-		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
-		String cart = (String) executor.executeAsyncScript(
-				"var callback = arguments[arguments.length - 1];" +
-				"var xhr = new XMLHttpRequest();\n" + 
-				"xhr.open('POST', 'https://api.sphere.io/pink-shirtmaker-dev/carts', true);\n" +  
-				"xhr.setRequestHeader('Authorization', 'Bearer "+token+"' );\n" +
-				"xhr.onreadystatechange = function() {" +
-			       "  if (xhr.readyState == 4) {" +
-			       "    callback(xhr.responseText);" +
-			       "  }" +
-				"};\n" + 
-				"\n" + 
-				"xhr.send('{\"currency\":\"USD\",\"country\":\"US\",\"taxMode\":\"External\"}');");
-		System.out.println(cart);
-		executor.executeScript(
-				"var existing = localStorage.getItem('pink-shopper');\n" +
-			    "existing = JSON.parse(existing);\n" +
-			    "existing['bag'] = "+cart+";\n" +
-			    "localStorage.setItem('pink-shopper', JSON.stringify(existing));");
-	}
-	
+
 	// returns the amount of line items in the cart
 	public static int getLineItemCount() {
 		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();

@@ -16,7 +16,7 @@ import helpers.Verify;
 import io.cucumber.core.api.Scenario;
 
 public class MiniBagPage {
-	Scenario scenario = DriverFactory.getScenario();
+	private Scenario scenario = DriverFactory.getScenario();
 	
 	@FindBy(xpath = "//*[@class='header-bag is-open']") private WebElement miniBag;
 	
@@ -57,11 +57,7 @@ public class MiniBagPage {
 		Assert.assertTrue(miniBag.isDisplayed());
 		scenario.write("Bag is expanded.");
 	}
-	
-	public void removeItem() {
-		removeItem.click();
-	}
-	
+
 	public int getItemNumber() {
 		return bagItems.size();
 	}

@@ -7,7 +7,7 @@ import io.cucumber.core.api.Scenario;
 
 
 public class HomePage {
-Scenario scenario;
+private Scenario scenario;
 
 	public HomePage(Scenario scenario) {
 		 this.scenario = DriverFactory.getScenario();

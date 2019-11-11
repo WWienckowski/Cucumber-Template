@@ -1,15 +1,13 @@
 package helpers;
 
+import driver.DriverFactory;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import driver.DriverFactory;
 
 public class Click {
 	
@@ -27,19 +25,7 @@ public class Click {
 		}
 		DriverFactory.getScenario().write("Success");
 	}
-	
-	public static void byAltText(String altText) {
-		try {
-			DriverFactory.getScenario().write("Clicking: "+altText);
-			WebDriverWait wait = new WebDriverWait(DriverFactory.getDriver(), 15);
-			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@alt=\'"+altText+"\')]"))).click();
-		} catch (Exception e) {
-			DriverFactory.getScenario().write("Unable to click "+altText);
-			Assert.fail();
-		}
-		DriverFactory.getScenario().write("Success");
-	}
-	
+
 	public static void byLinkText(String linkText) {
 		try {
 			DriverFactory.getScenario().write("Clicking: "+linkText);
@@ -93,9 +79,5 @@ public class Click {
 			}
 			DriverFactory.getScenario().write("Success");
 	}
-	
-	public static void tapAnywhere() {
-		Actions action = new Actions(DriverFactory.getDriver());
-		action.moveByOffset(-100, 0).click().perform();
-	}
+
 }

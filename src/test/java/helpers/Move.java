@@ -8,9 +8,6 @@ import org.openqa.selenium.interactions.Actions;
 import driver.DriverFactory;
 
 public class Move {
-	public static void mouseOut() {
-		moveCursor(50, 50);
-	}
 
 	public static void hoverOnByText(String text) {
 		WebElement element = DriverFactory.getDriver().findElement(By.xpath("//*[contains(text(), \""+text+"\")]"));
@@ -35,12 +32,7 @@ public class Move {
 		((JavascriptExecutor) DriverFactory.getDriver())
 	    .executeScript("window.scrollTo(0, document.body.scrollHeight)");
 	}
-	
-	public static void moveCursor(int x, int y) {
-		Actions pointer = new Actions(DriverFactory.getDriver());
-		pointer.moveByOffset(x, y).perform();
-	}
-	
+
 	public static void moveToXpath(String xpath) {
 		WebElement target = DriverFactory.getDriver().findElement(By.xpath(xpath));
 		Actions pointer = new Actions(DriverFactory.getDriver());

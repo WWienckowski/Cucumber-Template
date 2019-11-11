@@ -10,18 +10,18 @@ Feature: View Shopping Bag from Checkout (UI)
 
   Scenario: The user expands the Shopping Bag
     And the Shopping Bag control is minimised
-    When the user clicks on the 'Shopping Bag' button
+    When the user clicks on the Shopping Bag button
     Then the Shopping Bag control is expanded
     And the user can see the products in the Shopping Bag
 
   Scenario: The user minimises the Shopping Bag
-    When the user clicks on the 'Shopping Bag' button
+    When the user clicks on the Shopping Bag button
     And the Shopping Bag control is expanded
-    When the user clicks on the 'Shopping Bag' button
+    When the user clicks on the Shopping Bag button
     Then the Shopping Bag control is minimised
 
   Scenario: The user clicks the 'Edit Shopping Bag' link
-    Given the user clicks on the 'Shopping Bag' button
+    Given the user clicks on the Shopping Bag button
     And the Shopping Bag control is expanded
     When the user clicks on 'Edit Shopping Bag' link
     Then the Shopping Bag page is loaded

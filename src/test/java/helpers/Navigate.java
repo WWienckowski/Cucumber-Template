@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import driver.DriverFactory;
 
 public class Navigate {
-	final static String baseUrl = checkEnvironment();
+	private final static String baseUrl = checkEnvironment();
 	
 	private static String checkEnvironment() {
 		String baseUrl;
@@ -59,8 +59,4 @@ public class Navigate {
 		DriverFactory.getScenario().write("Current URL is: "+DriverFactory.getDriver().getCurrentUrl());
 	}
 
-	public static void start() {
-		DriverFactory.getDriver().get(baseUrl);
-		Move.idleForX(5000);
-	}
 }

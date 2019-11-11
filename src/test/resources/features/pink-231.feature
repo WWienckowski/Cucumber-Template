@@ -4,6 +4,10 @@ Feature: Edit size in Shopping Bag (UI & Integration)
   I want to be able to change the size of a particular item in my bag, 
   so that I can have the correct size before I purchase
 
+	Background:
+		Given the user has a shirt in the bag
+		And the user is on the bag page
+
   Scenario: Title of your scenario
     Given the user is navigating to the shopping bag page
     When the shopping bag page loads

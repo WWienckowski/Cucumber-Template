@@ -55,13 +55,13 @@ public class GenericDefs {
 		Navigate.to("product/poplin-button-cuff/10500040B1X");
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(2000);
-	    DriverFactory.getScenario().write("Line item 0 quantity: "+Integer.toString(Cart.getItemQuantity(0)));
+	    DriverFactory.getScenario().write("Line item 0 quantity: "+ Cart.getItemQuantity(0));
 	    Navigate.to("product/club-stripe-woven-silk-tie/70111185G2P");
 	    Move.idleForX(1000);
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(2000);
-	    DriverFactory.getScenario().write("Line item 1 quantity: "+Integer.toString(Cart.getItemQuantity(1)));
-	    DriverFactory.getScenario().write(Integer.toString(Cart.getLineItemCount())+" line items in bag");
+	    DriverFactory.getScenario().write("Line item 1 quantity: "+ Cart.getItemQuantity(1));
+	    DriverFactory.getScenario().write(Cart.getLineItemCount() +" line items in bag");
 	}
 	
 	@Given("the cart has 1 item with of quantity 2")
@@ -70,9 +70,9 @@ public class GenericDefs {
 		Move.idleForX(1000);
 	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(500);
-	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+	    Click.javascriptClickXpath("//a[text()='+']");
 	    Move.idleForX(500);
-	    DriverFactory.getScenario().write(Integer.toString(Cart.getItemQuantity(0)));
+	    DriverFactory.getScenario().write(Cart.getItemQuantity(0) +" of selected item in cart");
 	}
 	
 	@Given("the shirt has been gift wrapped")
@@ -118,27 +118,12 @@ public class GenericDefs {
 	public void the_user_clicks_the_button(String text) {
 	    Click.javascriptClickXpath("//button[contains(text(),\'"+text+"\')]");
 	}
-	
-	@Given("the checkbox for {string} is not checked")
-	public void the_checkbox_for_is_not_checked(String checkbox) {
-	    Verify.isSelectedByText(checkbox, false);
-	}
 
 	@When("the user clicks the checkbox for {string}")
 	public void the_user_clicks_the_checkbox_for(String checkbox) {
 	    Click.byCheckboxText(checkbox);
 	}
 
-	@Given("the checkbox for {string} is checked")
-	public void the_checkbox_for_is_checked(String checkbox) {
-		Verify.isSelectedByText(checkbox, true);
-	}
-	
-	@When("the user clicks on {string} image")
-	public void the_user_clicks_on_image(String altText) {
-	    Click.byAltText(altText);
-	}
-	
 	@When("the user clicks on/the {string} link")
 	public void the_user_clicks_on_link(String linkText) {
 	    Click.byLinkText(linkText);
@@ -149,70 +134,12 @@ public class GenericDefs {
 		page = page.contentEquals("Shopping Bag") ? "basket/viewbasket" : page;
 		Navigate.checkUrl(page);
 	}
-	
-	@Then("the {string} button is not disabled")
-	public void the_button_is_not_disabled(String text) {
-	    Verify.isButtonEnabledByText(text, true);
-	}
-	
-	@When("the user clicks on the {string} checkbox")
-	public void the_user_clicks_on_checkbox_by_text(String checkText) {
-	    Click.byCheckboxText(checkText);
-	}
-	
-	@Then("there is a tool tip icon next to the {string} field")
-	public void there_is_a_tool_tip_icon_next_to_the_field(String fieldName) {
-	    Verify.verifyToolTipByFieldName(fieldName);
-	}
-	
-	@When("the user hovers over {string}")
-	public void the_user_hovers_over(String text) {
-	    Move.hoverOnByText(text);
-	}
-	
-	@Then("there is a {string} component as per designs")
-	public void there_is_a_component_as_per_designs(String componentText) {
-	    Verify.findComponentByText(componentText);
-	}
-	
-	@Then("there is a {string} checkbox")
-	public void there_is_a_checkbox(String componentText) {
-	    Verify.findComponentByText(componentText);
-	}
-	
+
 	@Given("the user has not left the page")
 	public void the_user_has_not_left_the_page() {
 	    Move.idleForX(1000);
 	}
-	
-	@Then("there is a {string} button that is grey with white text")
-	public void there_is_a_button_that_is_grey_with_white_text(String componentText) {
-		Verify.findComponentByText(componentText);
-		String xpath = "//*[contains(text(), \'"+componentText+"\')]";
-		Verify.checkCSS(xpath, "rgba(200, 200, 200, 1)", "background-color");
-		Verify.checkCSS(xpath, "rgba(255, 255, 255, 1)", "color");
-	}
-	
-	@When("the user taps anywhere on the screen")
-	public void the_user_taps_anywhere_on_the_screen() {
-	    Click.tapAnywhere();
-	}
-	
-	@Then("the {string} radio button is selected")
-	public void the_radio_button_is_selected(String string) {
-	    Verify.isSelectedByText(string, true);
-	}
-	
-	@Then("an active {string} button will display")
-	public void an_active_button_will_display(String buttonText) {
-	    Verify.isButtonEnabledByText(buttonText, true);
-	}
-	
-	@Then("the mouse cursor will revert to default")
-	public void the_mouse_cursor_will_revert_to_default() {
-	    Verify.checkCSS("//body", "auto", "cursor");
-	}
-	
+
 	@Then("the Shopping Bag page is loaded")
 	public void the_Shopping_Bag_page_is_loaded() {
 	    Navigate.checkUrl("bag");
@@ -221,12 +148,6 @@ public class GenericDefs {
 	@Then("the {string} button turns black")
 	public void the_button_turns_black(String element) {
 	    Verify.isActiveByText(element);
-	}
-	
-	@Then("{string} is bold and underlined")
-	public void is_bold_and_underlined(String text) {
-	    Verify.checkCSS("//*[text()=\'"+text+"\']", "700", "font-weight");
-	    Verify.checkCSS("//*[text()=\'"+text+"\']", "underline solid rgb(0, 0, 0)", "text-decoration");
 	}
 	
 	@Given("the user is in {word} locale")
@@ -247,7 +168,6 @@ public class GenericDefs {
 	@Given("the user has entered an invalid value in the field")
 	public void the_user_is_in_the_string_field(List<String> info) {
 	    Input.inputTextByPlaceholder(info.get(0),info.get(1));
-	    
 	}
 	
 	@Given("the user has entered a valid value in the field")
@@ -290,49 +210,9 @@ public class GenericDefs {
 	    	Verify.checkCSS("//input[@placeholder=\'"+field+"\']", "rgb(196, 11, 20)", "border-color");
 	    }
 	}
-	
-	@When("I make a cart")
-	public void i_make_a_cart() {
-	    Move.idleForX(3000);
-	    String token = Input.getPinkShopper().substring(16, 48);
-	    System.out.println(token);
-		Cart.makeCart(token);
-	}
-	
 
-	@Then("The pink-shopper should have a cart")
-	public void the_pink_shopper_should_have_a_cart() {
-	    System.out.println(Input.getPinkShopper());
-	}
-	
-	@Then("I can add items to the cart")
-	public void i_can_add_items_to_the_cart() {
-	    Navigate.to("product/poplin-button-cuff/10500040B1X");
-	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(1000);
-	    DriverFactory.getScenario().write(Input.getPinkShopper());
-	}
-	
-	@Given("the user goes to a product page")
-	public void the_user_goes_to_a_product_page() {
-		Navigate.to("product/poplin-button-cuff/10500040B1X");
-		Move.idleForX(1000);
-	}
-
-	@Given("adds an item to the card")
-	public void adds_an_item_to_the_card() {
-		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(1000);
-	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	}
-
-	@Then("there will be an item in the cart")
-	public void there_will_be_an_item_in_the_cart() {
-		DriverFactory.getScenario().write(Input.getPinkShopper());
-	}
-	
 	@Then("the user is presented with the {string} message")
-	public void the_user_is_presented_with_the_Your_Shopping_Bag_is_empty_message(String message) {
+	public void the_user_is_presented_with_the_message(String message) {
 	    Verify.checkForElementByText(message);
 	}
 	

@@ -33,7 +33,7 @@ Feature: Collect in Pink Store (UI)
 	Scenario:	The user can return to the store list after selecting a pick up store
 		Given the user clicks on 'Pick-up here'
 		And the 'Picking up' summary and 'Edit' link are displayed
-		When the user clicks on the 'Edit' link in the Picking up summary
+		When the user clicks on the Edit link in the Picking up summary
 		Then a list of Pink stores is displayed
 
 

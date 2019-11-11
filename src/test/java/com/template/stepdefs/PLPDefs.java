@@ -11,8 +11,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class PLPDefs {
-	PLPage plp;
-	PLPState plpState;
+	private PLPage plp;
+	private PLPState plpState;
 	
 	public PLPDefs(SharedDriver driver, PLPage plp, PLPState plpState){
 		this.plp = plp; 
@@ -41,7 +41,7 @@ public class PLPDefs {
 	public void the_master_image_is_the_selected_colour_variant() {
 	    int productIndex = plpState.getProductIndex();
 		int swatchIndex = plpState.getSwatchIndex();
-		plp.checkSwatchMatchesImage(productIndex, swatchIndex);
+		plp.checkSwatchMatchesImage(productIndex);
 	}
 
 	@Then("the name of the selected colour variant is displayed as per designs")
@@ -53,7 +53,7 @@ public class PLPDefs {
 	
 	@Then("all attribute accordions will be minimised")
 	public void all_attribute_accordions_will_be_minimised() {
-		plp.checkAllAccordiansMinimised();
+		plp.checkAllAccordionsMinimised();
 	}
 
 	@Then("the arrows on the attribute accordions will be pointing down")
@@ -68,7 +68,7 @@ public class PLPDefs {
 
 	@Then("the attribute filter options will be displayed")
 	public void the_attribute_filter_options_will_be_displayed() {
-	    plp.checkForFilterOptions(0);
+	    plp.checkForFilterOptions();
 	}
 
 	@Then("the arrow on the accordion will be pointing up")
@@ -81,14 +81,14 @@ public class PLPDefs {
 		plp.clickAttribute(0);
 	}
 
-	@When("the user clicks that attribute accordian")
-	public void the_user_clicks_that_attribute_accordian() {
+	@When("the user clicks that attribute accordion")
+	public void the_user_clicks_that_attribute_accordion() {
 		plp.clickAttribute(0);
 	}
 
-	@Then("the attribute accordian will minimise")
-	public void the_attribute_accordian_will_minimise() {
-	    plp.checkAllAccordiansMinimised();
+	@Then("the attribute accordion will minimise")
+	public void the_attribute_accordion_will_minimise() {
+	    plp.checkAllAccordionsMinimised();
 	}
 	
 	@When("the user clicks on an available attribute")
