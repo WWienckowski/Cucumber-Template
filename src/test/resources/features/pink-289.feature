@@ -1,4 +1,4 @@
-@PINK-289 @Checkout @Sprint7 @incomplete
+@PINK-289 @Checkout @Sprint8 @incomplete
 Feature: Delivery Speed Control (Integration)
   As a user, 
   I want to view what delivery options are available and how much they cost,

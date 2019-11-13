@@ -1,4 +1,4 @@
-@PINK-231 @ShoppingBag @Sprint7 @incomplete
+@PINK-231 @ShoppingBag @Sprint8 @incomplete
 Feature: Edit size in Shopping Bag (UI & Integration)
   As a user, 
   I want to be able to change the size of a particular item in my bag, 

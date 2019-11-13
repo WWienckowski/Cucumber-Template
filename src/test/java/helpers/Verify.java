@@ -25,6 +25,7 @@ public class Verify {
 	}
 	
 	public static void isActiveByText(String element) {
+		Move.idleForX(1000);
 		WebElement isActive = DriverFactory.getDriver().findElement(By.className("is-active"));
 		if (isActive.getText().matches(element)) {
 			DriverFactory.getScenario().write(element+" is active.");

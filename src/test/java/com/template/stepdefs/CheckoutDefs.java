@@ -5,12 +5,14 @@ import com.template.page_objects.CheckoutPage;
 import driver.DriverFactory;
 import driver.SharedDriver;
 import helpers.*;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -307,5 +309,48 @@ public class CheckoutDefs {
 	@Given("the user has provided valid entries and selections for all Ship to Address fields")
 	public void the_user_has_provided_valid_entries_and_selections_for_all_Ship_to_Address_fields() {
 	    checkout.enterShippingAddress();
+	}
+
+	@Then("the TAX field value on the checkout order summary will be zero")
+	public void theTAXFieldValueOnTheCheckoutOrderSummaryWillBeZero() {
+		checkout.startWithZeroTax();
+	}
+
+	@And("the checkout summary TAX will be displayed in dollars")
+	public void theCheckoutSummaryTAXWillBeDisplayedIn$() {
+		checkout.displayTaxInDollars();
+	}
+
+	@And("the user has entered a valid ZIP code in the {string} field")
+	public void theUserHasEnteredAValidZIPCodeInTheZIPCodeField(String field, String entry) {
+		Input.inputTextByPlaceholder(field, entry);
+	}
+
+	@Then("the system will calculate the tax to be applied to the order")
+	public void theSystemWillCalculateTheTaxToBeAppliedToTheOrder() {
+		String taxNumber = Cart.getLineItemAttribute(0, "USSLSTXB2C");
+		DriverFactory.getScenario().write(taxNumber);
+		// TODO calculate tax
+	}
+
+	@And("the TAX field in the Order Summary will display the tax to be applied to the order")
+	public void theTAXFieldInTheOrderSummaryWillDisplayTheTaxToBeAppliedToTheOrder() {
+		// TODO display tax
+	}
+
+	@And("the Contact for Order Component will contain the correct fields")
+	public void theContactForOrderComponentWillContainTheCorrectFields(String stepData) {
+		List<String> fields = Arrays.asList(stepData.split(","));
+		checkout.checkContactFields(fields);
+	}
+
+	@Given("the user has provided valid entries for all required fields in the {string} section")
+	public void theUserHasProvidedValidEntriesForAllRequiredFieldsInTheDelivery_typeSection(String deliveryType) {
+		if (deliveryType.equals("Ship to Address")){
+			checkout.enterShippingAddress();
+		} else {
+			checkout.collectInStoreIsActive();
+			checkout.enterCollectInStoreInfo();
+		}
 	}
 }

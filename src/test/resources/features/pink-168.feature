@@ -1,4 +1,4 @@
-@PINK-168 @Checkout @Sprint7 @incomplete
+@PINK-168 @Checkout @Sprint8 @incomplete
 Feature: Billing Address - Field Validation (Services)
   This is the services ticket for the Billing Address behaviour. 
   The user must be able to use the same billing address as the 

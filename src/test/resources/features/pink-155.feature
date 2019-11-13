@@ -1,4 +1,4 @@
-@PINK-155 @Checkout @Sprint7 @incomplete
+@PINK-155 @Checkout @Sprint8 @incomplete
 Feature: Delivery Address - Field Validation (Services)
   The system must alert the customer if any of their entries in the delivery address fields are invalid.
   NOTE: in-line validation should wait until field is not in focus to show error messages. 

@@ -1,4 +1,4 @@
-@PINK-201 @Checkout @Sprint7 @incomplete
+@PINK-201 @Checkout @Sprint8 @incomplete
 Feature: Create Loqate Service for UK Predictive Address Lookup
   Set up Loqate service to enable users to search and choose their preferred delivery address.
 

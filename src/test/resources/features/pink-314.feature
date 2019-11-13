@@ -1,4 +1,4 @@
-@PINK-314 @PLP @Sprint7 @incomplete
+@PINK-314 @PLP @Sprint8 @incomplete
 Feature: PLP Filters UI & Integration Desktop
   Users must be able to interact with the filters on the PLPs,
   for example by adding or removing filters, opening the filter category accordion, clearing all filters

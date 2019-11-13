@@ -62,7 +62,8 @@ public class CheckoutPage {
 
 	@FindBy(xpath = "//pink-order-summary//span[@class='subtotal-detail']") private WebElement deskSub;
 
-	@FindBy(xpath = "//div[@class='checkout-shopping-bag_list is-open']//span[@class='subtotal-detail']") private WebElement mobileSub;
+	@FindBy(xpath = "//div[@class='checkout-shopping-bag_list is-open']//span[@class='subtotal-detail']")
+	private WebElement mobileSub;
 
 	@FindBy(xpath = "//input[@name='userLoqateFinder']") private WebElement addressSearch;
 	
@@ -75,6 +76,12 @@ public class CheckoutPage {
 	@FindAll ({
 		@FindBy(xpath = "//pink-ship-to-address-form//fieldset")
 	})  private List<WebElement> shipToAddressFieldsets;
+
+	@FindAll ({
+			@FindBy(xpath = "//div[contains(@class, 'summary')]//span[@class='tax-detail']")
+	}) private List<WebElement> taxSummaries;
+
+	@FindBy (xpath = "//pink-contact-form//fieldset") private WebElement contactComponent;
 
 	public void bagControlIsOpen(Boolean open) {
 		Boolean actual;
@@ -101,6 +108,7 @@ public class CheckoutPage {
 	}
 
 	public void enterShippingAddress() {
+		scenario.write("Entering Ship to Address info");
 		// enter SHIPPING ADDRESS
 		expandManualAddressEntry();
 		WebElement shippingAddress = shipToAddressFieldsets.get(0);
@@ -122,11 +130,23 @@ public class CheckoutPage {
 		// enter zipcode
 		inputs.get(5).sendKeys("23225");
 		// enter CONTACT FOR ORDER
-		WebElement contactInfo = shipToAddressFieldsets.get(2);
-		List<WebElement> contactInputs = contactInfo.findElements(By.xpath(".//input"));
+		List<WebElement> contactInputs = contactComponent.findElements(By.xpath(".//input"));
+		// enter email address
+		contactInputs.get(0).sendKeys("Test@test.com");
+		// enter mobile number
+		contactInputs.get(2).sendKeys("123-456-7890");
+	}
+
+	public void enterCollectInStoreInfo () {
+		scenario.write("Entering Collect in Pink Store info");
+		// select a store
+		DriverFactory.getDriver().findElement(By.xpath("//button[text()='Pick-up here']")).click();
+		Move.idleForX(1500);
+		// enter CONTACT FOR ORDER
+		List<WebElement> contactInputs = contactComponent.findElements(By.xpath(".//input"));
 		// select a title
-		Select userTitle = new Select (contactInfo.findElement(By.xpath(".//select[@id='userTitle']")));
-		userTitle.selectByVisibleText("Ms.");
+		Select userTitle = new Select (contactComponent.findElement(By.xpath(".//select[@id='userTitle']")));
+		userTitle.selectByVisibleText("Mr.");
 		// enter full name
 		contactInputs.get(0).sendKeys("Test Test");
 		// enter email address
@@ -280,7 +300,7 @@ public class CheckoutPage {
 		if (shipToAddress.getAttribute("class").contains("is-active")) {
 			scenario.write("Ship to Address is active.");
 		} else {
-			scenario.write("Ship to Address is not active");
+			scenario.write("Ship to Address is not active, clicking Ship to Address");
 			Click.javascriptClick(shipToAddress);
 		}
 	}
@@ -288,9 +308,9 @@ public class CheckoutPage {
 	public void collectInStoreIsActive() {
 		WebElement collectInStore = deliveryOptions.get(1).findElement(By.xpath(".//label"));
 		if (collectInStore.getAttribute("class").contains("is-active")) {
-			scenario.write("Ship to Address is active.");
+			scenario.write("Collect in a Pink Store is active.");
 		} else {
-			scenario.write("Ship to Address is not active");
+			scenario.write("Collect in a Pink Store is not active, clicking Collect in a Pink Store");
 			Click.javascriptClick(collectInStore);
 		}
 	}
@@ -343,6 +363,43 @@ public class CheckoutPage {
 		scenario.write("Selected: "+entry);
 	}
 
-	
-	
+
+	public void startWithZeroTax() {
+		boolean displayed = false;
+		Assert.assertEquals("No tax summary displayed", 2, taxSummaries.size());
+		for (WebElement taxSummary : taxSummaries) {
+			if (taxSummary.isDisplayed()) {
+				displayed = true;
+				Assert.assertEquals("Tax summary was not displayed as 0",
+						"0", taxSummary.getText().replace("$",""));
+				scenario.write("Tax summary initially displays as 0");
+			}
+		}
+		Assert.assertTrue("No tax summary displayed", displayed);
+	}
+
+	public void displayTaxInDollars() {
+		for (WebElement taxSummary : taxSummaries) {
+			if (taxSummary.isDisplayed()) {
+				Assert.assertTrue("$ not present on tax summary", taxSummary.getText().contains("$"));
+			}
+		}
+		scenario.write("Tax is displayed in dollars");
+	}
+
+	public void checkContactFields(List<String> fields) {
+		int errors =0;
+		for (String field : fields) {
+			scenario.write("Looking for "+field);
+			int found = contactComponent.findElements(By.xpath(".//input[@placeholder=\'"+field.trim()+"\']")).size();
+			found += contactComponent.findElements(By.xpath(".//select//option[1][text()=\'"+field.trim()+"\']")).size();
+			if (found != 1) {
+				scenario.write(found+" found... FAIL");
+				errors++;
+			}
+			else scenario.write("Field was found");
+		}
+		if (errors>0) Assert.fail(errors+" fields displayed incorrectly");
+		scenario.write("All fields displayed correctly");
+	}
 }
