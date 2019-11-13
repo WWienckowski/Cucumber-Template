@@ -2,9 +2,11 @@ package helpers;
 
 import java.sql.Date;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
@@ -15,8 +17,12 @@ import driver.DriverFactory;
 
 public class Input {
 	public static void inputTextByPlaceholder(String placeholder, String text) {
-		new WebDriverWait(DriverFactory.getDriver(), 15).until
-		(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder=\'"+placeholder+"\']")));
+		try {
+			new WebDriverWait(DriverFactory.getDriver(), 15).until
+					(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder=\'" + placeholder + "\']")));
+		} catch (TimeoutException t) {
+			Assert.fail("A field with \'"+placeholder+"\' as placeholder text could not be found.");
+		}
 		DriverFactory.getDriver().findElement(By.xpath("//input[@placeholder=\'"+placeholder+"\']")).sendKeys(text);		
 	}
 

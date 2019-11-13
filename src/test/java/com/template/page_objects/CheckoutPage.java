@@ -83,6 +83,12 @@ public class CheckoutPage {
 
 	@FindBy (xpath = "//pink-contact-form//fieldset") private WebElement contactComponent;
 
+	@FindBy (xpath = "//h2[contains(text(),'Delivery')]//a]") private WebElement deliveryEditLink;
+
+	@FindBy (xpath = "//h2[contains(text(),'Payment')]//a]") private WebElement paymentEditLink;
+
+	@FindBy (xpath = "//h2[contains(text(),'Review')]//a]") private WebElement reviewEditLink;
+
 	public void bagControlIsOpen(Boolean open) {
 		Boolean actual;
 		String state = !open ? "closed" : "open";
@@ -112,13 +118,11 @@ public class CheckoutPage {
 		// enter SHIPPING ADDRESS
 		expandManualAddressEntry();
 		WebElement shippingAddress = shipToAddressFieldsets.get(0);
+		Select shipTitle = new Select (shippingAddress.findElement(By.xpath(".//select[@id='shippingTitle']")));
+		Select shipState = new Select (shippingAddress.findElement(By.xpath(".//select[@name='userState']")));
 		List<WebElement> inputs = shippingAddress.findElements(By.xpath(".//input"));
 		// select a title
-		Select shipTitle = new Select (shippingAddress.findElement(By.xpath(".//select[@id='shippingTitle']")));
 		shipTitle.selectByVisibleText("Ms.");
-		// select a state
-		Select shipState = new Select (shippingAddress.findElement(By.xpath(".//select[@name='userState']")));
-		shipState.selectByVisibleText("AL");
 		// enter first name
 		inputs.get(0).sendKeys("test");
 		// enter last name
@@ -127,6 +131,8 @@ public class CheckoutPage {
 		inputs.get(2).sendKeys("123 Test Street");
 		// enter city
 		inputs.get(4).sendKeys("Testville");
+		// select a state
+		shipState.selectByIndex(5);
 		// enter zipcode
 		inputs.get(5).sendKeys("23225");
 		// enter CONTACT FOR ORDER
@@ -401,5 +407,21 @@ public class CheckoutPage {
 		}
 		if (errors>0) Assert.fail(errors+" fields displayed incorrectly");
 		scenario.write("All fields displayed correctly");
+	}
+
+	public void clickToEdit(String section) {
+		scenario.write("Clicking the edit link for the "+section+" section");
+		switch (section) {
+			case "Delivery":
+				Click.javascriptClick(deliveryEditLink);
+			case "Payment":
+				Click.javascriptClick(paymentEditLink);
+			case "Review":
+				Click.javascriptClick(reviewEditLink);
+		}
+	}
+
+	public void changeContactEntries() {
+		// TODO edit the contact info and make sure it is changed
 	}
 }

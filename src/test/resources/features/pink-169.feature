@@ -19,15 +19,15 @@ Feature: Contact for Order Component (Integration)
     | Collect in a Pink Store | Select a Title* , Full name* , Email Address* , Mobile Number* |
 
   Scenario: A user who wants updates will be added to the mailing list
-    Given the user has checked the 'Send me updates from Pink Shirtmaker' checkbox
-    And the user has provided valid entries in all required fields in the Delivery section
-    When the user clicks 'Continue'
-    Then the user's Full Name and Email Address are added to Pink's mailing list
+    Given the user has provided valid entries for all required fields in the 'Ship to Address' section
+    And the user has checked the 'Send me updates from Pink Shirtmaker' checkbox
+    When the user clicks the 'continue' button
+    Then the user\'s cart will reflect their choice to subscribe to updates
 
-  Scenario Outline: The users 'Contact for Order' entries are captured (<delivery_type>)
+  Scenario Outline: The user's 'Contact for Order' entries are captured (<delivery_type>)
     Given the user has provided valid entries for all required fields in the '<delivery_type>' section
-    When the user clicks 'Continue'
-    Then the user's contact_details are captured
+    When the user clicks the 'continue' button
+    Then the user\'s contact details are captured
       | <entries> |
     Examples:
       | delivery_type | entries |
@@ -38,4 +38,4 @@ Feature: Contact for Order Component (Integration)
     Given the user has already completed the Delivery section
     When the user clicks 'Edit' on the Delivery section
     Then the Contact for Order component is active again
-    And the user can change their entries
+    And the user can change their Contact for Order entries

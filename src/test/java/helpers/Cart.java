@@ -1,8 +1,10 @@
 package helpers;
 
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.JavascriptExecutor;
 
 import driver.DriverFactory;
@@ -36,10 +38,22 @@ public class Cart {
 	// get the quantity of a particular lineItem in the cart
 	public static int getItemQuantity(int lineItem) {
 		JavascriptExecutor executor = (JavascriptExecutor)DriverFactory.getDriver();
-		long quantity = (long) executor.executeScript(
-				"var shopper = localStorage.getItem('pink-shopper');\n" + 
-				"shopper = JSON.parse(shopper);\n" + 
-				"return shopper['bag']['lineItems']["+lineItem+"]['quantity'];");
+		int count = 0;
+		int maxTries = 3;
+		long quantity;
+		while(true) {
+			try {
+				quantity = (long) executor.executeScript(
+						"var shopper = localStorage.getItem('pink-shopper');\n" +
+								"shopper = JSON.parse(shopper);\n" +
+								"return shopper['bag']['lineItems'][" + lineItem + "]['quantity'];");
+				break;
+			} catch (JavascriptException js) {
+				DriverFactory.getScenario().write("Attempt "+(count+1)+"/"+maxTries+" has failed.");
+				if (++count == maxTries) throw js;
+				Move.idleForX(3000);
+			}
+		}
 		return Math.toIntExact(quantity);
 	}
 	

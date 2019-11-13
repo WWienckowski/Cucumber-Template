@@ -353,4 +353,35 @@ public class CheckoutDefs {
 			checkout.enterCollectInStoreInfo();
 		}
 	}
+
+    @Then("the user\\'s contact details are captured")
+    public void theUserSContact_detailsAreCaptured(String entries) {
+
+    }
+
+    @Then("the user\\'s cart will reflect their choice to subscribe to updates")
+    public void theUserSCartWillReflectTheirChoiceToSubscribeToUpdates() {
+	    // TODO check the cart object value that indicates a user wants updates
+    }
+
+    @Given("the user has already completed the Delivery section")
+    public void theUserHasAlreadyCompletedTheDeliverySection() {
+	    Move.idleForX(2000);
+	    checkout.enterPaymentSection();
+    }
+
+    @When("the user clicks 'Edit' on the {word} section")
+    public void theUserClicksEditOnTheDeliverySection(String section) {
+	    checkout.clickToEdit(section);
+    }
+
+    @Then("the Contact for Order component is active again")
+    public void theContactForOrderComponentIsActiveAgain() {
+        Verify.findComponentByText("Contact for order");
+    }
+
+    @And("the user can change their Contact for Order entries")
+    public void theUserCanChangeTheirContactForOrderEntries() {
+        checkout.changeContactEntries();
+    }
 }

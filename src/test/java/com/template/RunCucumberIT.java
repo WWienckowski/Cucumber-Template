@@ -10,11 +10,8 @@ import io.cucumber.junit.CucumberOptions;
 		tags = "not @incomplete",
 		features = "src/test/resources/features",
 		glue = "com.template.stepdefs",
-		plugin = {"pretty", "json:target/cucumber-json/cucumber.json"},
+		plugin = {"pretty", "json:target/cucumber-json/cucumber.json", "html:target/cucumber-html"},
 		monochrome = true)
 
 public class RunCucumberIT {
-	
-	
-
 }

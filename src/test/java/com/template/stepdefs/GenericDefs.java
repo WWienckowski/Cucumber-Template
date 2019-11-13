@@ -2,6 +2,7 @@ package com.template.stepdefs;
 
 import java.util.List;
 
+import io.cucumber.java.en.And;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
@@ -53,9 +54,10 @@ public class GenericDefs {
 	@Given("there are products in the Shopping Bag")
 	public void there_are_products_in_the_Shopping_Bag() {
 		Navigate.to("product/poplin-button-cuff/10500040B1X");
+        Move.idleForX(2000);
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(2000);
-	    DriverFactory.getScenario().write("Line item 0 quantity: "+ Cart.getItemQuantity(0));
+	    DriverFactory.getScenario().write("Line item 0 quantity: " + Cart.getItemQuantity(0));
 	    Navigate.to("product/club-stripe-woven-silk-tie/70111185G2P");
 	    Move.idleForX(1000);
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
@@ -230,5 +232,9 @@ public class GenericDefs {
 	public void a_link_is_not_present(String linkText) {
 	    Verify.linkIsAbsent(linkText);
 	}
-	
+
+    @And("the user has checked the {string} checkbox")
+    public void theUserHasCheckedThe_String_Checkbox(String checkText) {
+	    Click.byCheckboxText(checkText);
+    }
 }
