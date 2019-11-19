@@ -7,6 +7,7 @@ import java.nio.file.Files;
 
 import javax.imageio.ImageIO;
 
+import helpers.Navigate;
 import org.openqa.selenium.Dimension;
 
 import driver.DriverFactory;
@@ -26,15 +27,19 @@ public class Hooks {
 	  @Before("not @mobile")
 	  public void initialize(Scenario scenario) {
 	      DriverFactory.getDriver().manage().window().maximize();
+	      DriverFactory.getDriver().manage().deleteAllCookies();
 		  DriverFactory.setScenario(scenario);
+		  Navigate.to("");
 	  }
 	  
 	  @Before("@mobile")
 	  public void initializeMobile(Scenario scenario) {
 		  scenario.write("Simulating mobile browser");
-		  Dimension d = new Dimension(375,812);
-		  DriverFactory.getDriver().manage().window().setSize(d);
+		  Dimension mobile = new Dimension(375,812);
+		  DriverFactory.getDriver().manage().window().setSize(mobile);
+		  DriverFactory.getDriver().manage().deleteAllCookies();
 	      DriverFactory.setScenario(scenario);
+		  Navigate.to("");
 	  }
 	  
 	  @After(order=1)

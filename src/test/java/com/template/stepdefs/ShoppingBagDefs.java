@@ -213,4 +213,8 @@ private BagState bagState;
 	    DriverFactory.getScenario().write("Gift message was unchanged");
 	}
 
+	@Then("the spinner should show up")
+	public void theSpinnerShouldShowUp() {
+		bag.checkLoader();
+	}
 }

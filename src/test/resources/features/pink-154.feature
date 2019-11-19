@@ -7,7 +7,8 @@ Feature: Card Payment - Field Validation (Services)
   Current website shows error messages while typing.
 
   Background: 
-    Given there are products in the Shopping Bag
+    Given the user has a shirt in the bag
+    And the user is on the checkout page
     And the user is in the Card payment section
 
   Scenario Outline: The user inputs invalid Card payment information for: <field>

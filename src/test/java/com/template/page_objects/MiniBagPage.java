@@ -49,11 +49,11 @@ public class MiniBagPage {
 		 }
 	
 	public void hoverOnBagIcon() {
-		Move.HoverOn(bagIcon);
+		Move.hoverOnByElement(bagIcon);
 	}
 	
 	public void expandBag() {
-		Move.HoverOn(bagIcon);
+		Move.hoverOnByElement(bagIcon);
 		Assert.assertTrue(miniBag.isDisplayed());
 		scenario.write("Bag is expanded.");
 	}

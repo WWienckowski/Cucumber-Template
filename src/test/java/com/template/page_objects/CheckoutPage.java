@@ -12,10 +12,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.sql.Driver;
 import java.util.List;
 import java.util.Map;
 
@@ -111,17 +113,18 @@ public class CheckoutPage {
 		Click.javascriptClick(continueButton);
 		Move.idleForX(1000);
 		Move.scrollToTop();
+		Move.idleForX(1000);
 	}
 
 	public void enterShippingAddress() {
 		scenario.write("Entering Ship to Address info");
 		// enter SHIPPING ADDRESS
 		expandManualAddressEntry();
+		Move.idleForX(1500);
 		WebElement shippingAddress = shipToAddressFieldsets.get(0);
-		Select shipTitle = new Select (shippingAddress.findElement(By.xpath(".//select[@id='shippingTitle']")));
-		Select shipState = new Select (shippingAddress.findElement(By.xpath(".//select[@name='userState']")));
 		List<WebElement> inputs = shippingAddress.findElements(By.xpath(".//input"));
 		// select a title
+		Select shipTitle = new Select (shippingAddress.findElement(By.xpath(".//select[@id='shippingTitle']")));
 		shipTitle.selectByVisibleText("Ms.");
 		// enter first name
 		inputs.get(0).sendKeys("test");
@@ -132,7 +135,8 @@ public class CheckoutPage {
 		// enter city
 		inputs.get(4).sendKeys("Testville");
 		// select a state
-		shipState.selectByIndex(5);
+		Select shipState = new Select (shippingAddress.findElement(By.xpath(".//select[@name='userState']")));
+		shipState.selectByVisibleText("VA");
 		// enter zipcode
 		inputs.get(5).sendKeys("23225");
 		// enter CONTACT FOR ORDER
@@ -326,6 +330,7 @@ public class CheckoutPage {
 		wait.until(ExpectedConditions.numberOfElementsToBeMoreThan
 				(By.xpath("//pink-ship-to-address-form//fieldset[legend[text()=' Shipping address ']]//input"), 4));
 		scenario.write("Ship to address fields expanded");
+		Move.idleForX(3000);
 	}
 
 	public void enterAddressValue(String field, String entry) {

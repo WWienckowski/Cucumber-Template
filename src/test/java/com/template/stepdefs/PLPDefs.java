@@ -40,7 +40,6 @@ public class PLPDefs {
 	@Then("the master image is the selected colour variant")
 	public void the_master_image_is_the_selected_colour_variant() {
 	    int productIndex = plpState.getProductIndex();
-		int swatchIndex = plpState.getSwatchIndex();
 		plp.checkSwatchMatchesImage(productIndex);
 	}
 
@@ -107,7 +106,7 @@ public class PLPDefs {
 	    plp.checkActiveAttributeText();
 	}
 
-	@Then("the attribute bullet point is bold\\/circled as per designs")
+	@Then("the attribute bullet point is bold and circled as per designs")
 	public void the_attribute_bullet_point_is_bold_circled_as_per_designs() {
 	    plp.checkActiveAttributeBullets();
 	}

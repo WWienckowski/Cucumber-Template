@@ -29,8 +29,7 @@ public class PLPage {
 	private String colorSwatchXpath = ".//a[contains(@class, 'color-option')]//img";
 	private String selectedColorSwatchXpath = ".//a[@class='color-option is-active']//img";
 	private String colorVariantNameXpath = ".//span[@class='product-color']";
-	
-	
+
 	// xpath variables for product facets
 	private String filterOptionXpath = ".//pink-listing-facet-item";
 	private String upArrowXpath = ".//img[@src='/assets/samples/up-arrow.svg']";

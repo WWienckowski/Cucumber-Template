@@ -17,7 +17,8 @@ import helpers.Verify;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public class GenericDefs {
@@ -34,26 +35,20 @@ public class GenericDefs {
 	
 	@Given("the user has a shirt in the bag")
 	public void the_user_has_an_item_in_the_bag() {
-		Navigate.to("");
-		Navigate.to("product/poplin-button-cuff/10500040B1X");
-		Move.idleForX(1000);
-		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(1000);
-	    DriverFactory.getScenario().write(Integer.toString(Cart.getLineItemCount()));
+		Cart.addShirtToCart();
 	}
 	
 	@Given("the user has a tie in the bag")
 	public void there_is_a_shirt_and_a_tie_in_the_bag() {
-		Navigate.to("product/club-stripe-woven-silk-tie/70111185G2P");
-		Move.idleForX(1000);
-		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(1000);
-	    DriverFactory.getScenario().write(Integer.toString(Cart.getLineItemCount()));
+		Cart.addTieToCart();
 	}
 	
 	@Given("there are products in the Shopping Bag")
 	public void there_are_products_in_the_Shopping_Bag() {
-		Navigate.to("product/poplin-button-cuff/10500040B1X");
+		Cart.addShirtToCart();
+		Cart.addTieToCart();
+
+		/*Navigate.to("product/poplin-button-cuff/10500040B1X");
         Move.idleForX(2000);
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(2000);
@@ -63,18 +58,12 @@ public class GenericDefs {
 		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
 	    Move.idleForX(2000);
 	    DriverFactory.getScenario().write("Line item 1 quantity: "+ Cart.getItemQuantity(1));
-	    DriverFactory.getScenario().write(Cart.getLineItemCount() +" line items in bag");
+	    DriverFactory.getScenario().write(Cart.getLineItemCount() +" line items in bag");*/
 	}
 	
 	@Given("the cart has 1 item with of quantity 2")
 	public void the_cart_has_item_with_of_quantity_and_item_with_quantity_of() {
-		Navigate.to("product/poplin-button-cuff/10500040B1X");
-		Move.idleForX(1000);
-	    Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
-	    Move.idleForX(500);
-	    Click.javascriptClickXpath("//a[text()='+']");
-	    Move.idleForX(500);
-	    DriverFactory.getScenario().write(Cart.getItemQuantity(0) +" of selected item in cart");
+		Cart.addItemWithQuantityTwo();
 	}
 	
 	@Given("the shirt has been gift wrapped")
@@ -102,18 +91,24 @@ public class GenericDefs {
 	
 	@Given("the user is on the {word} page")
 	public void navigate_to_page_url(String urlSuffix) {
-		urlSuffix = urlSuffix.contentEquals("PLP(shirts)") ? "shirts" : urlSuffix;
-		urlSuffix = urlSuffix.contentEquals("PLP(clothing)") ? "clothing" : urlSuffix;
-		urlSuffix = urlSuffix.contentEquals("PLP(accessories)") ? "accessories" : urlSuffix;
-		urlSuffix = urlSuffix.contentEquals("bag") ? "basket/viewbasket" : urlSuffix;
-		urlSuffix = urlSuffix.contentEquals("home") ? "" : urlSuffix;
-		Navigate.to(urlSuffix);
-		Move.idleForX(1000);
+		if (urlSuffix.equalsIgnoreCase("checkout")) {
+			Navigate.toCheckout();
+		} else if (urlSuffix.equalsIgnoreCase("bag")) {
+			Navigate.toBag();
+		} else {
+			urlSuffix = urlSuffix.contentEquals("PLP(shirts)") ? "shirts" : urlSuffix;
+			urlSuffix = urlSuffix.contentEquals("PLP(clothing)") ? "clothing" : urlSuffix;
+			urlSuffix = urlSuffix.contentEquals("PLP(accessories)") ? "accessories" : urlSuffix;
+			urlSuffix = urlSuffix.contentEquals("home") ? "" : urlSuffix;
+			Navigate.to(urlSuffix);
+			Move.idleForX(1000);
+		}
+		Move.idleForX(5000);
 	}
 	
 	@When("the user clicks on {string}")
 	public void user_clicks_on(String element) {
-		Click.byText(element);
+		Click.javascriptClickXpath("//*[text()=\'"+element+"\']");
 	}
 	
 	@When("the user clicks the {string} button")
@@ -149,7 +144,7 @@ public class GenericDefs {
 	
 	@Then("the {string} button turns black")
 	public void the_button_turns_black(String element) {
-	    Verify.isActiveByText(element);
+		Verify.isActiveByText(element);
 	}
 	
 	@Given("the user is in {word} locale")

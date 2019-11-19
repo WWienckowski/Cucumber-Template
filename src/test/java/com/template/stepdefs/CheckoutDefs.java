@@ -125,10 +125,7 @@ public class CheckoutDefs {
 	
 	@Given("the user is in the Card payment section")
 	public void the_user_is_in_the_Card_payment_section() {
-	    Navigate.to("checkout");
-	    Move.idleForX(300);
-	    checkout.enterPaymentSection(); 
-	    Move.idleForX(1000);
+	    checkout.enterPaymentSection();
 	}
 	
 	@Given("the user clicks on the Shopping Bag button")

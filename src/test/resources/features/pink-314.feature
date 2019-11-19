@@ -17,14 +17,14 @@ Feature: PLP Filters UI & Integration Desktop
 
   Scenario: Expanded attribute menus minimise when clicked
     Given the attribute accordion is expanded
-    When the user clicks that attribute accordian
-    Then the attribute accordian will minimise
+    When the user clicks that attribute accordion
+    Then the attribute accordion will minimise
 
   Scenario: Selecting an attribute updates the products and makes the selection bold
     Given the attribute accordion is expanded
     When the user clicks on an available attribute
     Then the attribute text will be bold
-    And the attribute bullet point is bold/circled as per designs
+    And the attribute bullet point is bold and circled as per designs
     And the PLP updates to show the products meeting the attribute filter
 
   Scenario: Unavailable attributes change nothing

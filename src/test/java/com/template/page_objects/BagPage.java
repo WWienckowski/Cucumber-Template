@@ -14,6 +14,7 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import driver.DriverFactory;
@@ -72,6 +73,10 @@ public class BagPage {
 	
 	@FindBy(xpath = "//div[@class='actions']//input[@type='checkbox']") 
 	private WebElement giftMessageCheckbox;
+
+	@FindBy(className = "loader-spinner_icon") private WebElement spinnerIcon;
+
+	@FindBy(className = "loader-spinner_bg") private WebElement spinnerBackground;
 	
 	public BagPage() {
 		
@@ -90,7 +95,7 @@ public class BagPage {
 	}
 
 	public void cartUpdatesQuantity(String quantity) {
-		Move.idleForX(600);
+		Move.idleForX(2000);
 		Screenshot.includeScreenshotOfElement(quantitySelect);
 		String number = quantityNo.getText();
 		switch (quantity) {
@@ -109,9 +114,9 @@ public class BagPage {
 		System.out.println(fields);
 		switch (fields.size()) {
 		case 2:
-			// check uk fields
+			// TODO check uk fields
 		case 3:
-			// check us and row?
+			// TODO check us and row
 		}
 	}
 
@@ -159,7 +164,7 @@ public class BagPage {
 		// If the attribute is not present on the item, make sure the field is not displayed for that item
 		case "Not Found":
 			int elements = bagItems.get(i).findElements
-			(By.xpath(".//*[contains(text(), \'"+key+"\')]")).size();
+			(By.xpath(".//*[text()= \'"+key+":\']")).size();
 			String message = elements==0 ? key+" not displayed. \nPASS" : key+" displayed. \nFAIL";
 			scenario.write("Item has no "+key+" attribute, "+message);
 			result = elements==0;
@@ -186,8 +191,9 @@ public class BagPage {
 				break;
 			} else if (key.equals("Size") || key.equals("Collar Size")) {
 				try {
-					displayed = bagItems.get(i).findElement
-							(By.xpath("//div[span[contains(text(), \'"+key+"\')]]//select")).getAttribute("value");
+					Select size = new Select(bagItems.get(i).findElement
+							(By.xpath("//div[span[contains(text(), \'"+key+"\')]]//select")));
+					displayed = size.getFirstSelectedOption().getText().trim();
 					message = displayed.equals(attName) ? "PASS" : "FAIL";
 					scenario.write(key+" = "+attName+", Displayed = "+displayed);
 					scenario.write(message);
@@ -299,6 +305,19 @@ public class BagPage {
 	public void exitGiftMessage() {
 		DriverFactory.getDriver().findElement(By.xpath("//div[@class='giftwrap-body']//textarea")).sendKeys(Keys.TAB);
 		Move.idleForX(500);
+	}
+
+	public void checkLoader() {
+		int tries = 0;
+		int maxTries = 10;
+		while(true) {
+			if (spinnerIcon.isDisplayed()) {
+				scenario.write("Spinner is visible");
+				break;
+			} else {
+				if (++tries == maxTries) Assert.fail("Spinner not shown");
+			}
+		}
 	}
 
 }

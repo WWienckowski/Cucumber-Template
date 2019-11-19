@@ -23,7 +23,7 @@ Feature: Collect in Pink Store (UI)
 	
 	Scenario: The map link displays a map component
 		Given a list of Pink stores is displayed
-		When the user clicks on 'See map view'
+		When the user clicks on 'See map view '
 		Then the system will load the map component
 		
 	Scenario: Selecting a store displays the address in a 'Picking up' section

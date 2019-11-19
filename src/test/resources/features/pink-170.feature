@@ -1,4 +1,4 @@
-@PINK-170 @Checkout @Sprint7
+@PINK-170 @Checkout @Sprint8
 Feature: Contact for Order - Field Validation (Services)
   The user must be able to enter the required contact details and 
   be alerted if their entries do not meet the validation criteria.

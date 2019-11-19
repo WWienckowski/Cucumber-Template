@@ -14,7 +14,8 @@ Feature: Billing Address - Field Validation (Services)
 
   Background: 
     Given there are products in the Shopping Bag
-    Given the user is in the Card payment section
+    And the user is on the checkout page
+    And the user is in the Card payment section
     And the user clicks the checkbox for 'Billing address same as shipping address'
 
   #Scenario Outline: Valid entries remain in the input field (UK)

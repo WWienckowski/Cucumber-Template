@@ -155,4 +155,32 @@ public class Cart {
 		String netData = ((JavascriptExecutor)DriverFactory.getDriver()).executeScript(scriptToExecute).toString();
 		return netData;
 	}
+
+	public static void addItemWithQuantityTwo() {
+		Navigate.to("product/poplin-button-cuff/10500040B1X");
+		Move.idleForX(1000);
+		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+		Move.idleForX(1000);
+		Move.hoverOnByXpath("//span[@class='icon-cart']");
+		Move.idleForX(500);
+		Click.javascriptClickXpath("//a[img[@src='/assets/images/plus.svg']]");
+		Move.idleForX(1000);
+		DriverFactory.getScenario().write(Cart.getItemQuantity(0) +" of selected item in cart");
+	}
+
+    public static void addShirtToCart() {
+		Navigate.toShirt();
+		Move.idleForX(1000);
+		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+		Move.idleForX(1000);
+		DriverFactory.getScenario().write(Cart.getLineItemCount() +" item in cart");
+    }
+
+	public static void addTieToCart() {
+		Navigate.toTie();
+		Move.idleForX(1000);
+		Click.javascriptClickXpath("//*[text()=' Add to shopping Bag ']");
+		Move.idleForX(1000);
+		DriverFactory.getScenario().write(Cart.getLineItemCount() +" item in cart");
+	}
 }
